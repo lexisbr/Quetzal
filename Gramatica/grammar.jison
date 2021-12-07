@@ -2,6 +2,7 @@
 
 /* lexical grammar */
 %lex
+%options case-insensitive
 %%
 
 /* regular expresions */
@@ -10,9 +11,8 @@ WhiteSpace						{LineTerminator}|[ \t\f]
 
 /* comentarios */
 LineComment						\/\/[^\r\n]*
-CommentContent					([^*]|\*+[^/*])*
-DocumentationComment			\/\*{CommentContent}\*+\/
-Comment							{LineComment}|{DocumentationComment}
+MultipleLineComment				([^*]|\*+[^/*])*
+
 
 /* comillas dobles y simples */
 d_quote							["]
@@ -25,9 +25,16 @@ Integer							[1-9][0-9]+|[0-9]
 Decimal							{Integer}\.[0-9]+
 
 /* id */
-Id								[a-zA-Z][a-zA-Z_0-9]*    /*[a-zA-Z_]\w*  */
+Id								[a-zA-Z][a-zA-Z_0-9]*   
+
+/* Cadena */
+String                          ["][^"]*["] 
+
+/* Cadena */
+Char                            ['][^'][']
 
 /* reserved words */
+<<<<<<< HEAD
 
 
 boolean							"boolean"
@@ -59,14 +66,74 @@ void							"void"
 false							"false"
 true							"true"
 while							"while"
+=======
+NULL							"null"
+INT 							"int"
+DOUBLE							"double"
+BOOLEAN							"boolean"
+CHAR							"char"
+STRING							"String"
+STRUCT                          "struct"
+POW                             "pow"
+SQRT                            "sqrt"
+SIN                             "sin"      
+COS                             "cos"
+TAN                             "tan"
+CARACTEROF                      "caracterOfPosition"
+SUBSTRING                       "subString"
+LENGTH                          "length"
+TOUPPERCASE                     "toUpperCase"
+TOLOWERCASE                     "toLowerCase"
+PRINT                           "print"
+PRINTLN                         "println"
+PARSE                           "parse"
+TOINT                           "toInt"
+TODOUBLE                        "toDouble"
+STRINGPARSE                     "string"
+TYPEOF                          "typeof"
+IF								"if"
+ELSE							"else"
+SWITCH							"switch"
+CASE 							"case"
+DEFAULT							"default"
+BREAK							"break"
+WHILE							"while"
+DO								"do"
+FOR								"for"
+IN								"in"
+BEGIN	                        "begin"
+END	                            "end"
+PUSH	                        "push"
+POP	                            "pop"
+LENGTH
+CONTINUE						"continue"
+RETURN							"return"
+VOID							"void"
+FALSE							"false"
+TRUE							"true"
+>>>>>>> cc6f7c57dd88ffea547f71a7a26b43a51690b652
 
 /* operators */
 plus							"+"
 minus							"-"
 times							"*"
 divide							"/"
-pow								"^"
 mod								"%"
+eqeq							"=="
+neq								"!="
+greater							">"
+smaller							"<"
+greater_eq						">="
+smaller_eq						"<="
+plusplus						"++"
+minusminues						"--"
+
+and								"&&"
+or								"||"
+not								"!"
+concat							"&"
+repeat							"^"
+
 equal							"="
 lparen							"("
 rparen							")"
@@ -76,17 +143,11 @@ colon							":"
 semi							";"
 comma							","
 dot								"."
+mark						    "?"
+numeral						    "#"
 
-eqeq							"=="
-neq								"!="
-greater							">"
-greater_eq						">="
-smaller							"<"
-smaller_eq						"<="
 
-and								"&&"
-or								"||"
-not								"!"
+
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
 
