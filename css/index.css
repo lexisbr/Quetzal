@@ -1,8 +1,54 @@
-body {
-	font-size: 32px;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+  font-size: 20px;
 }
+header nav{
+	position: relative;
+	width: 100%;
+	left: 0;
+	top: 0;
+	z-index: 12;
+  }
+  .navbar{
+	width: 90%;
+	display: flex;
+	margin: 20px auto 0 auto;
+	align-items: center;
+	justify-content: space-between;
+  }
+	header nav .logo{
+	height: 80px;
+	width: 200px;
+  }
+  .logo img{
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+  }
+  nav .menu{
+	display: flex;
+  }
+  nav .menu li{
+	list-style: none;
+	margin: 0 10px;
+  }
+  nav .menu a{
+	color: #302d37;
+	font-size: 20px;
+	font-weight: 500;
+	text-decoration: none;
+  }
+  nav .menu a:hover{
+	  color: #302d37;
+	}
 
 h1 {
+	font-size: 50px;
 	text-align: center;
 }
 
@@ -13,4 +59,43 @@ h1 {
 
 .CodeMirror {
 	height: 60vh;
+}
+
+.buttonsDiv{
+	height:30px;
+    width:800px;
+	margin: auto;
+    text-align:center;
+	justify-content: space-between;
+}
+.buttons{
+	float:center;
+	margin: 20px 50px;
+}
+.buttons button{
+	width: auto;
+	outline: none;
+	margin: 0 10px;
+	border: none;
+	border-radius: 6px;
+	font-size: 18px;
+	color: rgb(255, 255, 255);
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	background-image: linear-gradient( 135deg, #2AFADF     10%, #C346C2 100%);
+}
+
+  #githubURL{
+   	margin-top: 8px;
+   	font-size: 30px;
+   	font-weight: 500;
+   	text-decoration: none;
+   	color: #000000;
+   	transition: all 0.3s ease;
+  }
+
+  #openFile {
+	display: none;
+	visibility: hidden;
 }
