@@ -28,6 +28,7 @@ BSL                             "\\".
 
 
 /* reserved words */
+
 "null"						        return 'null';
 "int" 						        return 'int';
 "double"					        return 'double';
@@ -79,6 +80,8 @@ BSL                             "\\".
                                     }
 
 <<EOF>>                     return 'EOF'
+
+
 
 /lex
 
