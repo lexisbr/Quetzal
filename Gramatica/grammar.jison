@@ -2,167 +2,178 @@
 
 /* lexical grammar */
 %lex
+
 %options case-insensitive
+
+escapechar                      [\'\"\\bfnrtv]
+escape                          \\{escapechar}
+acceptedcharsdouble             [^\"\\]+
+stringdouble                    {escape}|{acceptedcharsdouble}
+stringliteral                   \"{stringdouble}*\"
+
+acceptedcharssingle             [^\'\\]
+stringsingle                    {escape}|{acceptedcharssingle}
+charliteral                     \'{stringsingle}\'
+
+BSL                             "\\".
+%s                              comment
+
 %%
 
-/* regular expresions */
-LineTerminator					\r|\n|\r\n
-WhiteSpace						{LineTerminator}|[ \t\f]
+"//".*                              /* skip comments */
+"/*"                                this.begin('comment');
+<comment>"*/"                       this.popState();
+<comment>.                          /* skip comment content*/
+\s+                                 /* skip whitespace */
 
-/* comentarios */
-LineComment						\/\/[^\r\n]*
-MultipleLineComment				([^*]|\*+[^/*])*
-
-
-/* comillas dobles y simples */
-d_quote							["]
-s_quote							[']
-
-/* Integer */
-Integer							[1-9][0-9]+|[0-9]
-
-/* Decimales */
-Decimal							{Integer}\.[0-9]+
-
-/* id */
-Id								[a-zA-Z][a-zA-Z_0-9]*   
-
-/* Cadena */
-String                          ["][^"]*["] 
-
-/* Cadena */
-Char                            ['][^'][']
 
 /* reserved words */
-NULL							"null"
-INT 							"int"
-DOUBLE							"double"
-BOOLEAN							"boolean"
-CHAR							"char"
-STRING							"String"
-STRUCT                          "struct"
-POW                             "pow"
-SQRT                            "sqrt"
-SIN                             "sin"      
-COS                             "cos"
-TAN                             "tan"
-CARACTEROF                      "caracterOfPosition"
-SUBSTRING                       "subString"
-LENGTH                          "length"
-TOUPPERCASE                     "toUpperCase"
-TOLOWERCASE                     "toLowerCase"
-PRINT                           "print"
-PRINTLN                         "println"
-PARSE                           "parse"
-TOINT                           "toInt"
-TODOUBLE                        "toDouble"
-STRINGPARSE                     "string"
-TYPEOF                          "typeof"
-IF								"if"
-ELSE							"else"
-SWITCH							"switch"
-CASE 							"case"
-DEFAULT							"default"
-BREAK							"break"
-WHILE							"while"
-DO								"do"
-FOR								"for"
-IN								"in"
-BEGIN	                        "begin"
-END	                            "end"
-PUSH	                        "push"
-POP	                            "pop"
-LENGTH
-CONTINUE						"continue"
-RETURN							"return"
-VOID							"void"
-FALSE							"false"
-TRUE							"true"
+"null"						        return 'null';
+"int" 						        return 'int';
+"double"					        return 'double';
+"boolean"					        return 'boolean';
+"char"					            return 'char';
+"String"				            return 'String';
+"true"                              return 'true';
+"false"                             return 'false';
 
-/* operators */
-plus							"+"
-minus							"-"
-times							"*"
-divide							"/"
-mod								"%"
-eqeq							"=="
-neq								"!="
-greater							">"
-smaller							"<"
-greater_eq						">="
-smaller_eq						"<="
-plusplus						"++"
-minusminues						"--"
+"+"                                 return 'plus';
+"-"                                 return 'minus';
+"*"                                 return 'times';
+"/"                                 return 'div';
+"%"                                 return 'mod';
 
-and								"&&"
-or								"||"
-not								"!"
-concat							"&"
-repeat							"^"
+"<="                                return 'lte';
+">="                                return 'gte';
+"<"                                 return 'lt';
+">"                                 return 'gt';
+"="                                 return 'asig';
+"=="                                return 'equal';
+"!="                                return 'nequal';
 
-equal							"="
-lparen							"("
-rparen							")"
-lbrace							"{"
-rbrace							"}"
-colon							":"
-semi							";"
-comma							","
-dot								"."
-mark						    "?"
-numeral						    "#"
+"&&"                                return 'and';
+"||"                                return 'or';
+"!"                                 return 'not';
+
+";"                                 return 'semicolon';
+"("                                 return 'lparen';
+")"                                 return 'rparen';
+
+"&&"                                return 'and';
+"||"                                return 'or';
+"!"                                 return 'not';
 
 
+/* Number literals */
+(([0-9]+"."[0-9]*)|("."[0-9]+))     return 'double';
+[0-9]+                              return 'integer';
 
-<<EOF>>               return 'EOF'
-.                     return 'INVALID'
+[a-zA-Z_][a-zA-Z0-9_ñÑ]*            return 'identifier';
+
+{stringliteral}                     return 'string'
+{charliteral}                       return 'char'
+
+//error lexico
+.                                   {
+                                        console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+                                    }
+
+<<EOF>>                     return 'EOF'
 
 /lex
 
+//SECCION DE IMPORTS
+%{
+    const {Print} = require("../Instrucciones/Primitivas/Print.ts");
+    const {Primitivo} = require("../Expresiones/Primitivo.ts");
+    const {Operacion, Operador} = require("../Expresiones/Operacion.ts");
+    const {Objeto} = require("../Expresiones/Objeto.ts");
+    const {Atributo} = require("../Expresiones/Atributo.ts");
+%}
+
 /* operator associations and precedence */
-
-%left '+' '-'
-%left '*' '/'
-%left '^'
-%right '!'
-%right '%'
+%left 'or'
+%left 'and'
+%left 'lt' 'lte' 'gt' 'gte' 'equal' 'nequal'
+%left 'plus' 'minus'
+%left 'times' 'div' 'mod'
+%left 'pow'
+%left 'not'
 %left UMINUS
+%left 'lparen' 'rparen'
 
-%start expressions
 
-%% /* language grammar */
+/* The start of the grammar */
+%start START
 
-expressions
-    : e EOF
-        { typeof console !== 'undefined' ? console.log($1) : print($1);
-          return $1; }
-    ;
+%%
 
-e
-    : e '+' e
-        {$$ = $1+$3;}
-    | e '-' e
-        {$$ = $1-$3;}
-    | e '*' e
-        {$$ = $1*$3;}
-    | e '/' e
-        {$$ = $1/$3;}
-    | e '^' e
-        {$$ = Math.pow($1, $3);}
-    | e '!'
-        {{
-          $$ = (function fact (n) { return n==0 ? 1 : fact(n-1) * n })($1);
-        }}
-    | e '%'
-        {$$ = $1/100;}
-    | '-' e %prec UMINUS
-        {$$ = -$2;}
-    | '(' e ')'
-        {$$ = $2;}
-    | NUMBER
-        {$$ = Number(yytext);}
-    | E
-        {$$ = Math.E;}
-    | PI
-        {$$ = Math.PI;}
-    ;
+
+/* Definición de la gramática */
+START : RAICES EOF         { $$ = $1; return $$; }
+;
+
+RAICES:
+    RAICES RAIZ           { $1.push($2); $$ = $1;}
+	| RAIZ                { $$ = [$1]; } 
+;
+
+RAIZ:
+    PRINT semicolon       { $$ = $1 }
+    | OBJETO              { $$ = $1 }
+;
+
+OBJETO:
+      lt identifier LATRIBUTOS gt OBJETOS           lt div identifier gt       { $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5); }
+    | lt identifier LATRIBUTOS gt LISTA_ID_OBJETO   lt div identifier gt       { $$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[]); }
+    | lt identifier LATRIBUTOS div gt                                          { $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[]); }
+;
+
+LATRIBUTOS: ATRIBUTOS                               { $$ = $1; }
+           |                                        { $$ = []; }
+;
+
+ATRIBUTOS:
+    ATRIBUTOS ATRIBUTO                              { $1.push($2); $$ = $1;}
+    | ATRIBUTO                                      { $$ = [$1]; } 
+;
+
+ATRIBUTO: 
+    identifier asig string                   { $$ = new Atributo($1, $3, @1.first_line, @1.first_column); }
+;
+
+LISTA_ID_OBJETO: LISTA_ID_OBJETO identifier          { $1=$1 + ' ' +$2 ; $$ = $1;}
+        | identifier                                 { $$ = $1 }
+;
+
+OBJETOS:
+      OBJETOS OBJETO        { $1.push($2); $$ = $1;}
+	| OBJETO                { $$ = [$1]; } ;
+
+PRINT:
+    print lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column); } ;
+
+EXPR:
+    PRIMITIVA                           { $$ = $1 }
+    | OP_ARITMETICAS                    { $$ = $1 };
+
+
+OP_ARITMETICAS:
+    EXPR plus EXPR                      { $$ = new Operacion($1,$3,Operador.SUMA, @1.first_line, @1.first_column); }
+    | EXPR minus EXPR                   { $$ = new Operacion($1,$3,Operador.RESTA, @1.first_line, @1.first_column); }
+    | EXPR times EXPR                   { $$ = new Operacion($1,$3,Operador.MULTIPLICACION, @1.first_line, @1.first_column); }
+    | EXPR div EXPR                     { $$ = new Operacion($1,$3,Operador.DIVISION, @1.first_line, @1.first_column); }
+    | EXPR mod EXPR                     { $$ = new Operacion($1,$3,Operador.MODULO, @1.first_line, @1.first_column); }
+    | minus EXPR %prec UMINUS           { $$ = new Operacion($2,$2,Operador.MENOS_UNARIO, @1.first_line, @1.first_column); }
+    | lparen EXPR rparen                { $$ = $2 }
+;
+
+PRIMITIVA:
+    integer                      { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
+    | double                     { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
+    | string                     { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
+    | char                       { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
+    | null                              { $$ = new Primitivo(null, @1.first_line, @1.first_column); }
+    | true                              { $$ = new Primitivo(true, @1.first_line, @1.first_column); }
+    | false                             { $$ = new Primitivo(false, @1.first_line, @1.first_column); } ; 
+
