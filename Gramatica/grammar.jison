@@ -37,6 +37,7 @@ BSL                             "\\".
 "String"				            return 'String';
 "true"                              return 'true';
 "false"                             return 'false';
+"print"                             return 'print';
 
 "+"                                 return 'plus';
 "-"                                 return 'minus';
@@ -79,7 +80,7 @@ BSL                             "\\".
                                         console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
                                     }
 
-<<EOF>>                     return 'EOF'
+<<EOF>>                             return 'EOF'
 
 
 
@@ -87,11 +88,11 @@ BSL                             "\\".
 
 //SECCION DE IMPORTS
 %{
-    const {Print} = require("../Instrucciones/Primitivas/Print.ts");
-    const {Primitivo} = require("../Expresiones/Primitivo.ts");
-    const {Operacion, Operador} = require("../Expresiones/Operacion.ts");
-    const {Objeto} = require("../Expresiones/Objeto.ts");
-    const {Atributo} = require("../Expresiones/Atributo.ts");
+    const {Print} = require("../Instrucciones/Primitivas/Print.js");
+    const {Primitivo} = require("../Expresiones/Primitivo.js");
+    const {Operacion, Operador} = require("../Expresiones/Operacion.js");
+    const {Objeto} = require("../Expresiones/Objeto.js");
+    const {Atributo} = require("../Expresiones/Atributo.js");
 %}
 
 /* operator associations and precedence */
