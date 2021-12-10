@@ -1,6 +1,3 @@
-"use strict";
-exports.__esModule = true;
-exports.Print = void 0;
 // print("hola mundo");
 var Print = /** @class */ (function () {
     function Print(exp, linea, columna) {
@@ -22,4 +19,4 @@ var Print = /** @class */ (function () {
     };
     return Print;
 }());
-exports.Print = Print;
+export { Print };

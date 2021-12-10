@@ -1,4 +1,4 @@
-import { Instruccion } from "../Interfaces/Instruccion";
+import { Instruccion } from "../Interfaces/Instruccion.js";
 
 export class AST{
     

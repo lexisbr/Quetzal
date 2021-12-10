@@ -1,6 +1,3 @@
-"use strict";
-exports.__esModule = true;
-exports.Simbolo = void 0;
 var Simbolo = /** @class */ (function () {
     function Simbolo(tipo, id, linea, columna, valor) {
         this.indentificador = id;
@@ -20,4 +17,4 @@ var Simbolo = /** @class */ (function () {
     };
     return Simbolo;
 }());
-exports.Simbolo = Simbolo;
+export { Simbolo };

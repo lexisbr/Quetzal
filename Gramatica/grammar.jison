@@ -37,6 +37,7 @@ BSL                             "\\".
 "String"				            return 'String';
 "true"                              return 'true';
 "false"                             return 'false';
+"print"                             return 'print';
 
 "+"                                 return 'plus';
 "-"                                 return 'minus';
@@ -87,11 +88,11 @@ BSL                             "\\".
 
 //SECCION DE IMPORTS
 %{
-    const {Print} = require("../Instrucciones/Primitivas/Print.ts");
-    const {Primitivo} = require("../Expresiones/Primitivo.ts");
-    const {Operacion, Operador} = require("../Expresiones/Operacion.ts");
-    const {Objeto} = require("../Expresiones/Objeto.ts");
-    const {Atributo} = require("../Expresiones/Atributo.ts");
+    import {Print} from "../Instrucciones//Primitivas/Print.js";
+    import {Primitivo} from "../Expresiones/Primitivo.js";
+    import {Operacion, Operador} from "../Expresiones/Operacion.js";
+    import {Objeto} from "../Expresiones/Objeto.js";
+    import {Atributo} from "../Expresiones/Atributo.js";
 %}
 
 /* operator associations and precedence */

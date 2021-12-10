@@ -1,7 +1,7 @@
 //import regular from './parser/regular.js';
 //import regular from './parser/regular.js';
 
-// console.log(regular);
+import { grammar } from "../../Gramatica/grammar.js";
 
 const info = document.querySelector('#infoEditor');
 let source = '';
@@ -95,11 +95,16 @@ double operacionMatematica(char operador, int valor1, int valor2){
 	},
 });
 
-let button = document.querySelector("button");
+/**
+ * CAMBIAR ESTO HAHAH
+ */
+let button = document.getElementById("compilar");
 button.addEventListener("click", () => {
 	source = myCodeMirror.getValue();
 	//regular.parse(source);
 	console.log(source);
+	let result = grammar.parse(source);
+	console.log(result)
 });
 
 myCodeMirror.on("cursorActivity", () => {

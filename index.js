@@ -1,3 +1,4 @@
+"use strict";
 /**     import { AST } from "./AST/AST";
     import { Entorno } from "./AST/Entorno";
     import { Instruccion } from "./Interfaces/Instruccion";
@@ -20,4 +21,4 @@
         print(true);
         print("hola mundo");
     `);
-    */
+    */ 

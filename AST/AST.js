@@ -1,6 +1,3 @@
-"use strict";
-exports.__esModule = true;
-exports.AST = void 0;
 var AST = /** @class */ (function () {
     function AST(instrucciones) {
         this.instrucciones = instrucciones;
@@ -9,4 +6,4 @@ var AST = /** @class */ (function () {
     }
     return AST;
 }());
-exports.AST = AST;
+export { AST };

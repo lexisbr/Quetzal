@@ -1,7 +1,7 @@
-import { Expresion } from "../Interfaces/Expresion";
-import { AST } from "./AST";
-import { Entorno } from "./Entorno";
-import { Tipo } from "./Tipo";
+import { Expresion } from "../Interfaces/Expresion.js";
+import { AST } from "./AST.js";
+import { Entorno } from "./Entorno.js";
+import { Tipo } from "./Tipo.js";
 
 export class Simbolo implements Expresion {
     public indentificador: string;

@@ -1,7 +1,4 @@
-"use strict";
-exports.__esModule = true;
-exports.Objeto = void 0;
-var Entorno_1 = require("../AST/Entorno");
+import { Entorno } from "../AST/Entorno.js";
 var Objeto = /** @class */ (function () {
     function Objeto(id, texto, linea, columna, listaAtributos, listaO) {
         this.identificador = id;
@@ -10,8 +7,8 @@ var Objeto = /** @class */ (function () {
         this.columna = columna;
         this.listaAtributos = listaAtributos;
         this.listaObjetos = listaO;
-        this.entorno = new Entorno_1.Entorno(null);
+        this.entorno = new Entorno(null);
     }
     return Objeto;
 }());
-exports.Objeto = Objeto;
+export { Objeto };

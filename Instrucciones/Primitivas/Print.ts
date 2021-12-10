@@ -1,7 +1,7 @@
-import { AST } from "../../AST/AST";
-import { Entorno } from "../../AST/Entorno";
-import { Expresion } from "../../Interfaces/Expresion";
-import { Instruccion } from "../../Interfaces/Instruccion";
+import { AST } from "../../AST/AST.js";
+import { Entorno } from "../../AST/Entorno.js";
+import { Expresion } from "../../Interfaces/Expresion.js";
+import { Instruccion } from "../../Interfaces/Instruccion.js";
 
 // print("hola mundo");
 

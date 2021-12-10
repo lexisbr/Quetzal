@@ -1,7 +1,4 @@
-"use strict";
-exports.__esModule = true;
-exports.Tipo = void 0;
-var Tipo;
+export var Tipo;
 (function (Tipo) {
     Tipo[Tipo["STRING"] = 0] = "STRING";
     Tipo[Tipo["INT"] = 1] = "INT";
@@ -12,4 +9,4 @@ var Tipo;
     Tipo[Tipo["NULL"] = 6] = "NULL";
     Tipo[Tipo["ATRIBUTO"] = 7] = "ATRIBUTO";
     Tipo[Tipo["ARRAY"] = 8] = "ARRAY";
-})(Tipo = exports.Tipo || (exports.Tipo = {}));
+})(Tipo || (Tipo = {}));

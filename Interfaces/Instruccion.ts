@@ -1,5 +1,5 @@
-import { AST } from "../AST/AST";
-import { Entorno } from "../AST/Entorno";
+import { AST } from "../AST/AST.js";
+import { Entorno } from "../AST/Entorno.js";
 
 export interface Instruccion{
      linea:number;

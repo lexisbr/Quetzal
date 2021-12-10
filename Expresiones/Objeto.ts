@@ -1,5 +1,5 @@
-import { Entorno } from "../AST/Entorno";
-import { Atributo } from "./Atributo";
+import { Entorno } from "../AST/Entorno.js";
+import { Atributo } from "./Atributo.js";
 
 export class Objeto{
     identificador:string;

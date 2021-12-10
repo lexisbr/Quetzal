@@ -1,7 +1,7 @@
-import { AST } from "../AST/AST";
-import { Entorno } from "../AST/Entorno";
-import { Tipo } from "../AST/Tipo";
-import { Expresion } from "../Interfaces/Expresion";
+import { AST } from "../AST/AST.js";
+import { Entorno } from "../AST/Entorno.js";
+import { Tipo } from "../AST/Tipo.js";
+import { Expresion } from "../Interfaces/Expresion.js";
 
 export class Primitivo implements Expresion {
     linea: number;

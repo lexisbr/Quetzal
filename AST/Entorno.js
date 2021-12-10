@@ -1,6 +1,3 @@
-"use strict";
-exports.__esModule = true;
-exports.Entorno = void 0;
 var Entorno = /** @class */ (function () {
     function Entorno(anterior) {
         this.tabla = {};
@@ -59,4 +56,4 @@ var Entorno = /** @class */ (function () {
     };
     return Entorno;
 }());
-exports.Entorno = Entorno;
+export { Entorno };

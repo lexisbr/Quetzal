@@ -1,13 +1,15 @@
 
 let source2 = '';
 let myCodeMirror2 = CodeMirror(document.querySelector("#codeConsole"), {
-	lineNumbers: true,
+	lineNumbers: false,
 	tabSize: 4,
-	value: ` 	HELLO WORLD	`,
-	mode: 'text/x-java',
+	value: ` 	HELLO WORLD	
+		int a = 5;
+		if(a+b)`,
 	//theme: "darcula",
 	//theme: "ayu-dark",
 	theme: "ayu-mirage",
+	readOnly: true,
 	//theme: "tomorrow-night-bright",
 	specialChars: /[\(\)\|\+\*\-\/\%\&]/,
 	specialCharPlaceholder: (character) => {

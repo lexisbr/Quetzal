@@ -1,6 +1,6 @@
-import { AST } from "../AST/AST";
-import { Entorno } from "../AST/Entorno";
-import { Tipo } from "../AST/Tipo";
+import { AST } from "../AST/AST.js";
+import { Entorno } from "../AST/Entorno.js";
+import { Tipo } from "../AST/Tipo.js";
 
 export interface Expresion{
      linea:number;
