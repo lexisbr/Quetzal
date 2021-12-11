@@ -1,9 +1,9 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Objeto = void 0;
-var Entorno_1 = require("../AST/Entorno");
-var Objeto = /** @class */ (function () {
-    function Objeto(id, texto, linea, columna, listaAtributos, listaO) {
+const Entorno_1 = require("../AST/Entorno");
+class Objeto {
+    constructor(id, texto, linea, columna, listaAtributos, listaO) {
         this.identificador = id;
         this.texto = texto;
         this.linea = linea;
@@ -12,6 +12,5 @@ var Objeto = /** @class */ (function () {
         this.listaObjetos = listaO;
         this.entorno = new Entorno_1.Entorno(null);
     }
-    return Objeto;
-}());
+}
 exports.Objeto = Objeto;

@@ -1,23 +1,22 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Simbolo = void 0;
-var Simbolo = /** @class */ (function () {
-    function Simbolo(tipo, id, linea, columna, valor) {
+class Simbolo {
+    constructor(tipo, id, linea, columna, valor) {
         this.indentificador = id;
         this.linea = linea;
         this.columna = columna;
         this.tipo = tipo;
         this.valor = valor;
     }
-    Simbolo.prototype.traducir = function (ent, arbol) {
+    traducir(ent, arbol) {
         throw new Error("Method not implemented.");
-    };
-    Simbolo.prototype.getTipo = function (ent, arbol) {
+    }
+    getTipo(ent, arbol) {
         return this.tipo;
-    };
-    Simbolo.prototype.getValorImplicito = function (ent, arbol) {
+    }
+    getValorImplicito(ent, arbol) {
         return this.valor;
-    };
-    return Simbolo;
-}());
+    }
+}
 exports.Simbolo = Simbolo;

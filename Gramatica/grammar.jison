@@ -88,7 +88,7 @@ BSL                             "\\".
 
 //SECCION DE IMPORTS
 %{
-    const {Print} = require("../Instrucciones/Primitivas/Print.js");
+    const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
     const {Operacion, Operador} = require("../Expresiones/Operacion.js");
     const {Objeto} = require("../Expresiones/Objeto.js");
@@ -124,10 +124,10 @@ RAICES:
 
 RAIZ:
     PRINT semicolon       { $$ = $1 }
-    | OBJETO              { $$ = $1 }
+    | DECLARACION              { $$ = $1 }
 ;
 
-OBJETO:
+DECLARACION:
       lt identifier LATRIBUTOS gt OBJETOS           lt div identifier gt       { $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5); }
     | lt identifier LATRIBUTOS gt LISTA_ID_OBJETO   lt div identifier gt       { $$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[]); }
     | lt identifier LATRIBUTOS div gt                                          { $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[]); }
