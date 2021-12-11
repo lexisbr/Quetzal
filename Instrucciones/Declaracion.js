@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Print = void 0;
-// print("hola mundo");
-class Print {
-    constructor(exp, linea, columna) {
+exports.Declaracion = void 0;
+class Declaracion {
+    constructor(identificador, exp, tipo, linea, columna) {
         this.expresion = exp;
         this.linea = linea;
         this.columna = columna;
+        this.identificador = identificador;
+        this.tipo = tipo;
     }
     traducir(ent, arbol) {
         throw new Error("Method not implemented.");
@@ -14,16 +15,11 @@ class Print {
     ejecutar(ent, arbol) {
         const valor = this.expresion.getValorImplicito(ent, arbol);
         if (valor !== null) {
-            if (typeof valor === "string") {
-                console.log('>', valor.substring(1, valor.length - 1));
-            }
-            else {
-                console.log('>', valor);
-            }
+            console.log('>', valor);
         }
         else {
             console.log('>> Error, no se pueden imprimir valores nulos');
         }
     }
 }
-exports.Print = Print;
+exports.Declaracion = Declaracion;
