@@ -1,18 +1,20 @@
-const AST  = require("./AST/AST.js");
-const Entorno = require("./AST/Entorno.js"); 
-const Instruccion =  require("./Interfaces/Instruccion.js");
-
-const grammar = require("./Gramatica/grammar.js")
-
-
-if (typeof window !== 'undefined'){
-    window.parseExternal = function(input){ 
-        const instrucciones = grammar.parse(input);
-        const ast = new AST.AST(instrucciones);
-        const entornoGlobal = new Entorno.Entorno(null);
-        instrucciones.forEach(function (element) {
-            element.ejecutar(entornoGlobal, ast);
-        });
-    }
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const AST_1 = require("./AST/AST.js");
+const Entorno_1 = require("./AST/Entorno.js");
+const gramatica = require('./Gramatica/grammar.js');
+function ejecutarCodigo(entrada) {
+    //traigo todas las raices
+    const instrucciones = gramatica.parse(entrada);
+    const ast = new AST_1.AST(instrucciones);
+    const entornoGlobal = new Entorno_1.Entorno(null);
+    //recorro todas las raices  RECURSIVA
+    instrucciones.forEach((element) => {
+        element.ejecutar(entornoGlobal, ast);
+    });
 }
-
+ejecutarCodigo(`
+    print(1);
+    print(true);
+    print("hola mundo");
+`);

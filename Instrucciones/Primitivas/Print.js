@@ -1,25 +1,26 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Print = void 0;
 // print("hola mundo");
-var Print = /** @class */ (function () {
-    function Print(exp, linea, columna) {
+class Print {
+    constructor(exp, linea, columna) {
         this.expresion = exp;
         this.linea = linea;
         this.columna = columna;
     }
-    Print.prototype.traducir = function (ent, arbol) {
+    traducir(ent, arbol) {
         throw new Error("Method not implemented.");
-    };
-    Print.prototype.ejecutar = function (ent, arbol) {
-        var valor = this.expresion.getValorImplicito(ent, arbol);
+    }
+    ejecutar(ent, arbol) {
+        const valor = this.expresion.getValorImplicito(ent, arbol);
         if (valor !== null) {
             console.log('>', valor);
+            return valor;
         }
         else {
             console.log('>> Error, no se pueden imprimir valores nulos');
+            return "Error, no se pueden imprimir valores nulos";
         }
-    };
-    return Print;
-}());
+    }
+}
 exports.Print = Print;

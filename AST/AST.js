@@ -1,12 +1,11 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.AST = void 0;
-var AST = /** @class */ (function () {
-    function AST(instrucciones) {
+class AST {
+    constructor(instrucciones) {
         this.instrucciones = instrucciones;
         this.structs = [];
         this.funciones = [];
     }
-    return AST;
-}());
+}
 exports.AST = AST;

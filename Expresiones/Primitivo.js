@@ -1,18 +1,18 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Primitivo = void 0;
-var Tipo_1 = require("../AST/Tipo");
-var Primitivo = /** @class */ (function () {
-    function Primitivo(valor, linea, columna) {
+const Tipo_1 = require("../AST/Tipo");
+class Primitivo {
+    constructor(valor, linea, columna) {
         this.linea = linea;
         this.columna = columna;
         this.valor = valor;
     }
-    Primitivo.prototype.traducir = function (ent, arbol) {
+    traducir(ent, arbol) {
         throw new Error("Method not implemented.");
-    };
-    Primitivo.prototype.getTipo = function (ent, arbol) {
-        var valor = this.getValorImplicito(ent, arbol);
+    }
+    getTipo(ent, arbol) {
+        const valor = this.getValorImplicito(ent, arbol);
         if (typeof (valor) === 'boolean') {
             return Tipo_1.Tipo.BOOL;
         }
@@ -29,13 +29,12 @@ var Primitivo = /** @class */ (function () {
             return Tipo_1.Tipo.NULL;
         }
         return Tipo_1.Tipo.VOID;
-    };
-    Primitivo.prototype.getValorImplicito = function (ent, arbol) {
+    }
+    getValorImplicito(ent, arbol) {
         return this.valor;
-    };
-    Primitivo.prototype.isInt = function (n) {
+    }
+    isInt(n) {
         return Number(n) === n && n % 1 === 0;
-    };
-    return Primitivo;
-}());
+    }
+}
 exports.Primitivo = Primitivo;
