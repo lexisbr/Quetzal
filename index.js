@@ -1,6 +1,7 @@
 const AST  = require("./AST/AST.js");
 const Entorno = require("./AST/Entorno.js"); 
 const Instruccion =  require("./Interfaces/Instruccion.js");
+const Excepcion =  require("./AST/Excepcion.js");
 
 const grammar = require("./Gramatica/grammar.js")
 
@@ -11,7 +12,10 @@ if (typeof window !== 'undefined'){
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
         ast.instrucciones.forEach(function (element) {
-            element.ejecutar(entornoGlobal, ast);
+            let value = element.ejecutar(entornoGlobal, ast);
+            if(value instanceof Excepcion.Excepcion){ 
+                ast.updateConsola(value);
+            }
         });
         //console.log("Entorno ",entornoGlobal.getTabla());
         console.log("Consola ",ast.getConsola());
