@@ -24,13 +24,16 @@ export class Asignacion implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        const valor = this.expresion.getValorImplicito(ent, arbol);
+        let valor = this.expresion.getValorImplicito(ent, arbol);
         const tipoValor = this.expresion.getTipo(ent, arbol);
         if (!(valor instanceof Excepcion)) {
             if (ent.existeEnActual(this.identificador)) {
                 let simbolo:Simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent,arbol);
-                if( simboloValor == tipoValor || (tipoValor == Tipo.NULL && simboloValor == Tipo.STRING)) {
+                if( simboloValor == tipoValor || (tipoValor == Tipo.NULL && simboloValor == Tipo.STRING)|| (tipoValor == Tipo.INT && simboloValor == Tipo.DOUBLE)) {
+                    if(this.isDouble(tipoValor,simboloValor)){
+                        valor = valor.toFixed(2);
+                    }
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
                 }else{
@@ -43,6 +46,10 @@ export class Asignacion implements Instruccion {
         } else {
             return valor;
         }
+    }
+
+    isDouble(tipoValor:any, simboloValor:any){
+        return tipoValor == Tipo.INT && simboloValor == Tipo.DOUBLE;
     }
 
 }

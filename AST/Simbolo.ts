@@ -25,6 +25,7 @@ export class Simbolo implements Expresion {
     getTipo(ent: Entorno, arbol: AST): Tipo {
         return this.tipo;
     }
+    
     getValorImplicito(ent: Entorno, arbol: AST) {
         return this.valor;
     }

@@ -17,10 +17,13 @@ class Declaracion {
     }
     ejecutar(ent, arbol) {
         if (this.expresion != null) {
-            const valor = this.expresion.getValorImplicito(ent, arbol);
+            let valor = this.expresion.getValorImplicito(ent, arbol);
             const tipoValor = this.expresion.getTipo(ent, arbol);
-            if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING)) {
+            if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existe(this.identificador)) {
+                    if (this.isDouble(tipoValor)) {
+                        valor = valor.toFixed(2);
+                    }
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 }
@@ -62,6 +65,9 @@ class Declaracion {
     }
     isInt(n) {
         return Number(n) === n && n % 1 === 0;
+    }
+    isDouble(tipoValor) {
+        return tipoValor == Tipo_1.Tipo.INT && this.tipo == Tipo_1.Tipo.DOUBLE;
     }
 }
 exports.Declaracion = Declaracion;

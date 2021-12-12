@@ -27,10 +27,13 @@ export class Declaracion implements Instruccion {
 
     ejecutar(ent: Entorno, arbol: AST) {
         if (this.expresion != null) {
-            const valor = this.expresion.getValorImplicito(ent, arbol);
+            let valor = this.expresion.getValorImplicito(ent, arbol);
             const tipoValor = this.expresion.getTipo(ent, arbol);
-            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING)) {
+            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existe(this.identificador)) {
+                    if(this.isDouble(tipoValor)){
+                        valor = valor.toFixed(2);
+                    }
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 } else {
@@ -71,5 +74,9 @@ export class Declaracion implements Instruccion {
 
     isInt(n: number) {
         return Number(n) === n && n % 1 === 0;
+    }
+
+    isDouble(tipoValor:any){
+        return tipoValor == Tipo.INT && this.tipo == Tipo.DOUBLE
     }
 }

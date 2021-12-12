@@ -14,13 +14,16 @@ class Asignacion {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
-        const valor = this.expresion.getValorImplicito(ent, arbol);
+        let valor = this.expresion.getValorImplicito(ent, arbol);
         const tipoValor = this.expresion.getTipo(ent, arbol);
         if (!(valor instanceof Excepcion_1.Excepcion)) {
             if (ent.existeEnActual(this.identificador)) {
                 let simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent, arbol);
-                if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING)) {
+                if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING) || (tipoValor == Tipo_js_1.Tipo.INT && simboloValor == Tipo_js_1.Tipo.DOUBLE)) {
+                    if (this.isDouble(tipoValor, simboloValor)) {
+                        valor = valor.toFixed(2);
+                    }
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
                 }
@@ -35,6 +38,9 @@ class Asignacion {
         else {
             return valor;
         }
+    }
+    isDouble(tipoValor, simboloValor) {
+        return tipoValor == Tipo_js_1.Tipo.INT && simboloValor == Tipo_js_1.Tipo.DOUBLE;
     }
 }
 exports.Asignacion = Asignacion;
