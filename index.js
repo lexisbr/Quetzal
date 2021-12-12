@@ -7,7 +7,6 @@ const grammar = require("./Gramatica/grammar.js")
 
 if (typeof window !== 'undefined'){
     window.parseExternal = function(input){ 
-        const respuestas = [];
         const instrucciones = grammar.parse(input);
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);

@@ -3,10 +3,9 @@ import { Entorno } from "../AST/Entorno";
 import { Tipo } from "../AST/Tipo";
 import { Operador } from "../AST/Operador";
 import { Expresion } from "../Interfaces/Expresion";
-import { Excepcion } from "../AST/Excepcion";
 
 
-export class Operacion implements Expresion {
+export class Logico implements Expresion {
     linea: number;
     columna: number;
     op_izquierda: Expresion;
@@ -20,6 +19,7 @@ export class Operacion implements Expresion {
         this.op_derecha = op_derecha;
         this.operador = operacion;
     }
+
     traducir(ent: Entorno, arbol: AST) {
         throw new Error("Method not implemented.");
     }
@@ -64,7 +64,7 @@ export class Operacion implements Expresion {
                 else
                 {
                     console.log("Error de tipos de datos no permitidos realizando una suma");
-                    return new Excepcion(this.linea,this.columna,"Error Semantico","Los datos no son numericos");
+                    return null;
                 }
             }
             //resta

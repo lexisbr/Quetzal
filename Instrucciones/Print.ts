@@ -9,11 +9,13 @@ export class Print implements Instruccion {
     linea: number;
     columna: number;
     public expresion: Expresion;
+    salto: boolean;
 
-    constructor(exp: Expresion, linea: number, columna: number) {
+    constructor(exp: Expresion, linea: number, columna: number, salto: boolean) {
         this.expresion = exp;
         this.linea = linea;
         this.columna = columna;
+        this.salto = salto;
     }
 
     traducir(ent: Entorno, arbol: AST) {
@@ -21,16 +23,20 @@ export class Print implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        const valor = this.expresion.getValorImplicito(ent, arbol);
+        let valor = this.expresion.getValorImplicito(ent, arbol);
         if (valor !== null) {
             if (typeof valor === "string") {
-                arbol.updateConsola(valor.substring(1, valor.length - 1));
-            } else {
-                arbol.updateConsola(valor);
+                valor = valor.substring(1, valor.length - 1);
             }
+            valor = this.addSalto(valor);
+            arbol.updateConsola(valor);
         } else {
             console.log('>> Error, no se pueden imprimir valores nulos');
         }
+    }
+
+    addSalto(valor: any) {
+        return this.salto ? valor + "\n" : valor;
     }
 
 }

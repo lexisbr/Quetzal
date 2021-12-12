@@ -38,6 +38,7 @@ BSL                             "\\".
 "true"                              return 'true';
 "false"                             return 'false';
 "print"                             return 'print';
+"println"                           return 'println';
 
 "+"                                 return 'plus';
 "-"                                 return 'minus';
@@ -91,7 +92,6 @@ BSL                             "\\".
     const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
     const {Operacion, Operador} = require("../Expresiones/Operacion.js");
-    const {Objeto} = require("../Expresiones/Objeto.js");
     const {Atributo} = require("../Expresiones/Atributo.js");
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
@@ -135,7 +135,9 @@ DECLARACION:
 ;
 
 PRINT:
-    print lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column); } ;
+    print lparen EXPR rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
+    | println lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
+;
 
 EXPR:
     PRIMITIVA                           { $$ = $1 }
