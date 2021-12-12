@@ -21,9 +21,6 @@ class Operacion {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
-            if (this.isChar(valor)) {
-                return Tipo_1.Tipo.CHAR;
-            }
             return Tipo_1.Tipo.STRING;
         }
         else if (typeof (valor) === 'number') {
@@ -47,9 +44,7 @@ class Operacion {
                     return op1 + op2;
                 }
                 else {
-
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Suma (+)");
-
                 }
             }
             //resta
