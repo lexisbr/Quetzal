@@ -10,7 +10,13 @@ class Identificador {
         this.identificador = identificador;
     }
     getTipo(ent, arbol) {
-        throw new Error("Method not implemented.");
+        if (ent.existeEnActual(this.identificador)) {
+            let simbolo = ent.getSimbolo(this.identificador);
+            return simbolo.getTipo(ent, arbol);
+        }
+        else {
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable no existe");
+        }
     }
     getValorImplicito(ent, arbol) {
         if (ent.existeEnActual(this.identificador)) {

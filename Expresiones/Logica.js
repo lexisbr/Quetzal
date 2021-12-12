@@ -49,7 +49,6 @@ class Logica {
                     return op1 && op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos para AND");
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para AND");
                 }
             }
@@ -59,7 +58,7 @@ class Logica {
                     return op1 || op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos para OR");
+
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para OR");
                 }
             }
@@ -71,7 +70,7 @@ class Logica {
                     return !op1;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos para NOT");
+
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para NOT");
                 }
             }

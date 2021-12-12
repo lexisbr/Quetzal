@@ -21,6 +21,9 @@ class Operacion {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
+            if (this.isChar(valor)) {
+                return Tipo_1.Tipo.CHAR;
+            }
             return Tipo_1.Tipo.STRING;
         }
         else if (typeof (valor) === 'number') {
@@ -44,8 +47,9 @@ class Operacion {
                     return op1 + op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos realizando una suma");
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Los datos no son numericos");
+
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Suma (+)");
+
                 }
             }
             //resta
@@ -54,8 +58,7 @@ class Operacion {
                     return op1 - op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos realizando una suma");
-                    return null;
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Resta (-)");
                 }
             }
             //multiplicación
@@ -64,36 +67,31 @@ class Operacion {
                     return op1 * op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos realizando una suma");
-                    return null;
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Multiplicacion (*)");
                 }
             }
             //division
             else if (this.operador == Operador_1.Operador.DIVISION) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
                     if (op2 === 0) {
-                        console.log("Resultado indefinido, no puede ejecutarse operación sobre cero.");
-                        return null;
+                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No puede realizar una Operacion entre cero");
                     }
                     return op1 / op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos realizando una suma");
-                    return null;
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Division (/)");
                 }
             }
             //modulo
             else if (this.operador == Operador_1.Operador.MODULO) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
                     if (op2 === 0) {
-                        console.log("Resultado indefinido, no puede ejecutarse operación sobre cero.");
-                        return null;
+                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No puede realizar una Operacion entre cero");
                     }
                     return op1 % op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos realizando una suma");
-                    return null;
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Modular (%)");
                 }
             }
         }
@@ -104,8 +102,7 @@ class Operacion {
                     return -1 * op1;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos realizando una operación unaria");
-                    return null;
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Unaria (-)");
                 }
             }
         }

@@ -1,0 +1,43 @@
+/**
+*   PRUEBA DE OPERACIONES ARITMETICAS, LOGICAS Y RELACIONALES
+*/
+//ARITMETICAS ENTERAS
+int n1 = 10;
+int n2 = 5;
+    println(n1 + n2);
+    println(n1 - n2);
+    println(n1 * n2);
+    println(n1 / n2);
+    println(n1 % n2);
+    prinln(-n1);
+
+// ARITMETICAS DECIMALES
+double d1 = 10;
+double d2 = 5;
+    println(d1 + d2);
+    println(d1 - d2);
+    println(d1 * d2);
+    println(d1 / d2);
+    println(d1 % d2);
+    prinln(-d1);
+
+//RELACIONALES ENTERAS
+    println(n1 > n2);
+    println(n1 < n2);
+    println(n1 >= n2);
+    println(n1 <= n2);
+    println(n1 == n2);
+    println(n1 != n2);
+    
+//RELACIONALES DECIMALES
+    println(d1 > d2);
+    println(d1 < d2);
+    println(d1 >= d2);
+    println(d1 <= d2);
+    println(d1 == d2);
+    println(d1 != d2);
+
+boolean a = true;
+boolean b = false;
+println(a == b);
+println(a != b);

@@ -17,15 +17,18 @@ class Relacional {
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
+
         if (typeof (valor) === 'boolean') {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
+
             if (this.isChar(valor)) {
                 return Tipo_1.Tipo.CHAR;
             }
             return Tipo_1.Tipo.STRING;
         }
+
         else if (typeof (valor) === 'number') {
             if (this.isInt(Number(valor))) {
                 return Tipo_1.Tipo.INT;
@@ -40,13 +43,17 @@ class Relacional {
     getValorImplicito(ent, arbol) {
         let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
         let op2 = this.op_derecha.getValorImplicito(ent, arbol);
+
+        let typeOp1 = this.op_izquierda.getTipo(ent, arbol);
+        let typeOp2 = this.op_derecha.getTipo(ent, arbol);
+
         //MENOR QUE
         if (this.operador == Operador_1.Operador.MENOR_QUE) {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
                 return op1 < op2;
             }
             else {
-                console.log("Error de tipos de datos no permitidos para operador <");
+
                 return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Menor Que (<)");
             }
         }
@@ -56,7 +63,7 @@ class Relacional {
                 return op1 > op2;
             }
             else {
-                console.log("Error de tipos de datos no permitidos para operador >");
+
                 return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Mayor Que (>)");
             }
         }
@@ -68,80 +75,64 @@ class Relacional {
             else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
                 return op1 == op2;
             }
-            else if (typeof (op1 === "string") && typeof (op2 === "string")) {
+
+            else if (typeOp1 === Tipo_1.Tipo.STRING && typeOp2 === Tipo_1.Tipo.STRING) {
+                return op1 == op2;
+            }
+            else if (typeOp1 === Tipo_1.Tipo.CHAR && typeOp2 === Tipo_1.Tipo.CHAR) {
+
                 return op1 == op2;
             }
             else if (typeof (op1 === null) && typeof (op2 === null)) {
                 return op1 == op2;
             }
             else {
-                console.log("Error de tipos de datos no permitidos para operador ==");
+ 
                 return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Igual Igual (==)");
             }
         } //MENOR IGUAL
         else if (this.operador == Operador_1.Operador.MENOR_IGUAL_QUE) {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                return op1 == op2;
-            }
-            else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
-                return op1 == op2;
-            }
-            else if (typeof (op1 === "string") && typeof (op2 === "string")) {
-                return op1 == op2;
+
+                return op1 <= op2;
             }
             else if (typeof (op1 === null) && typeof (op2 === null)) {
-                return op1 == op2;
+                return op1 <= op2;
             }
             else {
-                console.log("Error de tipos de datos no permitidos para operador ==");
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Igual Igual (==)");
-            }
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Menor Igual (<=)");
+            } //MAYOR IGUAL
         }
-        else if (this.operador == Operador_1.Operador.RESTA) {
+        else if (this.operador == Operador_1.Operador.MAYOR_IGUAL_QUE) {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                return op1 - op2;
+                return op1 >= op2;
+            }
+            else if (typeof (op1 === null) && typeof (op2 === null)) {
+                return op1 >= op2;
             }
             else {
-                console.log("Error de tipos de datos no permitidos realizando una suma");
-                return null;
-            }
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Mayor Igual (>=)");
+            } //DIFERENTE QUE
         }
-        //multiplicación
-        else if (this.operador == Operador_1.Operador.MULTIPLICACION) {
+        else if (this.operador == Operador_1.Operador.DIFERENTE_QUE) {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                return op1 * op2;
+                return op1 != op2;
+            }
+            else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+                return op1 != op2;
+            }
+            else if (typeOp1 === Tipo_1.Tipo.STRING && typeOp2 === Tipo_1.Tipo.STRING) {
+                return op1 != op2;
+            }
+            else if (typeOp1 === Tipo_1.Tipo.CHAR && typeOp2 === Tipo_1.Tipo.CHAR) {
+                return op1 != op2;
+            }
+            else if (typeof (op1 === null) && typeof (op2 === null)) {
+                return op1 != op2;
             }
             else {
-                console.log("Error de tipos de datos no permitidos realizando una suma");
-                return null;
-            }
-        }
-        //division
-        else if (this.operador == Operador_1.Operador.DIVISION) {
-            if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                if (op2 === 0) {
-                    console.log("Resultado indefinido, no puede ejecutarse operación sobre cero.");
-                    return null;
-                }
-                return op1 / op2;
-            }
-            else {
-                console.log("Error de tipos de datos no permitidos realizando una suma");
-                return null;
-            }
-        }
-        //modulo
-        else if (this.operador == Operador_1.Operador.MODULO) {
-            if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                if (op2 === 0) {
-                    console.log("Resultado indefinido, no puede ejecutarse operación sobre cero.");
-                    return null;
-                }
-                return op1 % op2;
-            }
-            else {
-                console.log("Error de tipos de datos no permitidos realizando una suma");
-                return null;
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operador Diferente Que (!=)");
+
             }
         }
         return null;
@@ -150,7 +141,11 @@ class Relacional {
         return Number(n) === n && n % 1 === 0;
     }
     isChar(cadena) {
-        return cadena.length == 3 && cadena.charAt(0) === "'" && cadena.charAt(cadena.length - 1) === "'";
+
+        return (cadena.length == 3 &&
+            cadena.charAt(0) === "'" &&
+            cadena.charAt(cadena.length - 1) === "'");
+
     }
 }
 exports.Relacional = Relacional;
