@@ -47,7 +47,9 @@ class Operacion {
                     return op1 + op2;
                 }
                 else {
+
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Suma (+)");
+
                 }
             }
             //resta

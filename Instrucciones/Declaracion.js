@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Declaracion = void 0;
+const Excepcion_1 = require("../AST/Excepcion");
 const Simbolo_1 = require("../AST/Simbolo");
 const Tipo_1 = require("../AST/Tipo");
 class Declaracion {
@@ -15,24 +16,33 @@ class Declaracion {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
-        const valor = this.expresion.getValorImplicito(ent, arbol);
-        const tipoValor = this.expresion.getTipo(ent, arbol);
-        if (valor !== null) {
-            if (tipoValor == this.tipo) {
+        if (this.expresion != null) {
+            let valor = this.expresion.getValorImplicito(ent, arbol);
+            const tipoValor = this.expresion.getTipo(ent, arbol);
+            if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existe(this.identificador)) {
+                    if (this.isDouble(tipoValor)) {
+                        valor = valor.toFixed(2);
+                    }
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 }
                 else {
-                    console.log("Error Semantico: la variable ya existe ");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
                 }
             }
             else {
-                console.log("Error Semantico: los tipos no coinciden");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "El tipo asignado a la variable no es correcto");
             }
         }
         else {
-            console.log('>> Error, no se pueden imprimir valores nulos');
+            if (!ent.existe(this.identificador)) {
+                let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
+                ent.agregar(this.identificador, simbolo);
+            }
+            else {
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
+            }
         }
     }
     getTipo() {
@@ -55,6 +65,9 @@ class Declaracion {
     }
     isInt(n) {
         return Number(n) === n && n % 1 === 0;
+    }
+    isDouble(tipoValor) {
+        return tipoValor == Tipo_1.Tipo.INT && this.tipo == Tipo_1.Tipo.DOUBLE;
     }
 }
 exports.Declaracion = Declaracion;

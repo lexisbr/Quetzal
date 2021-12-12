@@ -41,9 +41,11 @@ class Logica {
         if (this.operador !== Operador_1.Operador.NOT) {
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             let op2 = this.op_derecha.getValorImplicito(ent, arbol);
+            let op1Tipo = this.op_izquierda.getTipo(ent, arbol);
+            let op2Tipo = this.op_derecha.getTipo(ent, arbol);
             //AND
             if (this.operador == Operador_1.Operador.AND) {
-                if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+                if (op1Tipo === Tipo_1.Tipo.BOOL && op2Tipo === Tipo_1.Tipo.BOOL) {
                     return op1 && op2;
                 }
                 else {
@@ -56,6 +58,7 @@ class Logica {
                     return op1 || op2;
                 }
                 else {
+
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para OR");
                 }
             }
@@ -67,6 +70,7 @@ class Logica {
                     return !op1;
                 }
                 else {
+
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para NOT");
                 }
             }

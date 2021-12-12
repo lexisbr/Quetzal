@@ -14,16 +14,12 @@ class Print {
     }
     ejecutar(ent, arbol) {
         let valor = this.expresion.getValorImplicito(ent, arbol);
-        if (valor !== null) {
-            if (typeof valor === "string") {
-                valor = valor.substring(1, valor.length - 1);
-            }
-            valor = this.addSalto(valor);
-            arbol.updateConsola(valor);
+        console.log(typeof valor);
+        if (typeof valor === "string" && (valor.charAt(0) == '"' && valor.charAt(0) == "'")) {
+            valor = valor.substring(1, valor.length - 1);
         }
-        else {
-            console.log('>> Error, no se pueden imprimir valores nulos');
-        }
+        valor = this.addSalto(valor);
+        arbol.updateConsola(valor);
     }
     addSalto(valor) {
         return this.salto ? valor + "\n" : valor;

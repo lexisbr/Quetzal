@@ -9,7 +9,7 @@ class Excepcion {
         this.descripcion = descripcion;
     }
     toString() {
-        return `${this.tipo} - ${this.descripcion} [${this.linea},${this.columna}]`;
+        return `${this.tipo} - ${this.descripcion} [${this.linea},${this.columna}]\n`;
     }
 }
 exports.Excepcion = Excepcion;

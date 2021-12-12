@@ -1,5 +1,6 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
+import { Excepcion } from "../AST/Excepcion";
 import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
@@ -25,23 +26,29 @@ export class Declaracion implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        const valor = this.expresion.getValorImplicito(ent, arbol);
-        const tipoValor = this.expresion.getTipo(ent, arbol);
-        if (valor !== null) {
-
-            if (tipoValor == this.tipo) {
+        if (this.expresion != null) {
+            let valor = this.expresion.getValorImplicito(ent, arbol);
+            const tipoValor = this.expresion.getTipo(ent, arbol);
+            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existe(this.identificador)) {
+                    if(this.isDouble(tipoValor)){
+                        valor = valor.toFixed(2);
+                    }
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
-                }else{
-                    console.log("Error Semantico: la variable ya existe ")
+                } else {
+                    return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
                 }
             } else {
-                console.log("Error Semantico: los tipos no coinciden")
+                return new Excepcion(this.linea, this.columna, "Semantico", "El tipo asignado a la variable no es correcto");
             }
-
         } else {
-            console.log('>> Error, no se pueden imprimir valores nulos');
+            if (!ent.existe(this.identificador)) {
+                let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
+                ent.agregar(this.identificador, simbolo);
+            } else {
+                return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
+            }
         }
     }
 
@@ -67,5 +74,9 @@ export class Declaracion implements Instruccion {
 
     isInt(n: number) {
         return Number(n) === n && n % 1 === 0;
+    }
+
+    isDouble(tipoValor:any){
+        return tipoValor == Tipo.INT && this.tipo == Tipo.DOUBLE
     }
 }

@@ -33,8 +33,9 @@ export class Identificador implements Expresion {
             let simbolo: Simbolo = ent.getSimbolo(this.identificador);
             return simbolo.getValorImplicito(ent, arbol);
         }
-        else {
-            return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable no existe");
+
+        else{ 
+            return new Excepcion(this.linea,this.columna,"Semantico","La variable no existe");
         }
     }
 

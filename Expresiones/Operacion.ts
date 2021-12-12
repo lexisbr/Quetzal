@@ -32,9 +32,6 @@ export class Operacion implements Expresion {
         }
         else if (typeof(valor) === 'string')
         {
-            if(this.isChar(valor)){
-                return Tipo.CHAR;
-            }
             return Tipo.STRING;
         }
         else if (typeof(valor) === 'number')
