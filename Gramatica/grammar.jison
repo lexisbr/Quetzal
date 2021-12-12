@@ -20,11 +20,10 @@ BSL                             "\\".
 
 %%
 
-"//".*                              /* skip comments */
-"/*"                                this.begin('comment');
-<comment>"*/"                       this.popState();
-<comment>.                          /* skip comment content*/
-\s+                                 /* skip whitespace */
+/* comentarios */
+"//".*                                /* IGNORE */
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]   /* IGNORE */
+\s+                                 /* IGNORE */
 
 
 /* reserved words */
@@ -73,8 +72,10 @@ BSL                             "\\".
 
 [a-zA-Z_][a-zA-Z0-9_ñÑ]*            return 'identifier';
 
-{stringliteral}                     return 'string'
-{charliteral}                       return 'char'
+{stringliteral}                     return 'string';
+{charliteral}                       return 'char';
+
+{Comment}                           return;
 
 //error lexico
 .                                   {
@@ -91,10 +92,11 @@ BSL                             "\\".
 %{
     const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
-    const {Operacion, Operador} = require("../Expresiones/Operacion.js");
-    const {Atributo} = require("../Expresiones/Atributo.js");
+    const {Operacion} = require("../Expresiones/Operacion.js");
+    const {Operador} = require("../AST/Operador.js");
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
+    const {Asignacion} = require("../Instrucciones/Asignacion.js");
     const {Identificador} = require("../Expresiones/Identificador.js");
 %}
 
@@ -126,12 +128,22 @@ RAICES:
 ;
 
 RAIZ:
-    PRINT semicolon       { $$ = $1 }
-    | DECLARACION semicolon           { $$ = $1 }
+    PRINT semicolon                         { $$ = $1; }
+    | DECLARACION_NULA semicolon            { $$ = $1; }
+    | DECLARACION semicolon                 { $$ = $1; }
+    | ASIGNACION semicolon                  { $$ = $1; }
 ;
 
 DECLARACION:
-       TIPO identifier asig EXPR        { $$ = new Declaracion($2,$4,$1,@1.first_line, @1.first_column); }
+    TIPO identifier asig EXPR        { $$ = new Declaracion($2,$4,$1,@1.first_line, @1.first_column); }
+;
+
+DECLARACION_NULA:
+    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); }
+;
+
+ASIGNACION:
+    identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }
 ;
 
 PRINT:
@@ -166,7 +178,7 @@ PRIMITIVA:
     | false                      { $$ = new Primitivo(false, @1.first_line, @1.first_column); } ; 
 
 TIPO:
-    | int                        {$$ = Tipo.INT }
+    int                        {$$ = Tipo.INT }
     | double                     {$$ = Tipo.DOUBLE }
     | String                     {$$ = Tipo.STRING }
     | boolean                    {$$ = Tipo.BOOL }

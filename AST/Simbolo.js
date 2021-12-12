@@ -18,5 +18,8 @@ class Simbolo {
     getValorImplicito(ent, arbol) {
         return this.valor;
     }
+    setValor(valor) {
+        this.valor = valor;
+    }
 }
 exports.Simbolo = Simbolo;

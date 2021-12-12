@@ -23,7 +23,6 @@ let myCodeMirror2 = CodeMirror(document.querySelector("#codeConsole"), {
 
 function addText(input){
 	let text = "";
-	console.log("addtext ",input);
 	for(let line of input){
 		text += line;
 	}
