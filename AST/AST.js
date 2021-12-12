@@ -6,6 +6,13 @@ class AST {
         this.instrucciones = instrucciones;
         this.structs = [];
         this.funciones = [];
+        this.consola = [];
+    }
+    updateConsola(line) {
+        this.consola.push(line);
+    }
+    getConsola() {
+        return this.consola;
     }
 }
 exports.AST = AST;

@@ -24,9 +24,9 @@ export class Print implements Instruccion {
         const valor = this.expresion.getValorImplicito(ent, arbol);
         if (valor !== null) {
             if (typeof valor === "string") {
-                console.log('>', valor.substring(1, valor.length - 1));
+                arbol.updateConsola(valor.substring(1, valor.length - 1));
             } else {
-                console.log('>', valor);
+                arbol.updateConsola(valor);
             }
         } else {
             console.log('>> Error, no se pueden imprimir valores nulos');

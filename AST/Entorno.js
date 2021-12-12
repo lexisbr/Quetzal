@@ -8,7 +8,7 @@ class Entorno {
     }
     agregar(id, simbolo) {
         id = id.toLowerCase();
-        simbolo.indentificador = simbolo.indentificador.toLowerCase();
+        simbolo.identificador = simbolo.identificador.toLowerCase();
         this.tabla[id] = simbolo;
     }
     eliminar(id) {
@@ -56,6 +56,9 @@ class Entorno {
                 e.tabla[id] = nuevoValor;
             }
         }
+    }
+    getTabla() {
+        return this.tabla;
     }
 }
 exports.Entorno = Entorno;

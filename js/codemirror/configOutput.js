@@ -3,7 +3,7 @@ let source2 = '';
 let myCodeMirror2 = CodeMirror(document.querySelector("#codeConsole"), {
 	lineNumbers: true,
 	tabSize: 4,
-	value: ` 	HELLO WORLD	`,
+	value: ``,
 	mode: 'text/x-java',
 	//theme: "darcula",
 	//theme: "ayu-dark",
@@ -28,11 +28,12 @@ let myCodeMirror2 = CodeMirror(document.querySelector("#codeConsole"), {
 	
 	},
 });
-/*
-let button = document.querySelector("button");
-button.addEventListener("click", () => {
-	source = myCodeMirror.getValue();
-	//regular.parse(source);
-	console.log(source);
-});
-*/
+
+function addText(input){
+	let text = "";
+	console.log("addtext ",input);
+	for(let line of input){
+		text += line;
+	}
+	myCodeMirror2.setValue(text);
+}

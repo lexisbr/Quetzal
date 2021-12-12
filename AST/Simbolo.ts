@@ -4,14 +4,14 @@ import { Entorno } from "./Entorno";
 import { Tipo } from "./Tipo";
 
 export class Simbolo implements Expresion {
-    public indentificador: string;
+    public identificador: string;
     public valor: any;
     private tipo: Tipo;
     linea: number;
     columna: number;
 
     constructor(tipo:Tipo, id:string, linea:number, columna:number, valor:any){
-        this.indentificador = id;
+        this.identificador = id;
         this.linea = linea;
         this.columna = columna;
         this.tipo = tipo;

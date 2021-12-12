@@ -12,7 +12,7 @@ export class Entorno{
 
     agregar(id:string, simbolo:Simbolo){
         id = id.toLowerCase();
-        simbolo.indentificador = simbolo.indentificador.toLowerCase();
+        simbolo.identificador = simbolo.identificador.toLowerCase();
         this.tabla[id] = simbolo;
     }
 
@@ -74,6 +74,10 @@ export class Entorno{
                 e.tabla[id] = nuevoValor;
             }
         }
+    }
+
+    getTabla(){
+        return this.tabla;
     }
 
 }

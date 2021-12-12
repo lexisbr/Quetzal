@@ -1,66 +1,40 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
+import { Simbolo } from "../AST/Simbolo";
+import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 
 export class Identificador implements Expresion {
     linea: number;
     columna: number;
-    expresion: Expresion;
-    tipo: Tipo;
+    tipo: any;
     identificador:string;
 
-    constructor(expresion: Expresion, tipo:Tipo, identificador:string, linea:number, columna:number){
+    constructor(identificador:string, linea:number, columna:number){
         this.linea = linea;
         this.columna = columna;
-        this.expresion = expresion;
-        this.tipo = tipo;
+        this.tipo = null;
         this.identificador = identificador;
     }
+
     getTipo(ent: Entorno, arbol: AST): Tipo {
         throw new Error("Method not implemented.");
     }
+
     getValorImplicito(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+        if(ent.existeEnActual(this.identificador)){
+            let simbolo:Simbolo = ent.getSimbolo(this.identificador);
+            return simbolo.getValorImplicito(ent,arbol);
+        }
+        else{ 
+            return new Excepcion(this.linea,this.columna,"Error Semantico","La variable no existe");
+        }
     }
+
     traducir(ent: Entorno, arbol: AST) {
         throw new Error("Method not implemented.");
     }
     
-   /* traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
-    }
 
-    getTipo(ent: Entorno, arbol: AST): Tipo {
-        const valor = this.getValorImplicito(ent, arbol);
-        if (typeof(valor) === 'boolean')
-        {
-            return Tipo.BOOL;
-        }
-        else if (typeof(valor) === 'string')
-        {
-            return Tipo.STRING;
-        }
-        else if (typeof(valor) === 'number')
-        {
-            if(this.isInt(Number(valor))){
-                return Tipo.INT;
-            }
-           return Tipo.DOUBLE;
-        }
-        else if(valor === null){
-            return Tipo.NULL;
-        }
-            
-        return Tipo.VOID;
-    }
-
-    getValorImplicito(ent: Entorno, arbol: AST) {
-        return this.valor;
-    }
-
-    isInt(n:number){
-        return Number(n) === n && n % 1 === 0;
-    }*/
-    
 }

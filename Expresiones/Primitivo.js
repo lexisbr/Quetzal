@@ -17,6 +17,9 @@ class Primitivo {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
+            if (this.isChar(valor)) {
+                return Tipo_1.Tipo.CHAR;
+            }
             return Tipo_1.Tipo.STRING;
         }
         else if (typeof (valor) === 'number') {
@@ -35,6 +38,9 @@ class Primitivo {
     }
     isInt(n) {
         return Number(n) === n && n % 1 === 0;
+    }
+    isChar(cadena) {
+        return cadena.length == 3 && cadena.charAt(0) === "'" && cadena.charAt(cadena.length - 1) === "'";
     }
 }
 exports.Primitivo = Primitivo;

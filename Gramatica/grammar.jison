@@ -93,6 +93,9 @@ BSL                             "\\".
     const {Operacion, Operador} = require("../Expresiones/Operacion.js");
     const {Objeto} = require("../Expresiones/Objeto.js");
     const {Atributo} = require("../Expresiones/Atributo.js");
+    const {Tipo} = require("../AST/Tipo.js");
+    const {Declaracion} = require("../Instrucciones/Declaracion.js");
+    const {Identificador} = require("../Expresiones/Identificador.js");
 %}
 
 /* operator associations and precedence */
@@ -124,42 +127,21 @@ RAICES:
 
 RAIZ:
     PRINT semicolon       { $$ = $1 }
-    | DECLARACION              { $$ = $1 }
+    | DECLARACION semicolon           { $$ = $1 }
 ;
 
 DECLARACION:
-       identifier LATRIBUTOS gt OBJETOS           lt div identifier gt       { $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5); }
-    | lt identifier LATRIBUTOS gt LISTA_ID_OBJETO   lt div identifier gt       { $$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[]); }
-    | lt identifier LATRIBUTOS div gt                                          { $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[]); }
+       TIPO identifier asig EXPR        { $$ = new Declaracion($2,$4,$1,@1.first_line, @1.first_column); }
 ;
-
-LATRIBUTOS: ATRIBUTOS                               { $$ = $1; }
-           |                                        { $$ = []; }
-;
-
-ATRIBUTOS:
-    ATRIBUTOS ATRIBUTO                              { $1.push($2); $$ = $1;}
-    | ATRIBUTO                                      { $$ = [$1]; } 
-;
-
-ATRIBUTO: 
-    identifier asig string                   { $$ = new Atributo($1, $3, @1.first_line, @1.first_column); }
-;
-
-LISTA_ID_OBJETO: LISTA_ID_OBJETO identifier          { $1=$1 + ' ' +$2 ; $$ = $1;}
-        | identifier                                 { $$ = $1 }
-;
-
-OBJETOS:
-      OBJETOS OBJETO        { $1.push($2); $$ = $1;}
-	| OBJETO                { $$ = [$1]; } ;
 
 PRINT:
     print lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column); } ;
 
 EXPR:
     PRIMITIVA                           { $$ = $1 }
-    | OP_ARITMETICAS                    { $$ = $1 };
+    | OP_ARITMETICAS                    { $$ = $1 }
+    | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
+;
 
 
 OP_ARITMETICAS:
@@ -177,10 +159,14 @@ PRIMITIVA:
     | double                     { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
     | string                     { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
     | char                       { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
-    | null                              { $$ = new Primitivo(null, @1.first_line, @1.first_column); }
-    | true                              { $$ = new Primitivo(true, @1.first_line, @1.first_column); }
-    | false                             { $$ = new Primitivo(false, @1.first_line, @1.first_column); } ; 
+    | null                       { $$ = new Primitivo(null, @1.first_line, @1.first_column); }
+    | true                       { $$ = new Primitivo(true, @1.first_line, @1.first_column); }
+    | false                      { $$ = new Primitivo(false, @1.first_line, @1.first_column); } ; 
 
-TIPOS:
-    | int 
-    | double 
+TIPO:
+    | int                        {$$ = Tipo.INT }
+    | double                     {$$ = Tipo.DOUBLE }
+    | String                     {$$ = Tipo.STRING }
+    | boolean                    {$$ = Tipo.BOOL }
+    | char                       {$$ = Tipo.CHAR }
+;

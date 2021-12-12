@@ -7,12 +7,16 @@ const grammar = require("./Gramatica/grammar.js")
 
 if (typeof window !== 'undefined'){
     window.parseExternal = function(input){ 
+        const respuestas = [];
         const instrucciones = grammar.parse(input);
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
-        instrucciones.forEach(function (element) {
+        ast.instrucciones.forEach(function (element) {
             element.ejecutar(entornoGlobal, ast);
         });
+        //console.log("Entorno ",entornoGlobal.getTabla());
+        console.log("Consola ",ast.getConsola());
+        return ast.getConsola();
     }
 }
 
