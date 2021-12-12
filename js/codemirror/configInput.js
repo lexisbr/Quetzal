@@ -47,6 +47,44 @@ myCodeMirror.on("cursorActivity", () => {
 let openFile = document.getElementById('openFile');
 
 document.getElementById('uploadButton').addEventListener('click',function(e){
-	openFile.style.visibility = 'visible';
-	openFile.style.display = 'block';
+	if(openFile.style.visibility === 'hidden' && openFile.style.display ==='none'){
+		openFile.style.visibility = 'visible';
+		openFile.style.display = 'block';
+	} else {
+		openFile.style.visibility = 'hidden';
+		openFile.style.display = 'none';
+	}
 });
+/**
+ * Cargar Archivos a la Entrada
+ */
+document.getElementById('openFile').addEventListener('change',function(){
+	let file = new FileReader();
+	file.onload =()=>{
+		myCodeMirror.setValue(file.result);
+	}
+file.readAsText(this.files[0]);
+});
+/**
+ * Funcion para descargar archivos de la entrada
+ * @param {*} filename 
+ * @param {*} textDownload
+ */
+function download (filename,textDownload){
+	let element = document.createElement('a');
+	element.setAttribute('href','data:text/plain;charset=utf-8,' + encodeURIComponent(textDownload));
+	element.setAttribute('download',filename);
+
+	element.style.display = 'none';
+	document.body.appendChild(element);
+	element.click();
+	document.body.removeChild(element);
+}
+/**
+ * EventListener on DownloadButton
+ */
+document.getElementById('downloadButton').addEventListener("click",function(){
+	let textDownload = myCodeMirror.getValue();
+	let filename = 'example.txt';
+	download(filename,textDownload);
+},false);

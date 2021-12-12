@@ -50,7 +50,7 @@ export class Operacion implements Expresion {
     
 
     getValorImplicito(ent: Entorno, arbol: AST) {
-        if (this.operador !== Operador.MENOS_UNARIO && this.operador !== Operador.NOT){
+        if (this.operador !== Operador.MENOS_UNARIO){
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             let op2 = this.op_derecha.getValorImplicito(ent, arbol);
             
