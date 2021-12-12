@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Asignacion = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
+const Tipo_js_1 = require("../AST/Tipo.js");
 class Asignacion {
     constructor(identificador, exp, linea, columna) {
         this.expresion = exp;
@@ -18,8 +19,8 @@ class Asignacion {
         if (!(valor instanceof Excepcion_1.Excepcion)) {
             if (ent.existeEnActual(this.identificador)) {
                 let simbolo = ent.getSimbolo(this.identificador);
-                console.log("tipoValor", tipoValor);
-                if (simbolo.getTipo(ent, arbol) == tipoValor) {
+                let simboloValor = simbolo.getTipo(ent, arbol);
+                if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING)) {
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
                 }
@@ -32,7 +33,7 @@ class Asignacion {
             }
         }
         else {
-            console.log('>> Error, no se pueden imprimir valores nulos');
+            return valor;
         }
     }
 }

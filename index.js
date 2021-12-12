@@ -18,7 +18,6 @@ if (typeof window !== 'undefined'){
             }
         });
         //console.log("Entorno ",entornoGlobal.getTabla());
-        console.log("Consola ",ast.getConsola());
         return ast.getConsola();
     }
 }

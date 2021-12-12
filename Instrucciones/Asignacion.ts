@@ -4,6 +4,7 @@ import { Excepcion } from "../AST/Excepcion";
 import { Simbolo } from "../AST/Simbolo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { Tipo } from "../AST/Tipo.js";
 
 export class Asignacion implements Instruccion {
     linea: number;
@@ -28,8 +29,8 @@ export class Asignacion implements Instruccion {
         if (!(valor instanceof Excepcion)) {
             if (ent.existeEnActual(this.identificador)) {
                 let simbolo:Simbolo = ent.getSimbolo(this.identificador);
-                console.log("tipoValor",tipoValor);
-                if(simbolo.getTipo(ent,arbol) == tipoValor) {
+                let simboloValor = simbolo.getTipo(ent,arbol);
+                if( simboloValor == tipoValor || (tipoValor == Tipo.NULL && simboloValor == Tipo.STRING)) {
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
                 }else{
@@ -40,7 +41,7 @@ export class Asignacion implements Instruccion {
             }
 
         } else {
-            console.log('>> Error, no se pueden imprimir valores nulos');
+            return valor;
         }
     }
 

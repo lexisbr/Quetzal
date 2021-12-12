@@ -25,11 +25,11 @@ class Declaracion {
                     ent.agregar(this.identificador, simbolo);
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
                 }
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "El tipo asignado a la variable no es correcto");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "El tipo asignado a la variable no es correcto");
             }
         }
         else {
@@ -38,7 +38,7 @@ class Declaracion {
                 ent.agregar(this.identificador, simbolo);
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
             }
         }
     }

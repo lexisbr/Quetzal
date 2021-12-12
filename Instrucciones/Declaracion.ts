@@ -34,17 +34,17 @@ export class Declaracion implements Instruccion {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 } else {
-                    return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
+                    return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
                 }
             } else {
-                return new Excepcion(this.linea, this.columna, "Error Semantico", "El tipo asignado a la variable no es correcto");
+                return new Excepcion(this.linea, this.columna, "Semantico", "El tipo asignado a la variable no es correcto");
             }
         } else {
             if (!ent.existe(this.identificador)) {
                 let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
                 ent.agregar(this.identificador, simbolo);
             } else {
-                return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
+                return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
             }
         }
     }

@@ -13,7 +13,7 @@ export class Excepcion {
     }
 
     toString():string{
-        return `${this.tipo} - ${this.descripcion} [${this.linea},${this.columna}]`
+        return `${this.tipo} - ${this.descripcion} [${this.linea},${this.columna}]\n`
     }
 
 }

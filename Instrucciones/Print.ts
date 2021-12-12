@@ -24,15 +24,11 @@ export class Print implements Instruccion {
 
     ejecutar(ent: Entorno, arbol: AST) {
         let valor = this.expresion.getValorImplicito(ent, arbol);
-        if (valor !== null) {
-            if (typeof valor === "string") {
-                valor = valor.substring(1, valor.length - 1);
-            }
-            valor = this.addSalto(valor);
-            arbol.updateConsola(valor);
-        } else {
-            console.log('>> Error, no se pueden imprimir valores nulos');
+        if (typeof valor === "string") {
+            valor = valor.substring(1, valor.length - 1);
         }
+        valor = this.addSalto(valor);
+        arbol.updateConsola(valor);
     }
 
     addSalto(valor: any) {
