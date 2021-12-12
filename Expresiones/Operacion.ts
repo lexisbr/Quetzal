@@ -10,15 +10,6 @@ export enum Operador {
     DIVISION,
     MODULO,
     MENOS_UNARIO,
-    MAYOR_QUE,
-    MENOR_QUE,
-    IGUAL_IGUAL,
-    DIFERENTE_QUE,
-    OR,
-    AND,
-    NOT,
-    MAYOR_IGUA_QUE,
-    MENOR_IGUA_QUE,
     DESCONOCIDO
 }
 
@@ -66,7 +57,7 @@ export class Operacion implements Expresion {
     
 
     getValorImplicito(ent: Entorno, arbol: AST) {
-        if (this.operador !== Operador.MENOS_UNARIO && this.operador !== Operador.NOT){
+        if (this.operador !== Operador.MENOS_UNARIO){
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             let op2 = this.op_derecha.getValorImplicito(ent, arbol);
             
