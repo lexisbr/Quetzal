@@ -312,7 +312,6 @@ parse: function parse(input) {
     const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
     const {Operacion, Operador} = require("../Expresiones/Operacion.js");
-    const {Atributo} = require("../Expresiones/Atributo.js");
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
     const {Identificador} = require("../Expresiones/Identificador.js");
@@ -644,98 +643,96 @@ options: {"case-insensitive":true},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:/* skip comments */
+case 0:/* IGNORE */
 break;
-case 1:this.begin('comment');
+case 1:/* IGNORE */
 break;
-case 2:this.popState();
+case 2:/* IGNORE */
 break;
-case 3:/* skip comment content*/
+case 3:return 29;
 break;
-case 4:/* skip whitespace */
+case 4:return 32;
 break;
-case 5:return 29;
+case 5:return 26;
 break;
-case 6:return 32;
+case 6:return 34;
 break;
-case 7:return 26;
+case 7:return 28;
 break;
-case 8:return 34;
+case 8:return 33;
 break;
-case 9:return 28;
+case 9:return 30;
 break;
-case 10:return 33;
+case 10:return 31;
 break;
-case 11:return 30;
+case 11:return 14;
 break;
-case 12:return 31;
+case 12:return 17;
 break;
-case 13:return 14;
+case 13:return 20;
 break;
-case 14:return 17;
+case 14:return 21;
 break;
-case 15:return 20;
+case 15:return 22;
 break;
-case 16:return 21;
+case 16:return 23;
 break;
-case 17:return 22;
+case 17:return 24;
 break;
-case 18:return 23;
+case 18:return 'lte';
 break;
-case 19:return 24;
+case 19:return 'gte';
 break;
-case 20:return 'lte';
+case 20:return 'lt';
 break;
-case 21:return 'gte';
+case 21:return 'gt';
 break;
-case 22:return 'lt';
+case 22:return 12;
 break;
-case 23:return 'gt';
+case 23:return 'equal';
 break;
-case 24:return 12;
+case 24:return 'nequal';
 break;
-case 25:return 'equal';
+case 25:return 'and';
 break;
-case 26:return 'nequal';
+case 26:return 'or';
 break;
-case 27:return 'and';
+case 27:return 'not';
 break;
-case 28:return 'or';
+case 28:return 8;
 break;
-case 29:return 'not';
+case 29:return 15;
 break;
-case 30:return 8;
+case 30:return 16;
 break;
-case 31:return 15;
+case 31:return 'and';
 break;
-case 32:return 16;
+case 32:return 'or';
 break;
-case 33:return 'and';
+case 33:return 'not';
 break;
-case 34:return 'or';
+case 34:return 26;
 break;
-case 35:return 'not';
+case 35:return 25;
 break;
-case 36:return 26;
+case 36:return 11;
 break;
-case 37:return 25;
+case 37:return 27;
 break;
-case 38:return 11;
+case 38:return 28;
 break;
-case 39:return 27
+case 39:return;
 break;
-case 40:return 28
-break;
-case 41:
+case 40:
                                         console.error('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column);
                                     
 break;
-case 42:return 5
+case 41:return 5
 break;
 }
 },
-rules: [/^(?:\/\/.*)/i,/^(?:\/\*)/i,/^(?:\*\/)/i,/^(?:.)/i,/^(?:\s+)/i,/^(?:null\b)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:String\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:print\b)/i,/^(?:println\b)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:<=)/i,/^(?:>=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:=)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:;)/i,/^(?:\()/i,/^(?:\))/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:(([0-9]+\.[0-9]*)|(\.[0-9]+)))/i,/^(?:[0-9]+)/i,/^(?:[a-zA-Z_][a-zA-Z0-9_ñÑ]*)/i,/^(?:("((\\([\'\"\\bfnrtv]))|([^\"\\]+))*"))/i,/^(?:('((\\([\'\"\\bfnrtv]))|([^\'\\]))'))/i,/^(?:.)/i,/^(?:$)/i],
-conditions: {"comment":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42],"inclusive":true},"INITIAL":{"rules":[0,1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42],"inclusive":true}}
+rules: [/^(?:\/\/.*)/i,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/i,/^(?:\s+)/i,/^(?:null\b)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:String\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:print\b)/i,/^(?:println\b)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:<=)/i,/^(?:>=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:=)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:;)/i,/^(?:\()/i,/^(?:\))/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:(([0-9]+\.[0-9]*)|(\.[0-9]+)))/i,/^(?:[0-9]+)/i,/^(?:[a-zA-Z_][a-zA-Z0-9_ñÑ]*)/i,/^(?:("((\\([\'\"\\bfnrtv]))|([^\"\\]+))*"))/i,/^(?:('((\\([\'\"\\bfnrtv]))|([^\'\\]))'))/i,/^(?:{Comment})/i,/^(?:.)/i,/^(?:$)/i],
+conditions: {"comment":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41],"inclusive":true},"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41],"inclusive":true}}
 });
 return lexer;
 })();

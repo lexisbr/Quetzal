@@ -20,11 +20,10 @@ BSL                             "\\".
 
 %%
 
-"//".*                              /* skip comments */
-"/*"                                this.begin('comment');
-<comment>"*/"                       this.popState();
-<comment>.                          /* skip comment content*/
-\s+                                 /* skip whitespace */
+/* comentarios */
+"//".*                                /* IGNORE */
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]   /* IGNORE */
+\s+                                 /* IGNORE */
 
 
 /* reserved words */
@@ -73,8 +72,10 @@ BSL                             "\\".
 
 [a-zA-Z_][a-zA-Z0-9_ñÑ]*            return 'identifier';
 
-{stringliteral}                     return 'string'
-{charliteral}                       return 'char'
+{stringliteral}                     return 'string';
+{charliteral}                       return 'char';
+
+{Comment}                           return;
 
 //error lexico
 .                                   {
@@ -92,7 +93,6 @@ BSL                             "\\".
     const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
     const {Operacion, Operador} = require("../Expresiones/Operacion.js");
-    const {Atributo} = require("../Expresiones/Atributo.js");
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
     const {Identificador} = require("../Expresiones/Identificador.js");
