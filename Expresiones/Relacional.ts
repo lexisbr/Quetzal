@@ -3,25 +3,8 @@ import { Entorno } from "../AST/Entorno";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Excepcion } from "../AST/Excepcion";
+import { Operador } from "../AST/Operador";
 
-export enum Operador {
-    SUMA,
-    RESTA,
-    MULTIPLICACION,
-    DIVISION,
-    MODULO,
-    MENOS_UNARIO,
-    MAYOR_QUE,
-    MENOR_QUE,
-    IGUAL_IGUAL,
-    DIFERENTE_QUE,
-    OR,
-    AND,
-    NOT,
-    MAYOR_IGUAL_QUE,
-    MENOR_IGUAL_QUE,
-    DESCONOCIDO
-}
 
 export class Relacional implements Expresion {
     linea: number;
@@ -47,6 +30,9 @@ export class Relacional implements Expresion {
             return Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
+            if(this.isChar(valor)){
+                return Tipo.CHAR;
+            }
             return Tipo.STRING;
         }
         else if (typeof (valor) === 'number') {
@@ -173,5 +159,9 @@ export class Relacional implements Expresion {
 
     isInt(n: number) {
         return Number(n) === n && n % 1 === 0;
+    }
+
+    isChar(cadena:string){
+        return cadena.length == 3 && cadena.charAt(0) === "'" && cadena.charAt(cadena.length-1) === "'";
     }
 }

@@ -9,10 +9,9 @@ export enum Operador {
     MENOR_QUE,
     IGUAL_IGUAL,
     DIFERENTE_QUE,
-    OR,
     AND,
+    OR,
     NOT,
     MAYOR_IGUA_QUE,
-    MENOR_IGUA_QUE,
-    DESCONOCIDO
+    MENOR_IGUA_QUE
 }

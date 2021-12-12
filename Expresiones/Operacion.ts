@@ -32,6 +32,9 @@ export class Operacion implements Expresion {
         }
         else if (typeof(valor) === 'string')
         {
+            if(this.isChar(valor)){
+                return Tipo.CHAR;
+            }
             return Tipo.STRING;
         }
         else if (typeof(valor) === 'number')
@@ -148,5 +151,9 @@ export class Operacion implements Expresion {
 
     isInt(n:number){
         return Number(n) === n && n % 1 === 0;
+    }
+
+    isChar(cadena:string){
+        return cadena.length == 3 && cadena.charAt(0) === "'" && cadena.charAt(cadena.length-1) === "'";
     }
 }
