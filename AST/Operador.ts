@@ -12,6 +12,6 @@ export enum Operador {
     AND,
     OR,
     NOT,
-    MAYOR_IGUA_QUE,
-    MENOR_IGUA_QUE
+    MAYOR_IGUAL_QUE,
+    MENOR_IGUAL_QUE
 }
