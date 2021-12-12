@@ -46,13 +46,13 @@ BSL                             "\\".
 "/"                                 return 'div';
 "%"                                 return 'mod';
 
+"=="                                return 'equal';
 "<="                                return 'lte';
 ">="                                return 'gte';
+"!="                                return 'nequal';
 "<"                                 return 'lt';
 ">"                                 return 'gt';
 "="                                 return 'asig';
-"=="                                return 'equal';
-"!="                                return 'nequal';
 
 "&&"                                return 'and';
 "||"                                return 'or';
@@ -91,8 +91,10 @@ BSL                             "\\".
 %{
     const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
-    const {Operacion, Operador} = require("../Expresiones/Operacion.js");
-    const {Atributo} = require("../Expresiones/Atributo.js");
+    const {Operacion} = require("../Expresiones/Operacion.js");
+    const {Operador} = require("../AST/Operador.js");
+    const {Relacional} = require("../Expresiones/Relacional.js");
+    const {Logica} = require("../Expresiones/Logica.js");
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
     const {Identificador} = require("../Expresiones/Identificador.js");
@@ -142,9 +144,25 @@ PRINT:
 EXPR:
     PRIMITIVA                           { $$ = $1 }
     | OP_ARITMETICAS                    { $$ = $1 }
+    | OP_RELACIONALES                   { $$ = $1 }
+    | OP_LOGICAS                        { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
 ;
 
+OP_LOGICAS:
+    not EXPR                            { $$ = new Logica($2,$2,Operador.NOT, @1.first_line, @1.first_column); }
+    | EXPR and EXPR                     { $$ = new Logica($1,$3,Operador.AND, @1.first_line, @1.first_column); }
+    | EXPR or EXPR                      { $$ = new Logica($1,$3,Operador.OR, @1.first_line, @1.first_column); }
+;
+
+OP_RELACIONALES:
+    EXPR equal EXPR                     { $$ = new Relacional($1,$3,Operador.IGUAL_IGUAL, @1.first_line, @1.first_column); }
+    | EXPR lte EXPR                     { $$ = new Relacional($1,$3,Operador.MENOR_IGUAL_QUE, @1.first_line, @1.first_column); }
+    | EXPR gte EXPR                     { $$ = new Relacional($1,$3,Operador.MAYOR_IGUAL_QUE, @1.first_line, @1.first_column); }
+    | EXPR nequal EXPR                  { $$ = new Relacional($1,$3,Operador.DIFERENTE_QUE, @1.first_line, @1.first_column); }
+    | EXPR lt EXPR                      { $$ = new Relacional($1,$3,Operador.MENOR_QUE, @1.first_line, @1.first_column); }
+    | EXPR gt EXPR                      { $$ = new Relacional($1,$3,Operador.MAYOR_QUE, @1.first_line, @1.first_column); }
+;
 
 OP_ARITMETICAS:
     EXPR plus EXPR                      { $$ = new Operacion($1,$3,Operador.SUMA, @1.first_line, @1.first_column); }

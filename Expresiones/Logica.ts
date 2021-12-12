@@ -60,7 +60,6 @@ export class Logica implements Expresion {
                     return op1 && op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos para AND");
                     return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para AND");
 
                 }
@@ -71,7 +70,6 @@ export class Logica implements Expresion {
                     return op1 || op2;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos para OR");
                     return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para OR");
 
                 }
@@ -84,7 +82,6 @@ export class Logica implements Expresion {
                     return !op1;
                 }
                 else {
-                    console.log("Error de tipos de datos no permitidos para NOT");
                     return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para NOT");
 
                 }
