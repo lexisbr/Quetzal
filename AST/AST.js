@@ -14,5 +14,8 @@ class AST {
     getConsola() {
         return this.consola;
     }
+    addFuncion(funcion) {
+        this.funciones.push(funcion);
+    }
 }
 exports.AST = AST;

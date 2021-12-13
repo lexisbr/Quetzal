@@ -60,6 +60,9 @@ BSL                             "\\".
 ";"                                 return 'semicolon';
 "("                                 return 'lparen';
 ")"                                 return 'rparen';
+"{"                                 return 'allave';
+"}"                                 return 'cllave';
+","                                 return 'coma';
 
 "&&"                                return 'and';
 "||"                                return 'or';
@@ -101,6 +104,7 @@ BSL                             "\\".
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
     const {Asignacion} = require("../Instrucciones/Asignacion.js");
+    const {Funcion} = require("../Instrucciones/Funcion.js");
     const {Identificador} = require("../Expresiones/Identificador.js");
 %}
 
@@ -135,7 +139,26 @@ RAIZ:
     PRINT semicolon                         { $$ = $1; }
     | DECLARACION_NULA semicolon            { $$ = $1; }
     | DECLARACION semicolon                 { $$ = $1; }
+    | FUNCION                               { $$ = $1; }
     | ASIGNACION semicolon                  { $$ = $1; }
+;
+
+FUNCION:
+    TIPO identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
+;
+
+LIST_PARAMETROS:
+    PARAMETROS { $$ = $1; }
+    | { $$ = []; }
+;
+
+PARAMETROS:
+    PARAMETROS coma PARAMETRO  { $1.push($3); $$ = $1;}
+    | PARAMETRO { $$ = $1; }
+;
+
+PARAMETRO:
+    DECLARACION_NULA  { $$ = $1; }
 ;
 
 DECLARACION:
@@ -154,6 +177,7 @@ PRINT:
     print lparen EXPR rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
     | println lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
 ;
+
 
 EXPR:
     PRIMITIVA                           { $$ = $1 }
