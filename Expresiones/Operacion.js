@@ -89,6 +89,54 @@ class Operacion {
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Modular (%)");
                 }
             }
+            else if (this.operador == Operador_1.Operador.POW) {
+                if (typeof (op1 === "number") && typeof (op2 === "number")) {
+                    return Math.pow(op1, op2);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Pow (xⁿ)");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.SQRT) {
+                if (typeof (op1 === "number")) {
+                    return Math.sqrt(op1);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Sqrt (√)");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.LOG) {
+                if (typeof (op1 === "number")) {
+                    return Math.log10(op1);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Log (log(x))");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.SENO) {
+                if (typeof (op1 === "number")) {
+                    return Math.sin(op1);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Sin (seno)");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.COSENO) {
+                if (typeof (op1 === "number")) {
+                    return Math.cos(op1);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Cos (coseno)");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.TAN) {
+                if (typeof (op1 === "number")) {
+                    return Math.tan(op1);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Tan (tangente)");
+                }
+            }
         }
         else {
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);

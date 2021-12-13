@@ -5,7 +5,6 @@ import { Operador } from "../AST/Operador";
 import { Expresion } from "../Interfaces/Expresion";
 import { Excepcion } from "../AST/Excepcion";
 
-
 export class Operacion implements Expresion {
     linea: number;
     columna: number;
@@ -59,6 +58,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {
+
                     return op1 + op2;
                 }
                 else
@@ -119,8 +119,69 @@ export class Operacion implements Expresion {
                 {
                     return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Modular (%)");
                 }
+            } else if (this.operador == Operador.POW)
+            {
+                if (typeof(op1==="number") && typeof(op2==="number"))
+                {
+                    return Math.pow(op1,op2);
+                }
+                else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Pow (xⁿ)");
+                }
+            } else if (this.operador == Operador.SQRT)
+            {
+                if (typeof(op1==="number"))
+                {
+                    return Math.sqrt(op1);
+                }
+                else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Sqrt (√)");
+                }
+            } else if (this.operador == Operador.LOG)
+            {
+                if (typeof(op1==="number"))
+                {
+                    return Math.log10(op1);
+                }
+                else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Log (log(x))");
+                }
             }
-
+ 
+             else if (this.operador == Operador.SENO)
+            {
+                if (typeof(op1==="number"))
+                {
+                    return Math.sin(op1);
+                }
+                else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Sin (seno)");
+                }
+            } else if (this.operador == Operador.COSENO)
+            {
+                if (typeof(op1==="number"))
+                {
+                    return Math.cos(op1);
+                }
+                else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Cos (coseno)");
+                }
+            } else if (this.operador == Operador.TAN)
+            {
+                if (typeof(op1==="number"))
+                {
+                    return Math.tan(op1);
+                }
+                else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Tan (tangente)");
+                }
+            } 
         }else{
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             if (this.operador == Operador.MENOS_UNARIO)

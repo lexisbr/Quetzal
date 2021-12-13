@@ -38,13 +38,23 @@ BSL                             "\\".
 "false"                             return 'false';
 "print"                             return 'print';
 "println"                           return 'println';
+/*Nativas Aritmeticas*/
+"pow"                               return 'pow';
+"sqrt"                              return 'sqrt';
+"log"                               return 'log';
+"sin"                               return 'sin';
+"cos"                               return 'cos';
+"tan"                               return 'tan';
 
+/*Aritmeticas*/
 "+"                                 return 'plus';
 "-"                                 return 'minus';
 "*"                                 return 'times';
 "/"                                 return 'div';
 "%"                                 return 'mod';
 
+
+/*Relacionales*/
 "=="                                return 'equal';
 "<="                                return 'lte';
 ">="                                return 'gte';
@@ -64,6 +74,8 @@ BSL                             "\\".
 "&&"                                return 'and';
 "||"                                return 'or';
 "!"                                 return 'not';
+
+","                                 return 'coma';
 
 
 /* Number literals */
@@ -110,7 +122,7 @@ BSL                             "\\".
 %left 'lt' 'lte' 'gt' 'gte' 'equal' 'nequal'
 %left 'plus' 'minus'
 %left 'times' 'div' 'mod'
-%left 'pow'
+%left 'pow', 'sqrt'
 %left 'not'
 %left UMINUS
 %left 'lparen' 'rparen'
@@ -185,7 +197,12 @@ OP_ARITMETICAS:
     | EXPR div EXPR                     { $$ = new Operacion($1,$3,Operador.DIVISION, @1.first_line, @1.first_column); }
     | EXPR mod EXPR                     { $$ = new Operacion($1,$3,Operador.MODULO, @1.first_line, @1.first_column); }
     | minus EXPR %prec UMINUS           { $$ = new Operacion($2,$2,Operador.MENOS_UNARIO, @1.first_line, @1.first_column); }
-    | lparen EXPR rparen                { $$ = $2 }
+    | pow lparen EXPR coma EXPR rparen  { $$ = new Operacion($3,$5,Operador.POW, @1.first_line, @1.first_column); }
+    | sqrt lparen EXPR rparen           { $$ = new Operacion($3,$3,Operador.SQRT, @1.first_line, @1.first_column); }
+    | log lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.LOG, @1.first_line, @1.first_column); }
+    | sin lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.SENO, @1.first_line, @1.first_column); }
+    | cos lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.COSENO, @1.first_line, @1.first_column); }
+    | tan lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.TAN, @1.first_line, @1.first_column); }
 ;
 
 PRIMITIVA:
@@ -195,7 +212,9 @@ PRIMITIVA:
     | char                       { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
     | null                       { $$ = new Primitivo(null, @1.first_line, @1.first_column); }
     | true                       { $$ = new Primitivo(true, @1.first_line, @1.first_column); }
-    | false                      { $$ = new Primitivo(false, @1.first_line, @1.first_column); } ; 
+    | false                      { $$ = new Primitivo(false, @1.first_line, @1.first_column); } 
+    | lparen EXPR rparen         { $$ = $2 }
+;
 
 TIPO:
     int                        {$$ = Tipo.INT }

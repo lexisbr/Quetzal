@@ -1,0 +1,61 @@
+/**
+*   PRUEBA DE OPERACIONES ARITMETICAS, LOGICAS Y RELACIONALES
+*/
+System.out.println("ARITMETICAS ENTERAS");
+int n1 = 10;
+int n2 = 5;
+    System.out.println(n1 + n2);
+    System.out.println(n1 - n2);
+    System.out.println(n1 * n2);
+    System.out.println(n1 / n2);
+    System.out.println(n1 % n2);
+    System.out.println(-n1);    //NO FUNCIONA EL UNARIO
+
+System.out.println("ARITMETICAS DECIMALES");
+double d1 = 10;
+double d2 = 5;
+    System.out.println(d1 + d2);//CONCATENA
+    System.out.println(d1 - d2);//MUESTRA RESULTADO ENTERO
+    System.out.println(d1 * d2);//""
+    System.out.println(d1 / d2);//""
+    System.out.println(d1 % d2);//""
+    System.out.println(-d1);    //NO FUNCIONA EL UNARIO
+
+System.out.println("RELACIONALES ENTERAS");     //NO DUNCIONAN
+    System.out.println(n1 > n2);
+    System.out.println(n1 < n2);
+    System.out.println(n1 >= n2);
+    System.out.println(n1 <= n2);
+    System.out.println(n1 == n2);
+    System.out.println(n1 != n2);
+    
+System.out.println("RELACIONALES DECIMALES");      //NO FUNCIONAN
+    System.out.println(d1 > d2);
+    System.out.println(d1 < d2);
+    System.out.println(d1 >= d2);
+    System.out.println(d1 <= d2);
+    System.out.println(d1 == d2);
+    System.out.println(d1 != d2);
+
+System.out.println("RELACIONALES CON STRING");     //NO FUNCIONAN, CREO QUE SE POR QUE ES
+String c1 = "Hola";
+String c2 = "Hola";
+    System.out.println(c1 == c2);
+    System.out.println(c1 != c2);
+
+System.out.println("RELACIONALES CON BOOLEANOS");  //FUNCIONAN
+boolean a = true;
+boolean b = false;
+System.out.println(a == b);
+System.out.println(a != b);
+System.out.println(!a);
+
+System.out.println("LOGICAS CON BOOLEANOS");   //FUNCIONAN BIEN
+System.out.println(a && b);
+System.out.println(a || b);
+System.out.println(!a);
+
+System.out.println("LOGICAS & RELACIONALES CON BOOLEANOS");   //FUNCIONAN BIEN
+System.out.println((a==b) && (a!=b));
+System.out.println((a==b) || (a!=b));
+System.out.println(!(a==b));

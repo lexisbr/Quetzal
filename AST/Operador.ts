@@ -13,5 +13,11 @@ export enum Operador {
     OR,
     NOT,
     MAYOR_IGUAL_QUE,
-    MENOR_IGUAL_QUE
+    MENOR_IGUAL_QUE,
+    POW,
+    SQRT,
+    LOG,
+    SENO,
+    COSENO,
+    TAN
 }
