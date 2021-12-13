@@ -31,6 +31,8 @@ export class Identificador implements Expresion {
     getValorImplicito(ent: Entorno, arbol: AST) {
         if (ent.existeEnActual(this.identificador)) {
             let simbolo: Simbolo = ent.getSimbolo(this.identificador);
+            this.tipo = simbolo.getTipo(ent, arbol);
+            console.log(simbolo);
             return simbolo.getValorImplicito(ent, arbol);
         }
 
@@ -43,5 +45,5 @@ export class Identificador implements Expresion {
         throw new Error("Method not implemented.");
     }
 
-
+    
 }

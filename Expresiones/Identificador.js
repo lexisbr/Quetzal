@@ -21,6 +21,8 @@ class Identificador {
     getValorImplicito(ent, arbol) {
         if (ent.existeEnActual(this.identificador)) {
             let simbolo = ent.getSimbolo(this.identificador);
+            this.tipo = simbolo.getTipo(ent, arbol);
+            console.log(simbolo);
             return simbolo.getValorImplicito(ent, arbol);
         }
         else {

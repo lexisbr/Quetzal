@@ -31,9 +31,6 @@ export class Declaracion implements Instruccion {
             const tipoValor = this.expresion.getTipo(ent, arbol);
             if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existe(this.identificador)) {
-                    if(this.isDouble(tipoValor)){
-                        valor = valor.toFixed(2);
-                    }
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 } else {

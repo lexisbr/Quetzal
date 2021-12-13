@@ -21,9 +21,6 @@ class Declaracion {
             const tipoValor = this.expresion.getTipo(ent, arbol);
             if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existe(this.identificador)) {
-                    if (this.isDouble(tipoValor)) {
-                        valor = valor.toFixed(2);
-                    }
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 }

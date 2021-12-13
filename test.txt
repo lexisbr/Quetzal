@@ -1,0 +1,63 @@
+/**
+*   PRUEBA DE OPERACIONES ARITMETICAS, LOGICAS Y RELACIONALES
+*/
+println("ARITMETICAS ENTERAS");
+int n1 = 10;
+int n2 = 5;
+    println(n1 + n2);   //10
+    println(n1 - n2);   //5 
+    println(n1 * n2);   //50
+    println(n1 / n2);   //2
+    println(n1 % n2);   //0
+    println(-n1);       //-10
+    
+println("ARITMETICAS DECIMALES");
+double d1 = 10;
+double d2 = 5;
+    println(d1 + d2);   //CONCATENA
+    println(d1 - d2);   //5.00
+    println(d1 * d2);   //50.00
+    println(d1 / d2);   //2.00
+    println(d1 % d2);   //0
+    println(-d1);       //-10.00
+
+
+
+println("RELACIONALES ENTERAS");     
+    println(n1 > n2);   //true  //no funciona
+    println(n1 < n2);   //false
+    println(n1 >= n2);  //true
+    println(n1 <= n2);  //false
+    println(n1 == n2);  //false
+    println(n1 != n2);  //true
+    
+println("RELACIONALES DECIMALES");      //NO FUNCIONAN
+    println(d1 > d2);   //true
+    println(d1 < d2);   //false
+    println(d1 >= d2);  //true
+    println(d1 <= d2);  //false
+    println(d1 == d2);  //false
+    println(d1 != d2);  //true
+
+println("RELACIONALES CON STRING");     //NO FUNCIONAN, CREO QUE SE POR QUE ES
+String c1 = "Hola";
+String c2 = "Hola";
+    println(c1 == c2);  //true
+    println(c1 != c2);  //false
+
+println("RELACIONALES CON BOOLEANOS");  //FUNCIONAN
+boolean a = true;
+boolean b = false;
+println(a == b);
+println(a != b);
+println(!a);
+
+println("LOGICAS CON BOOLEANOS");   //FUNCIONAN BIEN
+println(a && b);
+println(a || b);
+println(!a);
+
+println("LOGICAS & RELACIONALES CON BOOLEANOS");   //FUNCIONAN BIEN
+println((a==b) && (a!=b));
+println((a==b) || (a!=b));
+println(!(a==b));
