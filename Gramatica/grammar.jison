@@ -40,6 +40,7 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
 "sqrt"                              return 'sqrt';
