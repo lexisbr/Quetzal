@@ -10,7 +10,7 @@ int n2 = 5;
     println(n1 / n2);   //2
     println(n1 % n2);   //0
     println(-n1);       //-10
-    
+    println(n1>= n2 ? "Verdadero" : "Falso"); 
 println("ARITMETICAS DECIMALES");
 double d1 = 10;
 double d2 = 5;
@@ -70,3 +70,10 @@ println("LOGICAS & RELACIONALES CON BOOLEANOS");   //FUNCIONAN BIEN
 println((a==b) && (a!=b));
 println((a==b) || (a!=b));
 println(!(a==b));
+
+println("OPERACION TERNARIA");
+println((n1>=n2 && a != b )  ? "Verdadero" : "Falso"); 
+String respuesta;
+int edad = 35;
+respuesta = edad <= 50 ? "Puede vacunarse" : "No puede vacunarse";
+println(respuesta);
