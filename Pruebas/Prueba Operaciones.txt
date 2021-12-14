@@ -73,3 +73,7 @@ println(!(a==b));
 
 println("OPERACION TERNARIA");
 println((n1>=n2 && a != b )  ? "Verdadero" : "Falso"); 
+String respuesta;
+int edad = 35;
+respuesta = edad <= 50 ? "Puede vacunarse" : "No puede vacunarse";
+println(respuesta);
