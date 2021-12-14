@@ -13,15 +13,15 @@ if (typeof window !== 'undefined') {
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
         ast.instrucciones.forEach(function (element) {
-
+            let value;
             if (element instanceof Funcion.Funcion) {
                 ast.addFuncion(element);
+            } else {
+                value = element.ejecutar(entornoGlobal, ast);
             }
-
-            let value = element.ejecutar(entornoGlobal, ast);
             if (value instanceof Excepcion.Excepcion) {
                 ast.updateConsola(value);
-            } 
+            }
         });
         //console.log("Entorno ",entornoGlobal.getTabla());
         console.log(ast);

@@ -17,5 +17,14 @@ class AST {
     addFuncion(funcion) {
         this.funciones.push(funcion);
     }
+    getFuncion(name) {
+        for (let i in this.funciones) {
+            let funcion = this.funciones[i];
+            if (funcion.getNombre() === name) {
+                return funcion;
+            }
+        }
+        return null;
+    }
 }
 exports.AST = AST;

@@ -18,6 +18,9 @@ class Simbolo {
     getValorImplicito(ent, arbol) {
         return this.valor;
     }
+    getIdentificador() {
+        return this.identificador;
+    }
     setValor(valor) {
         this.valor = valor;
     }

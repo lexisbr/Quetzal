@@ -26,4 +26,14 @@ export class AST{
     addFuncion(funcion:Funcion){
         this.funciones.push(funcion);
     }
+
+    getFuncion(name:string){
+        for(let i in this.funciones) {
+            let funcion:Funcion = this.funciones[i];
+            if(funcion.getNombre() === name){
+                return funcion;
+            }
+        }
+        return null;
+    }
 }

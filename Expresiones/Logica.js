@@ -49,7 +49,7 @@ class Logica {
                     return op1 && op2;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para AND");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Tipo de Dato Erroneo para AND");
                 }
             }
             //OR
@@ -58,7 +58,7 @@ class Logica {
                     return op1 || op2;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para OR");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Tipo de Dato Erroneo para OR");
                 }
             }
         }

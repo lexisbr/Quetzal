@@ -5,6 +5,7 @@ import { Instruccion } from "../Interfaces/Instruccion";
 import { Excepcion } from "../AST/Excepcion";
 import { Expresion } from "../Interfaces/Expresion";
 import { Declaracion } from "./Declaracion";
+import { Return } from "./Return";
 
 export class Funcion implements Instruccion {
     nombre: string;
@@ -29,17 +30,27 @@ export class Funcion implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        let nuevoEntorno = new Entorno(ent);
-        nuevoEntorno.setEntorno("Funcion " + this.nombre);
+
+        ent.setEntorno("Funcion " + this.nombre);
         console.log("Instruccion " + this.instrucciones);
 
         for(let i in this.instrucciones) {
-            let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
+            let value = this.instrucciones[i].ejecutar(ent, arbol);
             if (value instanceof Excepcion) {
                 arbol.updateConsola(value.toString());
+            } else if (value instanceof Return){
+                this.tipo = value.getTipo();
+                return value.getValue();
             }
         }
+    }
 
+    getNombre():string {
+        return this.nombre;
+    }
+
+    getParametros():Array<Declaracion> {
+        return this.parametros;
     }
 }
 

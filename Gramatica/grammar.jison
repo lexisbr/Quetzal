@@ -38,6 +38,7 @@ BSL                             "\\".
 "false"                             return 'false';
 "print"                             return 'print';
 "println"                           return 'println';
+"return"                            return 'return';
 
 "+"                                 return 'plus';
 "-"                                 return 'minus';
@@ -100,12 +101,14 @@ BSL                             "\\".
 
     const {Relacional} = require("../Expresiones/Relacional.js");
     const {Logica} = require("../Expresiones/Logica.js");
+    const {Identificador} = require("../Expresiones/Identificador.js");
 
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
     const {Asignacion} = require("../Instrucciones/Asignacion.js");
     const {Funcion} = require("../Instrucciones/Funcion.js");
-    const {Identificador} = require("../Expresiones/Identificador.js");
+    const {Llamada} = require("../Instrucciones/Llamada.js");
+    const {Return} = require("../Instrucciones/Return.js");
 %}
 
 /* operator associations and precedence */
@@ -140,11 +143,13 @@ RAIZ:
     | DECLARACION_NULA semicolon            { $$ = $1; }
     | DECLARACION semicolon                 { $$ = $1; }
     | FUNCION                               { $$ = $1; }
+    | RETURN semicolon                      { $$ = $1; }
+    | LLAMADA semicolon                     { $$ = $1; }
     | ASIGNACION semicolon                  { $$ = $1; }
 ;
 
 FUNCION:
-    TIPO identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
+    TIPO_FUNCION identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
 ;
 
 LIST_PARAMETROS:
@@ -154,11 +159,33 @@ LIST_PARAMETROS:
 
 PARAMETROS:
     PARAMETROS coma PARAMETRO  { $1.push($3); $$ = $1;}
-    | PARAMETRO { $$ = $1; }
+    | PARAMETRO { $$ = [$1]; }
 ;
 
 PARAMETRO:
     DECLARACION_NULA  { $$ = $1; }
+;
+
+LLAMADA:
+    identifier lparen LIST_ARGUMENTOS rparen { $$ = new Llamada($1,$3,@1.first_line, @1.first_column);}
+;
+
+LIST_ARGUMENTOS:
+    ARGUMENTOS { $$ = $1; }
+    | { $$ = []; }
+;
+
+ARGUMENTOS:
+    ARGUMENTOS coma ARGUMENTO  { $1.push($3); $$ = $1;}
+    | ARGUMENTO { $$ = [$1]; }
+;
+
+ARGUMENTO:
+    EXPR  { $$ = $1; }
+;
+
+RETURN:
+    return EXPR { $$ = new Return($1,@1.first_line, @1.first_column); }
 ;
 
 DECLARACION:
@@ -222,9 +249,10 @@ PRIMITIVA:
     | false                      { $$ = new Primitivo(false, @1.first_line, @1.first_column); } ; 
 
 TIPO:
-    int                        {$$ = Tipo.INT }
-    | double                     {$$ = Tipo.DOUBLE }
-    | String                     {$$ = Tipo.STRING }
-    | boolean                    {$$ = Tipo.BOOL }
-    | char                       {$$ = Tipo.CHAR }
+    int                          {$$ = Tipo.INT; }
+    | double                     {$$ = Tipo.DOUBLE; }
+    | String                     {$$ = Tipo.STRING; }
+    | boolean                    {$$ = Tipo.BOOL; }
+    | char                       {$$ = Tipo.CHAR; }
+    | void                       {$$ = Tipo.VOID; }
 ;

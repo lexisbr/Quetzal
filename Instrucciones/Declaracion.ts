@@ -30,21 +30,21 @@ export class Declaracion implements Instruccion {
             let valor = this.expresion.getValorImplicito(ent, arbol);
             const tipoValor = this.expresion.getTipo(ent, arbol);
             if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
-                if (!ent.existe(this.identificador)) {
+                if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
                 } else {
-                    return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
+                    return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
                 }
             } else {
-                return new Excepcion(this.linea, this.columna, "Semantico", "El tipo asignado a la variable no es correcto");
+                return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo asignado a la variable no es correcto");
             }
         } else {
             if (!ent.existe(this.identificador)) {
                 let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
                 ent.agregar(this.identificador, simbolo);
             } else {
-                return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
+                return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
             }
         }
     }
@@ -67,6 +67,14 @@ export class Declaracion implements Instruccion {
         }
 
         return '';
+    }
+
+    getTipoEnum():number{
+        return this.tipo;
+    }
+
+    getIdentificador():string{
+        return this.identificador;
     }
 
     isInt(n: number) {

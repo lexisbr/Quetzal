@@ -24,7 +24,7 @@ export class Identificador implements Expresion {
             return simbolo.getTipo(ent, arbol);
         }
         else {
-            return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable no existe");
+            return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable no existe");
         }
     }
 
@@ -37,7 +37,7 @@ export class Identificador implements Expresion {
         }
 
         else{ 
-            return new Excepcion(this.linea,this.columna,"Semantico","La variable no existe");
+            return new Excepcion(this.linea,this.columna,"\nSemantico","La variable no existe");
         }
     }
 
