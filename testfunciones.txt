@@ -62,3 +62,10 @@ int num(int si){
 
 int a = 6 + num(1);
 print(a);
+
+void num(int si){
+  return;
+  print(si);
+}
+
+num(5); // no da error 

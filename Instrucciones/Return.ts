@@ -22,12 +22,17 @@ export class Return implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        console.log("Expresion",this.expresion);
-        let value = this.expresion.getValorImplicito(ent,arbol);
-        
-        if(value instanceof Excepcion) return value;
+        console.log("Expresion", this.expresion);
+        if (this.expresion == null) {
+            this.tipo = Tipo.VOID;
+            return this;
+        }
 
-        this.tipo = this.expresion.getTipo(ent,arbol);
+        let value = this.expresion.getValorImplicito(ent, arbol);
+
+        if (value instanceof Excepcion) return value;
+
+        this.tipo = this.expresion.getTipo(ent, arbol);
         this.value = value;
 
         return this;
@@ -36,14 +41,14 @@ export class Return implements Instruccion {
         throw new Error("Method not implemented.");
     }
 
-    getTipo(){
+    getTipo() {
         return this.tipo;
     }
 
-    getValue(){
+    getValue() {
         return this.value;
     }
 
 
-    
+
 }
