@@ -30,6 +30,9 @@ export class Simbolo implements Expresion {
         return this.valor;
     }
 
+    getIdentificador(){
+        return this.identificador;
+    }
     setValor(valor: any){
         this.valor = valor;
     }

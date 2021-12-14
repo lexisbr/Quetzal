@@ -4,10 +4,12 @@ import { Simbolo } from "./Simbolo";
 export class Entorno{
     private anterior:Entorno;
     private tabla:{[id:string] : Simbolo};
+    private entorno:String;
 
     constructor(anterior:any){
         this.tabla = {};
         this.anterior = anterior;
+        this.entorno = '';
     }
 
     agregar(id:string, simbolo:Simbolo){
@@ -80,4 +82,7 @@ export class Entorno{
         return this.tabla;
     }
 
+    setEntorno(id:string){
+        this.entorno = id;
+    }
 }

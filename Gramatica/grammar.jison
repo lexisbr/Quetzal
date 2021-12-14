@@ -34,6 +34,7 @@ BSL                             "\\".
 "boolean"					        return 'boolean';
 "char"					            return 'char';
 "String"				            return 'String';
+"void"				                return 'void';
 "true"                              return 'true';
 "false"                             return 'false';
 "print"                             return 'print';
@@ -72,13 +73,13 @@ BSL                             "\\".
 "("                                 return 'lparen';
 ")"                                 return 'rparen';
 "?"                                 return 'question';
+"{"                                 return 'allave';
+"}"                                 return 'cllave';
+","                                 return 'coma';
 
 "&&"                                return 'and';
 "||"                                return 'or';
 "!"                                 return 'not';
-
-","                                 return 'coma';
-
 
 
 /* Number literals */
@@ -112,12 +113,15 @@ BSL                             "\\".
 
     const {Relacional} = require("../Expresiones/Relacional.js");
     const {Logica} = require("../Expresiones/Logica.js");
+    const {Identificador} = require("../Expresiones/Identificador.js");
     const {Ternario} = require("../Expresiones/Ternario.js");
 
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
     const {Asignacion} = require("../Instrucciones/Asignacion.js");
-    const {Identificador} = require("../Expresiones/Identificador.js");
+    const {Funcion} = require("../Instrucciones/Funcion.js");
+    const {Llamada} = require("../Instrucciones/Llamada.js");
+    const {Return} = require("../Instrucciones/Return.js");
 %}
 
 /* operator associations and precedence */
@@ -152,7 +156,50 @@ RAIZ:
     PRINT semicolon                         { $$ = $1; }
     | DECLARACION_NULA semicolon            { $$ = $1; }
     | DECLARACION semicolon                 { $$ = $1; }
+    | FUNCION                               { $$ = $1; }
+    | RETURN semicolon                      { $$ = $1; }
+    | LLAMADA semicolon                     { $$ = $1; }
     | ASIGNACION semicolon                  { $$ = $1; }
+;
+
+FUNCION:
+    TIPO identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
+;
+
+LIST_PARAMETROS:
+    PARAMETROS { $$ = $1; }
+    | { $$ = []; }
+;
+
+PARAMETROS:
+    PARAMETROS coma PARAMETRO  { $1.push($3); $$ = $1;}
+    | PARAMETRO { $$ = [$1]; }
+;
+
+PARAMETRO:
+    DECLARACION_NULA  { $$ = $1; }
+;
+
+LLAMADA:
+    identifier lparen LIST_ARGUMENTOS rparen { $$ = new Llamada($1,$3,@1.first_line, @1.first_column);}
+;
+
+LIST_ARGUMENTOS:
+    ARGUMENTOS { $$ = $1; }
+    | { $$ = []; }
+;
+
+ARGUMENTOS:
+    ARGUMENTOS coma ARGUMENTO  { $1.push($3); $$ = $1;}
+    | ARGUMENTO { $$ = [$1]; }
+;
+
+ARGUMENTO:
+    EXPR  { $$ = $1; }
+;
+
+RETURN:
+    return EXPR { $$ = new Return($2,@1.first_line, @1.first_column); }
 ;
 
 DECLARACION:
@@ -172,6 +219,7 @@ PRINT:
     | println lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
 ;
 
+
 EXPR:
     PRIMITIVA                           { $$ = $1 }
     | OP_ARITMETICAS                    { $$ = $1 }
@@ -179,6 +227,7 @@ EXPR:
     | OP_LOGICAS                        { $$ = $1 }
     | OP_TERNARIA                       { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
+    | LLAMADA                           { $$ = $1 }
 ;
 
 OP_LOGICAS:
@@ -227,9 +276,10 @@ PRIMITIVA:
 ;
 
 TIPO:
-    int                        {$$ = Tipo.INT }
-    | double                     {$$ = Tipo.DOUBLE }
-    | String                     {$$ = Tipo.STRING }
-    | boolean                    {$$ = Tipo.BOOL }
-    | char                       {$$ = Tipo.CHAR }
+    int                          {$$ = Tipo.INT; }
+    | double                     {$$ = Tipo.DOUBLE; }
+    | String                     {$$ = Tipo.STRING; }
+    | boolean                    {$$ = Tipo.BOOL; }
+    | char                       {$$ = Tipo.CHAR; }
+    | void                       {$$ = Tipo.VOID; }
 ;

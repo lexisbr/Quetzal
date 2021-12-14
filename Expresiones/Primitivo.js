@@ -34,6 +34,7 @@ class Primitivo {
         return Tipo_1.Tipo.VOID;
     }
     getValorImplicito(ent, arbol) {
+        this.valor = this.removeQuotes(this.valor, ent, arbol);
         return this.valor;
     }
     isInt(n) {
@@ -41,6 +42,12 @@ class Primitivo {
     }
     isChar(cadena) {
         return cadena.length == 3 && cadena.charAt(0) === "'" && cadena.charAt(cadena.length - 1) === "'";
+    }
+    removeQuotes(valor, ent, arbol) {
+        if (typeof (valor) === 'string' && (valor.charAt(0) == '"' || valor.charAt(0) == "'")) {
+            valor = valor.substring(1, valor.length - 1);
+        }
+        return valor;
     }
 }
 exports.Primitivo = Primitivo;

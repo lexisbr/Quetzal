@@ -14,9 +14,6 @@ class Print {
     }
     ejecutar(ent, arbol) {
         let valor = this.expresion.getValorImplicito(ent, arbol);
-        if (typeof valor === "string" && (valor.charAt(0) == '"' || valor.charAt(0) == "'")) {
-            valor = valor.substring(1, valor.length - 1);
-        }
         valor = this.addSalto(valor);
         arbol.updateConsola(valor);
     }

@@ -1,0 +1,64 @@
+int numero(int a){
+  a = a + 5;
+  return a;
+}
+
+int a = numero(12);
+
+print(a);
+
+
+String cadena(String a){
+  return a;
+}
+
+String a = cadena("mundo");
+
+print(a);
+
+int numero2(int a){
+  return a;
+  a = a + 5;
+}
+
+int a2 = numero2(12);
+
+print(a2);
+
+
+String num(int si){
+  print(si);
+}
+
+num(5); //Error porque no tiene return 
+
+
+void num(int si){
+  print(si);
+}
+
+num(5); // no da error 
+
+String num(int si){
+  print(si);
+  return si; //Error porque retorna int 
+}
+
+num(5);
+
+boolean num(int si){
+  println(si);
+  return 5 > 7;
+}
+
+print(num(1));
+
+
+int num(int si){
+  println(si);
+  si = si + 8; 
+  return si;
+}
+
+int a = 6 + num(1);
+print(a);

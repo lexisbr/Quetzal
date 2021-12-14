@@ -5,6 +5,7 @@ class Entorno {
     constructor(anterior) {
         this.tabla = {};
         this.anterior = anterior;
+        this.entorno = '';
     }
     agregar(id, simbolo) {
         id = id.toLowerCase();
@@ -59,6 +60,9 @@ class Entorno {
     }
     getTabla() {
         return this.tabla;
+    }
+    setEntorno(id) {
+        this.entorno = id;
     }
 }
 exports.Entorno = Entorno;
