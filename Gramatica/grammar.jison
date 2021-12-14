@@ -40,6 +40,8 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+"if"                                return 'if';
+"else"                              return 'else';
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
 "sqrt"                              return 'sqrt';
@@ -116,6 +118,7 @@ BSL                             "\\".
     const {Logica} = require("../Expresiones/Logica.js");
     const {Identificador} = require("../Expresiones/Identificador.js");
     const {Ternario} = require("../Expresiones/Ternario.js");
+    const {If} = require("../Instrucciones/If.js");
 
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
@@ -161,6 +164,7 @@ RAIZ:
     | RETURN semicolon                      { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
     | ASIGNACION semicolon                  { $$ = $1; }
+    | CONDICIONAL_IF                        { $$ = $1; }
 ;
 
 FUNCION:
@@ -213,6 +217,12 @@ DECLARACION_NULA:
 
 ASIGNACION:
     identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }
+;
+
+CONDICIONAL_IF:
+    if lparen EXPR rparen allave RAICES cllave                              { $$ = new If($3,$6,[],@1.first_line, @1.first_column);}
+    | if lparen EXPR rparen allave RAICES cllave else allave RAICES cllave  { $$ = new If($3,$6,$10 ,@1.first_line, @1.first_column);}
+    | if lparen EXPR rparen allave RAICES cllave else CONDICIONAL_IF        { $$ = new If($3,$6,[$9],@1.first_line, @1.first_column);}
 ;
 
 PRINT:
