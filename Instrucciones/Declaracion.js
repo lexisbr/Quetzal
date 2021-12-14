@@ -4,9 +4,10 @@ exports.Declaracion = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
 const Simbolo_1 = require("../AST/Simbolo");
 const Tipo_1 = require("../AST/Tipo");
+const Llamada_1 = require("./Llamada");
 class Declaracion {
-    constructor(identificador, exp, tipo, linea, columna) {
-        this.expresion = exp;
+    constructor(identificador, expresion, tipo, linea, columna) {
+        this.expresion = expresion;
         this.linea = linea;
         this.columna = columna;
         this.identificador = identificador;
@@ -16,9 +17,21 @@ class Declaracion {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
+        let valor;
+        let tipoValor;
         if (this.expresion != null) {
-            let valor = this.expresion.getValorImplicito(ent, arbol);
-            const tipoValor = this.expresion.getTipo(ent, arbol);
+            if (this.expresion instanceof Llamada_1.Llamada) {
+                valor = this.expresion.ejecutar(ent, arbol);
+                if (valor instanceof Excepcion_1.Excepcion)
+                    return valor;
+                tipoValor = this.expresion.getTipo(arbol);
+            }
+            else {
+                valor = this.expresion.getValorImplicito(ent, arbol);
+                if (valor instanceof Excepcion_1.Excepcion)
+                    return valor;
+                tipoValor = this.expresion.getTipo(ent, arbol);
+            }
             if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);

@@ -22,7 +22,6 @@ export class Funcion implements Instruccion {
         this.tipo = tipo;
         this.linea = linea;
         this.columna = columna;
-
     }
 
     traducir(ent: Entorno, arbol: AST) {
@@ -34,23 +33,33 @@ export class Funcion implements Instruccion {
         ent.setEntorno("Funcion " + this.nombre);
         console.log("Instruccion " + this.instrucciones);
 
-        for(let i in this.instrucciones) {
+        for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(ent, arbol);
             if (value instanceof Excepcion) {
                 arbol.updateConsola(value.toString());
-            } else if (value instanceof Return){
-                this.tipo = value.getTipo();
-                return value.getValue();
+            } else if (value instanceof Return) {
+                if (this.tipo == value.getTipo()) {
+                    return value.getValue();
+                }
+                else return new Excepcion(this.linea, this.columna, "\nSemantico", "El valor de retorno no coincide con el tipo de la funcion.")
             }
+        }
+        
+        if(this.tipo != Tipo.VOID){
+            return new Excepcion(this.linea, this.columna, "\nSemantico", "La funcion debe retornar un valor")
         }
     }
 
-    getNombre():string {
+    getNombre(): string {
         return this.nombre;
     }
 
-    getParametros():Array<Declaracion> {
+    getParametros(): Array<Declaracion> {
         return this.parametros;
+    }
+
+    getTipo(): Tipo {
+        return this.tipo;
     }
 }
 

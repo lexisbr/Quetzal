@@ -15,7 +15,7 @@ class Llamada {
     ejecutar(ent, arbol) {
         let funcion = arbol.getFuncion(this.nombre);
         console.log("Funcion", funcion);
-        if (funcion == null) {
+        if (funcion === null) {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La funcion llamada no existe");
         }
         let nuevoEntorno = new Entorno_1.Entorno(ent);
@@ -29,8 +29,6 @@ class Llamada {
                 }
                 let expresionTipo = expresion.getTipo(ent, arbol);
                 let parametroTipo = parametrosFuncion[i].getTipoEnum();
-                console.log(parametroTipo);
-                console.log(expresionTipo);
                 if (expresionTipo == parametroTipo || (expresionTipo == Tipo_1.Tipo.INT && parametroTipo == Tipo_1.Tipo.DOUBLE)) {
                     let simbolo = new Simbolo_1.Simbolo(parametroTipo, parametrosFuncion[i].getIdentificador(), this.linea, this.columna, expresionValue);
                     nuevoEntorno.agregar(simbolo.getIdentificador(), simbolo);
@@ -50,6 +48,13 @@ class Llamada {
     }
     traducir(ent, arbol) {
         throw new Error("Method not implemented.");
+    }
+    getTipo(arbol) {
+        let funcion = arbol.getFuncion(this.nombre);
+        return funcion.getTipo();
+    }
+    getValorImplicito(ent, arbol) {
+        return this.ejecutar(ent, arbol);
     }
 }
 exports.Llamada = Llamada;

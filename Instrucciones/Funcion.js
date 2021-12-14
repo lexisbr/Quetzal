@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Funcion = void 0;
+const Tipo_1 = require("../AST/Tipo");
 const Excepcion_1 = require("../AST/Excepcion");
+const Return_1 = require("./Return");
 class Funcion {
     constructor(nombre, parametros, instrucciones, tipo, linea, columna) {
         this.nombre = nombre;
@@ -22,6 +24,16 @@ class Funcion {
             if (value instanceof Excepcion_1.Excepcion) {
                 arbol.updateConsola(value.toString());
             }
+            else if (value instanceof Return_1.Return) {
+                if (this.tipo == value.getTipo()) {
+                    return value.getValue();
+                }
+                else
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "El valor de retorno no coincide con el tipo de la funcion.");
+            }
+        }
+        if (this.tipo != Tipo_1.Tipo.VOID) {
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La funcion debe retornar un valor");
         }
     }
     getNombre() {
@@ -29,6 +41,9 @@ class Funcion {
     }
     getParametros() {
         return this.parametros;
+    }
+    getTipo() {
+        return this.tipo;
     }
 }
 exports.Funcion = Funcion;

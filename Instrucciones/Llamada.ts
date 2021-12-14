@@ -23,7 +23,7 @@ export class Llamada implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         let funcion:any = arbol.getFuncion(this.nombre);
         console.log("Funcion",funcion)
-        if(funcion == null){
+        if(funcion === null){
             return new Excepcion (this.linea,this.columna,"Semantico","La funcion llamada no existe");
         }
         
@@ -38,8 +38,6 @@ export class Llamada implements Instruccion {
                 }
                 let expresionTipo = expresion.getTipo(ent, arbol);
                 let parametroTipo = parametrosFuncion[i].getTipoEnum();
-                console.log(parametroTipo);
-                console.log(expresionTipo);
 
                 if(expresionTipo == parametroTipo || (expresionTipo == Tipo.INT && parametroTipo == Tipo.DOUBLE)){
                     let simbolo:Simbolo = new Simbolo(parametroTipo,parametrosFuncion[i].getIdentificador(),this.linea,this.columna,expresionValue);
@@ -65,7 +63,14 @@ export class Llamada implements Instruccion {
         throw new Error("Method not implemented.");
     }
     
+    getTipo(arbol: AST) {
+        let funcion:any = arbol.getFuncion(this.nombre);
+        return funcion.getTipo();
+    }
 
+    getValorImplicito(ent: Entorno, arbol: AST) {
+        return this.ejecutar(ent, arbol);
+    }
 
 
 }

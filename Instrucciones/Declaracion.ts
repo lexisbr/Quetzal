@@ -5,16 +5,17 @@ import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { Llamada } from "./Llamada";
 
 export class Declaracion implements Instruccion {
     linea: number;
     columna: number;
-    expresion: Expresion;
+    expresion: any;
     tipo: Tipo;
     identificador: string;
 
-    constructor(identificador: string, exp: Expresion, tipo: Tipo, linea: number, columna: number) {
-        this.expresion = exp;
+    constructor(identificador: string, expresion: any, tipo: Tipo, linea: number, columna: number) {
+        this.expresion = expresion;
         this.linea = linea;
         this.columna = columna;
         this.identificador = identificador;
@@ -26,9 +27,18 @@ export class Declaracion implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
+        let valor;
+        let tipoValor;
         if (this.expresion != null) {
-            let valor = this.expresion.getValorImplicito(ent, arbol);
-            const tipoValor = this.expresion.getTipo(ent, arbol);
+            if (this.expresion instanceof Llamada) {
+                valor = this.expresion.ejecutar(ent, arbol);
+                if (valor instanceof Excepcion) return valor;
+                tipoValor = this.expresion.getTipo(arbol);
+            } else {
+                valor = this.expresion.getValorImplicito(ent, arbol);
+                if (valor instanceof Excepcion) return valor;
+                tipoValor = this.expresion.getTipo(ent, arbol);
+            }
             if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
@@ -69,11 +79,11 @@ export class Declaracion implements Instruccion {
         return '';
     }
 
-    getTipoEnum():number{
+    getTipoEnum(): number {
         return this.tipo;
     }
 
-    getIdentificador():string{
+    getIdentificador(): string {
         return this.identificador;
     }
 
@@ -81,7 +91,7 @@ export class Declaracion implements Instruccion {
         return Number(n) === n && n % 1 === 0;
     }
 
-    isDouble(tipoValor:any){
+    isDouble(tipoValor: any) {
         return tipoValor == Tipo.INT && this.tipo == Tipo.DOUBLE
     }
 }

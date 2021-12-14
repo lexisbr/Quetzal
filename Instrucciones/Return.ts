@@ -22,6 +22,7 @@ export class Return implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
+        console.log("Expresion",this.expresion);
         let value = this.expresion.getValorImplicito(ent,arbol);
         
         if(value instanceof Excepcion) return value;

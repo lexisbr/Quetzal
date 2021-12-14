@@ -34,6 +34,7 @@ BSL                             "\\".
 "boolean"					        return 'boolean';
 "char"					            return 'char';
 "String"				            return 'String';
+"void"				                return 'void';
 "true"                              return 'true';
 "false"                             return 'false';
 "print"                             return 'print';
@@ -149,7 +150,7 @@ RAIZ:
 ;
 
 FUNCION:
-    TIPO_FUNCION identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
+    TIPO identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
 ;
 
 LIST_PARAMETROS:
@@ -185,7 +186,7 @@ ARGUMENTO:
 ;
 
 RETURN:
-    return EXPR { $$ = new Return($1,@1.first_line, @1.first_column); }
+    return EXPR { $$ = new Return($2,@1.first_line, @1.first_column); }
 ;
 
 DECLARACION:
@@ -212,6 +213,7 @@ EXPR:
     | OP_RELACIONALES                   { $$ = $1 }
     | OP_LOGICAS                        { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
+    | LLAMADA                           { $$ = $1 }
 ;
 
 OP_LOGICAS:
