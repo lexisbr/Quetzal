@@ -68,14 +68,17 @@ BSL                             "\\".
 "!"                                 return 'not';
 
 ";"                                 return 'semicolon';
+":"                                 return 'colon';
 "("                                 return 'lparen';
 ")"                                 return 'rparen';
+"?"                                 return 'question';
 
 "&&"                                return 'and';
 "||"                                return 'or';
 "!"                                 return 'not';
 
 ","                                 return 'coma';
+
 
 
 /* Number literals */
@@ -109,6 +112,7 @@ BSL                             "\\".
 
     const {Relacional} = require("../Expresiones/Relacional.js");
     const {Logica} = require("../Expresiones/Logica.js");
+    const {Ternario} = require("../Expresiones/Ternario.js");
 
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
@@ -117,6 +121,7 @@ BSL                             "\\".
 %}
 
 /* operator associations and precedence */
+%right 'question'
 %left 'or'
 %left 'and'
 %left 'lt' 'lte' 'gt' 'gte' 'equal' 'nequal'
@@ -172,6 +177,7 @@ EXPR:
     | OP_ARITMETICAS                    { $$ = $1 }
     | OP_RELACIONALES                   { $$ = $1 }
     | OP_LOGICAS                        { $$ = $1 }
+    | OP_TERNARIA                       { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
 ;
 
@@ -203,6 +209,10 @@ OP_ARITMETICAS:
     | sin lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.SENO, @1.first_line, @1.first_column); }
     | cos lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.COSENO, @1.first_line, @1.first_column); }
     | tan lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.TAN, @1.first_line, @1.first_column); }
+;
+
+OP_TERNARIA:
+    EXPR question EXPR colon EXPR       { $$ = new Ternario($1,$3,$5,@1.first_line,@1.first_column); } 
 ;
 
 PRIMITIVA:
