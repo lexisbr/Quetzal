@@ -40,6 +40,7 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+"main"                              return 'main';
 
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
@@ -124,6 +125,7 @@ BSL                             "\\".
     const {Funcion} = require("../Instrucciones/Funcion.js");
     const {Llamada} = require("../Instrucciones/Llamada.js");
     const {Return} = require("../Instrucciones/Return.js");
+    const {Main} = require("../Instrucciones/Main.js");
 %}
 
 /* operator associations and precedence */
@@ -162,6 +164,11 @@ RAIZ:
     | RETURN semicolon                      { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
     | ASIGNACION semicolon                  { $$ = $1; }
+    | MAIN                                  { $$ = $1; }
+;
+
+MAIN:
+    void main lparen rparen allave RAICES cllave {$$ = new Main($6,@1.first_line, @1.first_column); }
 ;
 
 FUNCION:
