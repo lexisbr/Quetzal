@@ -26,7 +26,10 @@ class Funcion {
             }
             else if (value instanceof Return_1.Return) {
                 if (this.tipo == value.getTipo()) {
-                    return value.getValue();
+                    if (this.tipo != Tipo_1.Tipo.VOID)
+                        return value.getValue();
+                    else
+                        return this;
                 }
                 else
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "El valor de retorno no coincide con el tipo de la funcion.");

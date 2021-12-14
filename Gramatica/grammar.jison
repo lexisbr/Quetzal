@@ -186,7 +186,12 @@ ARGUMENTO:
 ;
 
 RETURN:
-    return EXPR { $$ = new Return($2,@1.first_line, @1.first_column); }
+    return RETURN_OP { $$ = new Return($2,@1.first_line, @1.first_column); }
+;
+
+RETURN_OP:
+    EXPR {$$ = $1; }
+    | {$$ = null; }
 ;
 
 DECLARACION:
