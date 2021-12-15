@@ -27,7 +27,7 @@ export class Asignacion implements Instruccion {
         let valor = this.expresion.getValorImplicito(ent, arbol);
         const tipoValor = this.expresion.getTipo(ent, arbol);
         if (!(valor instanceof Excepcion)) {
-            if (ent.existeEnActual(this.identificador)) {
+            if (ent.existe(this.identificador)) {
                 let simbolo:Simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent,arbol);
                 if( simboloValor == tipoValor || (tipoValor == Tipo.NULL && simboloValor == Tipo.STRING)|| (tipoValor == Tipo.INT && simboloValor == Tipo.DOUBLE)) {

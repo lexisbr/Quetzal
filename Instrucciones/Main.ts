@@ -22,7 +22,7 @@ export class Main implements Instruccion {
         let nuevoEntorno = new Entorno(ent);
         nuevoEntorno.setEntorno("Main");
         for(let i in this.instrucciones){
-            let value = this.instrucciones[i].ejecutar(ent, arbol);
+            let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
             if(value instanceof Excepcion){
                 arbol.addExcepcion(value);
                 arbol.updateConsola(value.toString());
