@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CharOfPosition = void 0;
+exports.SubString = void 0;
 const Tipo_1 = require("../../AST/Tipo");
 const Excepcion_1 = require("../../AST/Excepcion");
-class CharOfPosition {
-    constructor(expresion, posicion, linea, columna) {
+class SubString {
+    constructor(expresion, posicionInicial, posicionFinal, linea, columna) {
         this.expresion = expresion;
-        this.posicion = posicion;
+        this.posicionInicial = posicionInicial;
+        this.posicionFinal = posicionFinal;
         this.linea = linea;
         this.columna = columna;
     }
@@ -37,14 +38,16 @@ class CharOfPosition {
     }
     getValorImplicito(ent, arbol) {
         let value = this.expresion.getValorImplicito(ent, arbol);
-        let position = this.posicion.getValorImplicito(ent, arbol);
+        let positionInitial = this.posicionInicial.getValorImplicito(ent, arbol);
+        let positionFinal = this.posicionFinal.getValorImplicito(ent, arbol);
         let typeValue = this.expresion.getTipo(ent, arbol);
-        let typePosition = this.posicion.getTipo(ent, arbol);
-        if (typeValue == Tipo_1.Tipo.STRING && (typePosition == Tipo_1.Tipo.INT || typePosition == Tipo_1.Tipo.DOUBLE)) {
-            return value.charAt(position);
+        let typePosInitial = this.posicionInicial.getTipo(ent, arbol);
+        let typePosFinal = this.posicionFinal.getTipo(ent, arbol);
+        if (typeValue == Tipo_1.Tipo.STRING && typePosInitial == Tipo_1.Tipo.INT && typePosFinal == Tipo_1.Tipo.INT) {
+            return value.substring(positionInitial, positionFinal + 1);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion CaracterOfPosition");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion SubString");
         }
     }
     isInt(n) {
@@ -54,4 +57,4 @@ class CharOfPosition {
         return cadena.length == 3 && cadena.charAt(0) === "'" && cadena.charAt(cadena.length - 1) === "'";
     }
 }
-exports.CharOfPosition = CharOfPosition;
+exports.SubString = SubString;

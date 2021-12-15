@@ -151,7 +151,7 @@ class Operacion {
                 }
             }
             else if (this.operador == Operador_1.Operador.REPEAT) {
-                if (typeof (op1 === "string") && typeof (op2 === "number")) {
+                if (typeof (op1 === "string") && (typeOp2 == Tipo_1.Tipo.INT || typeOp2 == Tipo_1.Tipo.DOUBLE)) {
                     return op1.repeat(op2);
                 }
                 else {

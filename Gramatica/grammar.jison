@@ -3,7 +3,7 @@
 /* lexical grammar */
 %lex
 
-%options case-insensitive
+%options case-sensitive
 
 escapechar                      [\'\"\\bfnrtv]
 escape                          \\{escapechar}
@@ -51,6 +51,7 @@ BSL                             "\\".
 "tan"                               return 'tan';
 /*Nativas de Cadenas*/
 "caracterOfPosition"                return 'charOfPos';
+"subString"                         return 'subString';
 
 /*Aritmeticas*/
 "+"                                 return 'plus';
@@ -123,6 +124,7 @@ BSL                             "\\".
     const {Identificador} = require("../Expresiones/Identificador.js");
     const {Ternario} = require("../Expresiones/Ternario.js");
     const {CharOfPosition} = require("../Expresiones/NativasString/CharOfPosition.js");
+    const {SubString} = require("../Expresiones/NativasString/SubString.js");
     const {If} = require("../Instrucciones/If.js");
 
     const {Tipo} = require("../AST/Tipo.js");
@@ -253,6 +255,7 @@ NATIVAS_STRING:
     EXPR concat EXPR                    { $$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
     | EXPR repeat EXPR                  { $$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
     | EXPR dot charOfPos lparen EXPR rparen {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
+    | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}     
 ;
 
 OP_LOGICAS:

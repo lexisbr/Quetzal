@@ -90,3 +90,6 @@ println(cadenaNativa);
 println(cadenaNativa^3);
 
 println(cadenaNativa.caracterOfPosition(4));
+
+String animal = "Tigre";
+println(animal.subString(2,4)); //gre

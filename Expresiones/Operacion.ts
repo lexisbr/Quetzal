@@ -194,7 +194,7 @@ export class Operacion implements Expresion {
                 }
             }  else if (this.operador == Operador.REPEAT)
             {
-                if (typeof(op1==="string") && typeof(op2==="number"))
+                if (typeof(op1==="string") && (typeOp2 == Tipo.INT || typeOp2 == Tipo.DOUBLE))
                 {
                     return op1.repeat(op2);
                 } else

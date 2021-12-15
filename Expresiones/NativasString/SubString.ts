@@ -5,15 +5,17 @@ import { Operador } from "../../AST/Operador";
 import { Expresion } from "../../Interfaces/Expresion";
 import { Excepcion } from "../../AST/Excepcion";
 
-export class CharOfPosition implements Expresion {
+export class SubString implements Expresion {
     linea: number;
     columna: number;
     expresion: Expresion;
-    posicion: Expresion;
+    posicionInicial: Expresion;
+    posicionFinal: Expresion;
 
-    constructor(expresion: Expresion, posicion: Expresion, linea: number, columna: number){
+    constructor(expresion: Expresion, posicionInicial: Expresion, posicionFinal: Expresion, linea: number, columna: number){
         this.expresion = expresion;
-        this.posicion = posicion;
+        this.posicionInicial = posicionInicial;
+        this.posicionFinal = posicionFinal;
         this.linea = linea;
         this.columna = columna;   
     }
@@ -51,21 +53,22 @@ export class CharOfPosition implements Expresion {
 
     getValorImplicito(ent: Entorno, arbol: AST) {
         let value = this.expresion.getValorImplicito(ent,arbol);
-        let position = this.posicion.getValorImplicito(ent,arbol);
+        let positionInitial = this.posicionInicial.getValorImplicito(ent,arbol);
+        let positionFinal = this.posicionFinal.getValorImplicito(ent,arbol);
         let typeValue = this.expresion.getTipo(ent,arbol);
-        let typePosition = this.posicion.getTipo(ent,arbol);
-    
-        if (typeValue == Tipo.STRING && (typePosition == Tipo.INT || typePosition == Tipo.DOUBLE))
+        let typePosInitial = this.posicionInicial.getTipo(ent,arbol);
+        let typePosFinal = this.posicionFinal.getTipo(ent,arbol);
+       
+        if (typeValue == Tipo.STRING && typePosInitial==Tipo.INT && typePosFinal == Tipo.INT)
             {
-                return value.charAt(position);
+                return value.substring(positionInitial,positionFinal+1);
             } else
             {
-                return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Funcion CaracterOfPosition");
+                return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Funcion SubString");
             }
            
         } 
-    
-
+       
     isInt(n:number){
         return Number(n) === n && n % 1 === 0;
     }
