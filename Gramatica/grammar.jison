@@ -52,6 +52,9 @@ BSL                             "\\".
 /*Nativas de Cadenas*/
 "caracterOfPosition"                return 'charOfPos';
 "subString"                         return 'subString';
+"length"                            return 'length';
+"toUpperCase"                       return 'toUpper';
+"toLowerCase"                       return 'toLower';
 
 /*Aritmeticas*/
 "+"                                 return 'plus';
@@ -125,6 +128,10 @@ BSL                             "\\".
     const {Ternario} = require("../Expresiones/Ternario.js");
     const {CharOfPosition} = require("../Expresiones/NativasString/CharOfPosition.js");
     const {SubString} = require("../Expresiones/NativasString/SubString.js");
+    //const {LengthString} = require("../Expresiones/NativasString/LengthString.js");
+    const {Length} = require("../Expresiones/NativasString/Length.js");
+    const {ToUpper} = require("../Expresiones/NativasString/ToUpper.js");
+    const {ToLower} = require("../Expresiones/NativasString/ToLower.js");
     const {If} = require("../Instrucciones/If.js");
 
     const {Tipo} = require("../AST/Tipo.js");
@@ -137,6 +144,7 @@ BSL                             "\\".
 
 /* operator associations and precedence */
 %right 'question'
+//%right 'lparen' //DUDA SOBRE EL LENGTH
 %right 'dot'
 %left 'repeat'
 %left 'or'
@@ -248,6 +256,7 @@ EXPR:
     | OP_TERNARIA                       { $$ = $1 }
     | NATIVAS_STRING                    { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
+    //| identifier dot length lparen rparen {$$ = new LengthString($1,@1.first_line,@1.first_column);}
     | LLAMADA                           { $$ = $1 }
 ;
 
@@ -255,7 +264,10 @@ NATIVAS_STRING:
     EXPR concat EXPR                    { $$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
     | EXPR repeat EXPR                  { $$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
     | EXPR dot charOfPos lparen EXPR rparen {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
-    | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}     
+    | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}    
+    | EXPR dot length lparen rparen {$$ = new Length($1,@1.first_line, @1.first_column);}     
+    | EXPR dot toUpper lparen rparen {$$ = new ToUpper($1,@1.first_line, @1.first_column);}     
+    | EXPR dot toLower lparen rparen {$$ = new ToLower($1,@1.first_line, @1.first_column);}     
 ;
 
 OP_LOGICAS:
