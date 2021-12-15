@@ -72,13 +72,21 @@ println((a==b) || (a!=b));
 println(!(a==b));
 
 println("OPERACION TERNARIA");
-println((n1>=n2 && a != b))  ? "Verdadero" : "Falso"); 
+println((n1>=n2 && a != b)  ? "Verdadero" : "Falso"); 
 String respuesta;
 int edad = 35;
 respuesta = edad <= 50 ? "Puede vacunarse" : "No puede vacunarse";
 println(respuesta);
-
+/*
 println("CONDICION IF");
 if(edad<=50){
 	println("Puede Vacunarse");
-}
+}*/
+println("NATIVAS DE CADENAS");
+String cadenaNativa;
+cadenaNativa = "para" & "caidismo";
+println(cadenaNativa);
+
+println(cadenaNativa^3);
+
+println(cadenaNativa.caracterOfPosition(4));

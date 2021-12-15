@@ -21,6 +21,9 @@ class Operacion {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
+            if (this.isChar(valor)) {
+                return Tipo_1.Tipo.CHAR;
+            }
             return Tipo_1.Tipo.STRING;
         }
         else if (typeof (valor) === 'number') {
@@ -38,6 +41,8 @@ class Operacion {
         if (this.operador !== Operador_1.Operador.MENOS_UNARIO) {
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             let op2 = this.op_derecha.getValorImplicito(ent, arbol);
+            let typeOp1 = this.op_izquierda.getTipo(ent, arbol);
+            let typeOp2 = this.op_derecha.getTipo(ent, arbol);
             //suma
             if (this.operador == Operador_1.Operador.SUMA) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
@@ -135,6 +140,22 @@ class Operacion {
                 }
                 else {
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Operacion Tan (tangente)");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.CONCAT) {
+                if (typeof (op1 === "string") && typeof (op2 === "string")) {
+                    return op1 + op2;
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Concatenacion (&)");
+                }
+            }
+            else if (this.operador == Operador_1.Operador.REPEAT) {
+                if (typeof (op1 === "string") && typeof (op2 === "number")) {
+                    return op1.repeat(op2);
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Concatenacion (&)");
                 }
             }
         }

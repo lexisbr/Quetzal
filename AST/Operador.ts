@@ -19,5 +19,7 @@ export enum Operador {
     LOG,
     SENO,
     COSENO,
-    TAN
+    TAN,
+    CONCAT,
+    REPEAT,
 }

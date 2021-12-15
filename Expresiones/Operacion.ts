@@ -31,6 +31,9 @@ export class Operacion implements Expresion {
         }
         else if (typeof(valor) === 'string')
         {
+            if(this.isChar(valor)){
+                return Tipo.CHAR;
+            }
             return Tipo.STRING;
         }
         else if (typeof(valor) === 'number')
@@ -52,16 +55,15 @@ export class Operacion implements Expresion {
         if (this.operador !== Operador.MENOS_UNARIO){
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             let op2 = this.op_derecha.getValorImplicito(ent, arbol);
-            
+            let typeOp1 = this.op_izquierda.getTipo(ent,arbol);
+            let typeOp2 = this.op_derecha.getTipo(ent,arbol);
             //suma
             if (this.operador == Operador.SUMA)
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {
-
                     return op1 + op2;
-                }
-                else
+                } else
                 {
                     return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Suma (+)");
                 }
@@ -180,6 +182,24 @@ export class Operacion implements Expresion {
                 else
                 {
                     return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Tan (tangente)");
+                }
+            } else if (this.operador == Operador.CONCAT)
+            {
+                if (typeof(op1==="string") && typeof(op2==="string"))
+                {
+                    return op1 + op2;
+                } else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
+                }
+            }  else if (this.operador == Operador.REPEAT)
+            {
+                if (typeof(op1==="string") && typeof(op2==="number"))
+                {
+                    return op1.repeat(op2);
+                } else
+                {
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
                 }
             } 
         }else{

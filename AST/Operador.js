@@ -24,4 +24,6 @@ var Operador;
     Operador[Operador["SENO"] = 18] = "SENO";
     Operador[Operador["COSENO"] = 19] = "COSENO";
     Operador[Operador["TAN"] = 20] = "TAN";
+    Operador[Operador["CONCAT"] = 21] = "CONCAT";
+    Operador[Operador["REPEAT"] = 22] = "REPEAT";
 })(Operador = exports.Operador || (exports.Operador = {}));
