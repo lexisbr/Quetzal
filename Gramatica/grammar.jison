@@ -40,6 +40,8 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+"break"                             return 'break';
+'continue'                          return 'continue';
 "if"                                return 'if';
 "else"                              return 'else';
 /*Nativas Aritmeticas*/
@@ -61,6 +63,7 @@ BSL                             "\\".
 "toDouble"                          return 'toDouble';
 "toString"                          return 'toSTRING';
 'typeof'                            return 'typeof';
+
 
 /*Aritmeticas*/
 "++"                                return 'incremento';
@@ -156,6 +159,8 @@ BSL                             "\\".
     const {Funcion} = require("../Instrucciones/Funcion.js");
     const {Llamada} = require("../Instrucciones/Llamada.js");
     const {Return} = require("../Instrucciones/Return.js");
+    const {Break} = require("../Instrucciones/Break.js");
+    const {Continue} = require("../Instrucciones/Continue.js");
 %}
 
 /* operator associations and precedence */
@@ -197,6 +202,8 @@ RAIZ:
     | DECLARACION semicolon                 { $$ = $1; }
     | FUNCION                               { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
+    | break semicolon                       { $$ = new Break(@1.first_line, @1.first_column);}
+    | continue semicolon                    { $$ = new Continue(@1.first_line, @1.first_column);}
     | LLAMADA semicolon                     { $$ = $1; }
     | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
     | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
