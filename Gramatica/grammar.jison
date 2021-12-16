@@ -57,6 +57,10 @@ BSL                             "\\".
 "toLowerCase"                       return 'toLower';
 /*Nativas*/
 "parse"                             return 'parse';
+"toInt"                             return 'toInt';
+"toDouble"                          return 'toDouble';
+"toString"                          return 'toSTRING';
+'typeof'                            return 'typeof';
 
 /*Aritmeticas*/
 "++"                                return 'incremento';
@@ -140,6 +144,10 @@ BSL                             "\\".
     const {Incremento} = require("../Expresiones/Incremento.js");
     const {Decremento} = require("../Expresiones/Decremento.js");
     const {TipoParse} = require("../Expresiones/Nativas/TipoParse.js");
+    const {ToInt} = require("../Expresiones/Nativas/ToInt.js");
+    const {ToDouble} = require("../Expresiones/Nativas/ToDouble.js");
+    const {ToString} = require("../Expresiones/Nativas/ToString.js");
+    const {Typeof} = require("../Expresiones/Nativas/Typeof.js");
     const {If} = require("../Instrucciones/If.js");
 
     const {Tipo} = require("../AST/Tipo.js");
@@ -331,10 +339,13 @@ PRIMITIVA:
     | dollar EXPR                { $$ = $2 }
 ;
 NATIVA:
-    int dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
+    int dot parse lparen EXPR rparen    {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
     | double dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.DOUBLE,$5,@1.first_line, @1.first_column);}
     | boolean dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.BOOL,$5,@1.first_line, @1.first_column);}
-
+    | toInt lparen EXPR rparen      {$$ = new ToInt($3,@1.first_line, @1.first_column);}
+    | toDouble lparen EXPR rparen      {$$ = new ToDouble($3,@1.first_line, @1.first_column);}
+    | toSTRING lparen EXPR rparen      {$$ = new ToString($3,@1.first_line, @1.first_column);}
+    | typeof lparen EXPR rparen      {$$ = new Typeof($3,@1.first_line, @1.first_column);}
 ;
 
 TIPO:

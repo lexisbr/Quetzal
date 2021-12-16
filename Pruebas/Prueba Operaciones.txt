@@ -125,3 +125,17 @@ println("FUNCIONES NATIVAS");
     println(boolean.parse("1"));
     boolean native3 = boolean.parse("0");
     println(native3);
+
+    println(toInt(3.99999));  // retorna 3
+    println(toDouble(34));  //retorna 34.0
+
+    println(toString(45.87));  // retorna "45.87"
+    //println(String([1,2,3]));  // retorna "[1,2,3]"
+    String native4 = toString(true);
+    println(native4);
+    println(typeof(5 * 5)); // int
+    println(typeof(5 + 5.5)); // double
+    println(typeof(5.5 + 5.5)); // double
+
+double prueba = 5.5 + 5.5;
+println(typeof(prueba));
