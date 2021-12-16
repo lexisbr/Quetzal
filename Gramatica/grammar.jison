@@ -55,6 +55,8 @@ BSL                             "\\".
 "length"                            return 'length';
 "toUpperCase"                       return 'toUpper';
 "toLowerCase"                       return 'toLower';
+/*Nativas*/
+"parse"                             return 'parse';
 
 /*Aritmeticas*/
 "++"                                return 'incremento';
@@ -81,6 +83,7 @@ BSL                             "\\".
 
 "&"                                 return 'concat';
 "^"                                 return 'repeat';
+"$"                                 return 'dollar';
 
 ";"                                 return 'semicolon';
 ":"                                 return 'colon';
@@ -96,7 +99,7 @@ BSL                             "\\".
 
 
 /* Number literals */
-(([0-9]+"."[0-9]*)|("."[0-9]+))     return 'double';
+(([0-9]+"."[0-9]*)|("."[0-9]+))     return 'decimal';
 [0-9]+                              return 'integer';
 
 [a-zA-Z_][a-zA-Z0-9_ñÑ]*            return 'identifier';
@@ -136,6 +139,7 @@ BSL                             "\\".
     const {ToLower} = require("../Expresiones/NativasString/ToLower.js");
     const {Incremento} = require("../Expresiones/Incremento.js");
     const {Decremento} = require("../Expresiones/Decremento.js");
+    const {TipoParse} = require("../Expresiones/Nativas/TipoParse.js");
     const {If} = require("../Instrucciones/If.js");
 
     const {Tipo} = require("../AST/Tipo.js");
@@ -149,6 +153,7 @@ BSL                             "\\".
 /* operator associations and precedence */
 %right 'question'
 //%right 'lparen' //DUDA SOBRE EL LENGTH
+%left 'dollar'
 %right 'dot'
 %left 'repeat'
 %left 'or'
@@ -262,6 +267,7 @@ EXPR:
     | OP_LOGICAS                        { $$ = $1 }
     | OP_TERNARIA                       { $$ = $1 }
     | NATIVAS_STRING                    { $$ = $1 }
+    | NATIVA                            { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
     //| identifier dot length lparen rparen {$$ = new LengthString($1,@1.first_line,@1.first_column);}
     | LLAMADA                           { $$ = $1 }
@@ -315,13 +321,20 @@ OP_TERNARIA:
 
 PRIMITIVA:
     integer                      { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
-    | double                     { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
+    | decimal                     { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
     | string                     { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
     | char                       { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
     | null                       { $$ = new Primitivo(null, @1.first_line, @1.first_column); }
     | true                       { $$ = new Primitivo(true, @1.first_line, @1.first_column); }
     | false                      { $$ = new Primitivo(false, @1.first_line, @1.first_column); } 
     | lparen EXPR rparen         { $$ = $2 }
+    | dollar EXPR                { $$ = $2 }
+;
+NATIVA:
+    int dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
+    | double dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.DOUBLE,$5,@1.first_line, @1.first_column);}
+    | boolean dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.BOOL,$5,@1.first_line, @1.first_column);}
+
 ;
 
 TIPO:

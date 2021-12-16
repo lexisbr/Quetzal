@@ -96,8 +96,9 @@ if(edad<=50){
 println("NATIVAS DE CADENAS");
 String cadenaNativa;
 cadenaNativa = "para" & "caidismo";
-println(cadenaNativa);
 
+println(cadenaNativa);
+println($cadenaNativa);
 println(cadenaNativa^3);
 
 println(cadenaNativa.caracterOfPosition(4));
@@ -112,3 +113,15 @@ while(a<15){
     println("Hola" + a);
     a=a+5;
 }
+println("FUNCIONES NATIVAS");
+    println(int.parse("8235"));
+    int native1 = int.parse("98");
+    println(native1);
+
+    println(double.parse("3.13159"));
+    double native2 = double.parse("1.69");
+    println(native2);
+
+    println(boolean.parse("1"));
+    boolean native3 = boolean.parse("0");
+    println(native3);
