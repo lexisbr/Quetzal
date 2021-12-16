@@ -19,7 +19,9 @@ if (typeof window !== 'undefined') {
             let value;
             if (element instanceof Funcion.Funcion) {
                 ast.addFuncion(element);
+
             } else if (element instanceof Declaracion.Declaracion) {
+
                 value = element.ejecutar(entornoGlobal, ast);
             }
 

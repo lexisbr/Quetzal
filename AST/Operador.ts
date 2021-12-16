@@ -9,6 +9,8 @@ export enum Operador {
     MENOR_QUE,
     IGUAL_IGUAL,
     DIFERENTE_QUE,
+    INCREMENTO,
+    DECREMENTO,
     AND,
     OR,
     NOT,
@@ -19,5 +21,7 @@ export enum Operador {
     LOG,
     SENO,
     COSENO,
-    TAN
+    TAN,
+    CONCAT,
+    REPEAT,
 }

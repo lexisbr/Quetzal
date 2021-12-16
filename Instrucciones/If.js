@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.If = void 0;
 const Entorno_1 = require("../AST/Entorno");
+const Excepcion_1 = require("../AST/Excepcion");
 const Tipo_1 = require("../AST/Tipo");
 class If {
     constructor(condicion, instrucciones_If, instrucciones_Else, linea, columna) {
@@ -20,8 +21,28 @@ class If {
         if (this.condicion.getTipo(ent, arbol) == Tipo_1.Tipo.BOOL) {
             if (valor_Condicional) { //SI EL VALOR DE LA CONDICION SE CUMPLE
                 for (let instrucciones of this.instrucciones_If) {
+                    entorno_Instrucciones.setEntorno("If");
                     let salidaInstrucciones = instrucciones.ejecutar(entorno_Instrucciones, arbol);
+                    console.log(salidaInstrucciones);
                     //BREAK
+                    if (salidaInstrucciones != null) {
+                        return salidaInstrucciones;
+                    }
+                    else {
+                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Error en la Sentencia If");
+                    }
+                }
+            }
+        }
+        else {
+            for (let instrucciones of this.instrucciones_Else) {
+                entorno_Instrucciones.setEntorno("Else");
+                let salidaInstrucciones = instrucciones.ejecutar(entorno_Instrucciones, arbol);
+                if (salidaInstrucciones != null) {
+                    return salidaInstrucciones;
+                }
+                else {
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Error en la Sentencia Else");
                 }
             }
         }

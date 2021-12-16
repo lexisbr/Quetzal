@@ -10,6 +10,17 @@ int n2 = 5;
     println(n1 / n2);   //2
     println(n1 % n2);   //0
     println(-n1);       //-10
+    println(n1++);  //10
+    println(n1);	//11
+    n1++;
+    println(n1);
+    n1 = n1+5;
+    println(n1);
+    
+    println(n2--);  //5
+    println(n2);	//4
+    n2--;   //4
+    println(n2);    //3
     println(n1>= n2 ? "Verdadero" : "Falso"); 
 println("ARITMETICAS DECIMALES");
 double d1 = 10;
@@ -72,8 +83,59 @@ println((a==b) || (a!=b));
 println(!(a==b));
 
 println("OPERACION TERNARIA");
-println((n1>=n2 && a != b )  ? "Verdadero" : "Falso"); 
+println((n1>=n2 && a != b)  ? "Verdadero" : "Falso"); 
 String respuesta;
 int edad = 35;
 respuesta = edad <= 50 ? "Puede vacunarse" : "No puede vacunarse";
 println(respuesta);
+/*
+println("CONDICION IF");
+if(edad<=50){
+	println("Puede Vacunarse");
+}*/
+println("NATIVAS DE CADENAS");
+String cadenaNativa;
+cadenaNativa = "para" & "caidismo";
+
+println(cadenaNativa);
+println($cadenaNativa);
+println(cadenaNativa^3);
+
+println(cadenaNativa.caracterOfPosition(4));
+
+String animal = "TiGrE";
+println(animal.subString(2,4)); //gre
+println(animal.toUpperCase());
+println(animal.toLowerCase());
+println(animal.length());
+a=0;
+while(a<15){
+    println("Hola" + a);
+    a=a+5;
+}
+println("FUNCIONES NATIVAS");
+    println(int.parse("8235"));
+    int native1 = int.parse("98");
+    println(native1);
+
+    println(double.parse("3.13159"));
+    double native2 = double.parse("1.69");
+    println(native2);
+
+    println(boolean.parse("1"));
+    boolean native3 = boolean.parse("0");
+    println(native3);
+
+    println(toInt(3.99999));  // retorna 3
+    println(toDouble(34));  //retorna 34.0
+
+    println(toString(45.87));  // retorna "45.87"
+    //println(String([1,2,3]));  // retorna "[1,2,3]"
+    String native4 = toString(true);
+    println(native4);
+    println(typeof(5 * 5)); // int
+    println(typeof(5 + 5.5)); // double
+    println(typeof(5.5 + 5.5)); // double
+
+double prueba = 5.5 + 5.5;
+println(typeof(prueba));

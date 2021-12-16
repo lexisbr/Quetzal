@@ -18,6 +18,9 @@ class Identificador {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La variable no existe");
         }
     }
+    getId() {
+        return this.identificador;
+    }
     getValorImplicito(ent, arbol) {
         if (ent.existe(this.identificador)) {
             let simbolo = ent.getSimbolo(this.identificador);
