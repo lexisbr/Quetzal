@@ -1,9 +1,11 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Tipo } from "../AST/Tipo";
+import { Simbolo } from "../AST/Simbolo";
 import { Operador } from "../AST/Operador";
 import { Expresion } from "../Interfaces/Expresion";
 import { Excepcion } from "../AST/Excepcion";
+import { Identificador } from "./Identificador";
 
 export class Operacion implements Expresion {
     linea: number;
@@ -201,7 +203,49 @@ export class Operacion implements Expresion {
                 {
                     return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
                 }
-            } 
+            } else if (this.operador == Operador.INCREMENTO)
+            {
+                if(!(this.op_izquierda instanceof Identificador)){
+                    return new Excepcion(this.linea,this.columna,"Semantico","No es un Identificador");
+                } 
+                
+                if (typeOp1 == Tipo.INT || typeOp1 == Tipo.DOUBLE)
+                {   
+                    if(ent.existeEnActual(this.op_izquierda.getId())){
+                        let simbolo = new Simbolo(typeOp1,this.op_izquierda.getId(),this.linea,this.columna,op1 + 1);
+                        ent.reemplazar(this.op_izquierda.getId(),simbolo);
+                        return op1;
+                    }
+                    else {
+                        return new Excepcion(this.linea,this.columna,"Semantico","Variable no Definida");
+                    }
+                    
+                } else{
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Incremento (++)");
+                }
+                
+            } else if (this.operador == Operador.DECREMENTO)
+            {
+                if(!(this.op_izquierda instanceof Identificador)){
+                    return new Excepcion(this.linea,this.columna,"Semantico","No es un Identificador");
+                } 
+                
+                if (typeOp1 == Tipo.INT || typeOp1 == Tipo.DOUBLE)
+                {   
+                    if(ent.existeEnActual(this.op_izquierda.getId())){
+                        let simbolo = new Simbolo(typeOp1,this.op_izquierda.getId(),this.linea,this.columna,op1 - 1);
+                        ent.reemplazar(this.op_izquierda.getId(),simbolo);
+                        return op1;
+                    }
+                    else {
+                        return new Excepcion(this.linea,this.columna,"Semantico","Variable no Definida");
+                    }
+                    
+                } else{
+                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Decremento (--)");
+                }
+                
+            }
         }else{
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             if (this.operador == Operador.MENOS_UNARIO)

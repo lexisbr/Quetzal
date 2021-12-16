@@ -10,6 +10,17 @@ int n2 = 5;
     println(n1 / n2);   //2
     println(n1 % n2);   //0
     println(-n1);       //-10
+    println(n1++);  //10
+    println(n1);	//11
+    n1++;
+    println(n1);
+    n1 = n1+5;
+    println(n1);
+    
+    println(n2--);  //5
+    println(n2);	//4
+    n2--;   //4
+    println(n2);    //3
     println(n1>= n2 ? "Verdadero" : "Falso"); 
 println("ARITMETICAS DECIMALES");
 double d1 = 10;
@@ -96,4 +107,8 @@ println(animal.subString(2,4)); //gre
 println(animal.toUpperCase());
 println(animal.toLowerCase());
 println(animal.length());
-
+a=0;
+while(a<15){
+    println("Hola" + a);
+    a=a+5;
+}

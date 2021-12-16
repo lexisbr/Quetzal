@@ -17,6 +17,7 @@ if (typeof window !== 'undefined') {
             if (element instanceof Funcion.Funcion) {
                 ast.addFuncion(element);
             } else {
+                console.log(element);
                 value = element.ejecutar(entornoGlobal, ast);
             }
             if (value instanceof Excepcion.Excepcion) {

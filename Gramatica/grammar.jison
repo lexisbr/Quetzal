@@ -57,6 +57,8 @@ BSL                             "\\".
 "toLowerCase"                       return 'toLower';
 
 /*Aritmeticas*/
+"++"                                return 'incremento';
+"--"                                return 'decremento';
 "+"                                 return 'plus';
 "-"                                 return 'minus';
 "*"                                 return 'times';
@@ -132,6 +134,8 @@ BSL                             "\\".
     const {Length} = require("../Expresiones/NativasString/Length.js");
     const {ToUpper} = require("../Expresiones/NativasString/ToUpper.js");
     const {ToLower} = require("../Expresiones/NativasString/ToLower.js");
+    const {Incremento} = require("../Expresiones/Incremento.js");
+    const {Decremento} = require("../Expresiones/Decremento.js");
     const {If} = require("../Instrucciones/If.js");
 
     const {Tipo} = require("../AST/Tipo.js");
@@ -154,6 +158,7 @@ BSL                             "\\".
 %left 'times' 'div' 'mod'
 %left 'pow', 'sqrt'
 %left 'not'
+%right 'incremento''decremento'//duda 
 %left UMINUS
 %left 'lparen' 'rparen'
 
@@ -180,6 +185,8 @@ RAIZ:
     | FUNCION                               { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
+    | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
+    | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
     | ASIGNACION semicolon                  { $$ = $1; }
     | CONDICIONAL_IF                        { $$ = $1; }
 ;
@@ -292,6 +299,8 @@ OP_ARITMETICAS:
     | EXPR div EXPR                     { $$ = new Operacion($1,$3,Operador.DIVISION, @1.first_line, @1.first_column); }
     | EXPR mod EXPR                     { $$ = new Operacion($1,$3,Operador.MODULO, @1.first_line, @1.first_column); }
     | minus EXPR %prec UMINUS           { $$ = new Operacion($2,$2,Operador.MENOS_UNARIO, @1.first_line, @1.first_column); }
+    | EXPR incremento                   { $$ = new Operacion($1,$1,Operador.INCREMENTO, @1.first_line, @1.first_column); }
+    | EXPR decremento                   { $$ = new Operacion($1,$1,Operador.DECREMENTO, @1.first_line, @1.first_column); }    
     | pow lparen EXPR coma EXPR rparen  { $$ = new Operacion($3,$5,Operador.POW, @1.first_line, @1.first_column); }
     | sqrt lparen EXPR rparen           { $$ = new Operacion($3,$3,Operador.SQRT, @1.first_line, @1.first_column); }
     | log lparen EXPR rparen            { $$ = new Operacion($3,$3,Operador.LOG, @1.first_line, @1.first_column); }
