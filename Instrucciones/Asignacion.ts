@@ -36,6 +36,8 @@ export class Asignacion implements Instruccion {
                     }
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
+
+                    return simbolo;
                 }else{
                     return new Excepcion(this.linea, this.columna, "Semantico", "Los tipos no coinciden");
                 }
@@ -51,5 +53,6 @@ export class Asignacion implements Instruccion {
     isDouble(tipoValor:any, simboloValor:any){
         return tipoValor == Tipo.INT && simboloValor == Tipo.DOUBLE;
     }
+
 
 }

@@ -14,7 +14,6 @@ class Llamada {
     }
     ejecutar(ent, arbol) {
         let funcion = arbol.getFuncion(this.nombre);
-        console.log("Funcion", funcion);
         if (funcion === null) {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La funcion llamada no existe");
         }

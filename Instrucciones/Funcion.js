@@ -18,7 +18,6 @@ class Funcion {
     }
     ejecutar(ent, arbol) {
         ent.setEntorno("Funcion " + this.nombre);
-        console.log("Instruccion " + this.instrucciones);
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(ent, arbol);
             if (value instanceof Excepcion_1.Excepcion) {

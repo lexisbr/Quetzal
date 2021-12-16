@@ -13,7 +13,6 @@ class While {
         this.condicion = condicion;
     }
     ejecutar(ent, arbol) {
-        console.log("entorno");
         while (true) {
             let condicion = this.condicion.getValorImplicito(ent, arbol);
             if (condicion instanceof Excepcion_1.Excepcion)

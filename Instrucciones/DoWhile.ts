@@ -20,19 +20,20 @@ export class DoWhile implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
+
         let condicion = this.condicion.getValorImplicito(ent, arbol);
         if (condicion instanceof Excepcion) return condicion;
         if (this.condicion.getTipo(ent, arbol) == Tipo.BOOL) {
+            let nuevoEntorno: Entorno = new Entorno(ent);
+            nuevoEntorno.setEntorno("DoWhile");
             do {
-                condicion = this.condicion.getValorImplicito(ent, arbol);
-                let nuevoEntorno: Entorno = new Entorno(ent);
-                nuevoEntorno.setEntorno("DoWhile");
                 for (let i in this.instrucciones) {
                     let instruccion = this.instrucciones[i];
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
                     if (result instanceof Excepcion) return result;
                     else if (result instanceof Return) return result;
                 }
+                condicion = this.condicion.getValorImplicito(ent, arbol);
             } while (condicion);
         } else {
             return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo de dato en condicion debe ser booleano")

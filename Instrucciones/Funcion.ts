@@ -31,7 +31,6 @@ export class Funcion implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
 
         ent.setEntorno("Funcion " + this.nombre);
-        console.log("Instruccion " + this.instrucciones);
 
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(ent, arbol);

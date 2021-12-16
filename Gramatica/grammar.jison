@@ -43,6 +43,7 @@ BSL                             "\\".
 "main"                              return 'main';
 "while"                             return 'while';
 "do"                                return 'do';
+"for"                               return 'for';
 
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
@@ -129,6 +130,7 @@ BSL                             "\\".
     const {Return} = require("../Instrucciones/Return.js");
     const {Main} = require("../Instrucciones/Main.js");
     const {While} = require("../Instrucciones/While.js");
+    const {DoWhile} = require("../Instrucciones/DoWhile.js");
 %}
 
 /* operator associations and precedence */
@@ -165,6 +167,7 @@ RAIZ:
     | DECLARACION semicolon                 { $$ = $1; }
     | FUNCION                               { $$ = $1; }
     | WHILE                                 { $$ = $1; }
+    | DO_WHILE semicolon                    { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
     | ASIGNACION semicolon                  { $$ = $1; }
@@ -216,7 +219,16 @@ WHILE:
 ;
 
 DO_WHILE:
-    do allave RAICES cllave while lparen EXPR rparen  { $$ = new While($6,$3,@1.first_line,@1.first_column); }
+    do allave RAICES cllave while lparen EXPR rparen  { $$ = new DoWhile($3,$7,@1.first_line,@1.first_column); }
+;
+
+FOR:
+    for lparen FOR_VARIABLE semicolon EXPRESION semicolon RAICES rparen allave ASIGNACION cllave
+;
+
+FOR_VARIABLE:
+    DECLARACION
+    | ASIGNACION 
 ;
 
 RETURN:

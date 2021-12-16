@@ -12,7 +12,6 @@ class Return {
         this.value = null;
     }
     ejecutar(ent, arbol) {
-        console.log("Expresion", this.expresion);
         if (this.expresion == null) {
             this.tipo = Tipo_1.Tipo.VOID;
             return this;
