@@ -65,7 +65,7 @@ class Relacional {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
                 return op1 == op2;
             }
-            else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+            else if (typeOp1 === Tipo_1.Tipo.BOOL && typeOp2 === Tipo_1.Tipo.BOOL) {
                 return op1 == op2;
             }
             else if (typeOp1 === Tipo_1.Tipo.STRING && typeOp2 === Tipo_1.Tipo.STRING) {
@@ -107,7 +107,7 @@ class Relacional {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
                 return op1 != op2;
             }
-            else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+            else if (typeOp1 === Tipo_1.Tipo.BOOL && typeOp2 === Tipo_1.Tipo.BOOL) {
                 return op1 != op2;
             }
             else if (typeOp1 === Tipo_1.Tipo.STRING && typeOp2 === Tipo_1.Tipo.STRING) {

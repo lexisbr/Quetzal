@@ -206,7 +206,7 @@ RAIZ:
     | ASIGNACION semicolon                  { $$ = $1; }
     | CONDICIONAL_IF                        { $$ = $1; }
     | MAIN                                  { $$ = $1; }
-
+;
 
 MAIN:
     void main lparen rparen allave RAICES cllave {$$ = new Main($6,@1.first_line, @1.first_column); }
@@ -295,13 +295,13 @@ EXPR:
 ;
 
 NATIVAS_STRING:
-    EXPR concat EXPR                    { $$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
-    | EXPR repeat EXPR                  { $$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
-    | EXPR dot charOfPos lparen EXPR rparen {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
+    EXPR concat EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
+    | EXPR repeat EXPR                                {$$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
+    | EXPR dot charOfPos lparen EXPR rparen           {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
     | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}    
-    | EXPR dot length lparen rparen {$$ = new Length($1,@1.first_line, @1.first_column);}     
-    | EXPR dot toUpper lparen rparen {$$ = new ToUpper($1,@1.first_line, @1.first_column);}     
-    | EXPR dot toLower lparen rparen {$$ = new ToLower($1,@1.first_line, @1.first_column);}     
+    | EXPR dot length lparen rparen                   {$$ = new Length($1,@1.first_line, @1.first_column);}     
+    | EXPR dot toUpper lparen rparen                  {$$ = new ToUpper($1,@1.first_line, @1.first_column);}     
+    | EXPR dot toLower lparen rparen                  {$$ = new ToLower($1,@1.first_line, @1.first_column);}     
 ;
 
 OP_LOGICAS:
@@ -342,7 +342,7 @@ OP_TERNARIA:
 
 PRIMITIVA:
     integer                      { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
-    | decimal                     { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
+    | decimal                    { $$ = new Primitivo(Number($1), @1.first_line, @1.first_column); }
     | string                     { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
     | char                       { $$ = new Primitivo($1, @1.first_line, @1.first_column); }
     | null                       { $$ = new Primitivo(null, @1.first_line, @1.first_column); }
