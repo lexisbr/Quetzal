@@ -7,6 +7,7 @@ class AST {
         this.structs = [];
         this.funciones = [];
         this.consola = [];
+        this.excepciones = [];
     }
     updateConsola(line) {
         this.consola.push(line);
@@ -25,6 +26,9 @@ class AST {
             }
         }
         return null;
+    }
+    addExcepcion(excepcion) {
+        this.excepciones.push(excepcion);
     }
 }
 exports.AST = AST;

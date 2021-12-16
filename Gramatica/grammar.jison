@@ -40,8 +40,10 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+
 "if"                                return 'if';
 "else"                              return 'else';
+"main"                              return 'main';
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
 "sqrt"                              return 'sqrt';
@@ -156,6 +158,7 @@ BSL                             "\\".
     const {Funcion} = require("../Instrucciones/Funcion.js");
     const {Llamada} = require("../Instrucciones/Llamada.js");
     const {Return} = require("../Instrucciones/Return.js");
+    const {Main} = require("../Instrucciones/Main.js");
 %}
 
 /* operator associations and precedence */
@@ -202,6 +205,11 @@ RAIZ:
     | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
     | ASIGNACION semicolon                  { $$ = $1; }
     | CONDICIONAL_IF                        { $$ = $1; }
+    | MAIN                                  { $$ = $1; }
+
+
+MAIN:
+    void main lparen rparen allave RAICES cllave {$$ = new Main($6,@1.first_line, @1.first_column); }
 ;
 
 FUNCION:
@@ -241,7 +249,12 @@ ARGUMENTO:
 ;
 
 RETURN:
-    return EXPR { $$ = new Return($2,@1.first_line, @1.first_column); }
+    return RETURN_OP { $$ = new Return($2,@1.first_line, @1.first_column); }
+;
+
+RETURN_OP:
+    EXPR {$$ = $1; }
+    | {$$ = null; }
 ;
 
 DECLARACION:

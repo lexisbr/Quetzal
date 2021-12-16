@@ -1,11 +1,13 @@
 import { Instruccion } from "../Interfaces/Instruccion";
 import { Funcion } from "../Instrucciones/Funcion";
+import { Excepcion } from "./Excepcion";
 
 export class AST{
     
     public instrucciones:Array<Instruccion>;
     public structs: Array<any>;
     public funciones: Array<Funcion>;
+    public excepciones: Array<Excepcion>;
     public consola: Array<any>;
 
     constructor(instrucciones:Array<Instruccion>){
@@ -13,6 +15,7 @@ export class AST{
         this.structs = [];
         this.funciones = [];
         this.consola = [];
+        this.excepciones = [];
     }
 
     updateConsola(line:string){
@@ -36,4 +39,9 @@ export class AST{
         }
         return null;
     }
+
+    addExcepcion(excepcion:Excepcion){
+        this.excepciones.push(excepcion);
+    }
+
 }
