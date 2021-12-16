@@ -68,7 +68,7 @@ export class Logica implements Expresion {
             }
             //OR
             else if (this.operador == Operador.OR) {
-                if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+                if (op1Tipo === Tipo.BOOL && op2Tipo === Tipo.BOOL) {
                     return op1 || op2;
                 }
                 else {
@@ -79,8 +79,9 @@ export class Logica implements Expresion {
 
         } else {
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
+            let op1Tipo = this.op_izquierda.getTipo(ent, arbol);
             if (this.operador == Operador.NOT) {
-                if (typeof (op1 === "boolean")) {
+                if (op1Tipo === Tipo.BOOL) {
                     return !op1;
                 }
                 else {

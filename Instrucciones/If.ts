@@ -32,11 +32,29 @@ export class If implements Instruccion {
         if(this.condicion.getTipo(ent,arbol) == Tipo.BOOL){
             if(valor_Condicional){  //SI EL VALOR DE LA CONDICION SE CUMPLE
                 for(let instrucciones of this.instrucciones_If){
+                    entorno_Instrucciones.setEntorno("If");
                     let salidaInstrucciones = instrucciones.ejecutar(entorno_Instrucciones,arbol);
+                    console.log(salidaInstrucciones);
                     //BREAK
+                    if(salidaInstrucciones != null){
+                        return salidaInstrucciones;
+                    }else {
+                        return new Excepcion(this.linea, this.columna, "Semantico", "Error en la Sentencia If");
+                    }
+                }
 
+            }
+        } else {
+            for(let instrucciones of this.instrucciones_Else){
+                entorno_Instrucciones.setEntorno("Else");
+                let salidaInstrucciones = instrucciones.ejecutar(entorno_Instrucciones,arbol);
+                if(salidaInstrucciones != null){
+                    return salidaInstrucciones;
+                }else {
+                    return new Excepcion(this.linea, this.columna, "Semantico", "Error en la Sentencia Else");
                 }
             }
+
         }
 /*
         if (this.expresion != null) {

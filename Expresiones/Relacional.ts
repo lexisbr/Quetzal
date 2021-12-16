@@ -86,7 +86,7 @@ export class Relacional implements Expresion {
         else if (this.operador == Operador.IGUAL_IGUAL) {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
                 return op1 == op2;
-            } else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+            } else if (typeOp1 === Tipo.BOOL && typeOp2 === Tipo.BOOL) {
                 return op1 == op2;
             } else if (typeOp1 === Tipo.STRING && typeOp2 === Tipo.STRING) {
                 return op1 == op2;
@@ -132,7 +132,7 @@ export class Relacional implements Expresion {
         } else if (this.operador == Operador.DIFERENTE_QUE) {
             if (typeof (op1 === "number") && typeof (op2 === "number")) {
                 return op1 != op2;
-            } else if (typeof (op1 === "boolean") && typeof (op2 === "boolean")) {
+            } else if (typeOp1 === Tipo.BOOL && typeOp2 === Tipo.BOOL) {
                 return op1 != op2;
             } else if (typeOp1 === Tipo.STRING && typeOp2 === Tipo.STRING) {
                 return op1 != op2;
