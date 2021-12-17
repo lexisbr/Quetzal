@@ -10,7 +10,7 @@ class Asignacion {
         this.columna = columna;
         this.identificador = identificador;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {

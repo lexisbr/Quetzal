@@ -20,10 +20,11 @@ class QuadControlador {
          quadReturn?: Quadrupla;
          returns: Quadrupla[];
     */
-    constructor() {
+    constructor(arbol) {
         this.quads = [];
         this.labels = [];
         this.temps = [];
+        this.arbol = arbol;
         /*
         this.isTrue = [];
         this.isFalse = [];

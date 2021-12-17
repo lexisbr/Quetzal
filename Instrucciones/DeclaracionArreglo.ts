@@ -5,6 +5,7 @@ import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Llamada } from "./Llamada";
 
 export class DeclaracionArreglo implements Instruccion {
@@ -22,7 +23,7 @@ export class DeclaracionArreglo implements Instruccion {
         this.tipo = tipo;
     }
 
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

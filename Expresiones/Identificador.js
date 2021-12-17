@@ -31,8 +31,8 @@ class Identificador {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La variable no existe");
         }
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
 }
 exports.Identificador = Identificador;

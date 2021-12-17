@@ -9,8 +9,8 @@ class Simbolo {
         this.tipo = tipo;
         this.valor = valor;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         return this.tipo;

@@ -9,7 +9,7 @@ class Print {
         this.columna = columna;
         this.salto = salto;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {

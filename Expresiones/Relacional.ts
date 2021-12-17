@@ -4,6 +4,8 @@ import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Excepcion } from "../AST/Excepcion";
 import { Operador } from "../AST/Operador";
+import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 
 export class Relacional implements Expresion {
     linea: number;
@@ -25,8 +27,8 @@ export class Relacional implements Expresion {
         this.op_derecha = op_derecha;
         this.operador = relacional;
     }
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla|undefined{
+        return;
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {

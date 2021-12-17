@@ -6,6 +6,7 @@ import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { Return } from "./Return";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 export class Main implements Instruccion {
     linea: number;
@@ -21,6 +22,7 @@ export class Main implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         let nuevoEntorno = new Entorno(ent);
         nuevoEntorno.setEntorno("Main");
+        arbol.tablas.push(nuevoEntorno);    //GUARDANDO LAS TS PARA EL RECORRIDO EN 3D
         for(let i in this.instrucciones){
             let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
             if(value instanceof Excepcion){
@@ -33,9 +35,9 @@ export class Main implements Instruccion {
         }
     
     }
-    traducir(ent: Entorno, arbol: AST) {
+
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
-
 
 }

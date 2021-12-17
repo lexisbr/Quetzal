@@ -6,6 +6,7 @@ import { Excepcion } from "../AST/Excepcion";
 import { Expresion } from "../Interfaces/Expresion";
 import { Declaracion } from "./Declaracion";
 import { Return } from "./Return";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 export class Funcion implements Instruccion {
     nombre: string;
@@ -24,14 +25,14 @@ export class Funcion implements Instruccion {
         this.columna = columna;
     }
 
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
-
+    
     ejecutar(ent: Entorno, arbol: AST) {
 
         ent.setEntorno("Funcion " + this.nombre);
-
+        
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(ent, arbol);
             if (value instanceof Excepcion) {

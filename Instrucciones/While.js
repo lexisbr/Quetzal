@@ -21,6 +21,7 @@ class While {
                 if (condicion) {
                     let nuevoEntorno = new Entorno_1.Entorno(ent);
                     nuevoEntorno.setEntorno("While");
+                    arbol.tablas.push(nuevoEntorno);
                     for (let i in this.instrucciones) {
                         let instruccion = this.instrucciones[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -39,7 +40,7 @@ class While {
             }
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

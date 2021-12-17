@@ -69,3 +69,26 @@ void num(int si){
 }
 
 num(5); // no da error 
+
+//ESTRUCTURA ADE3CUADA
+
+int numero(int a){
+  a = a + 5;
+  return a;
+}
+
+
+String cadena(String a){
+  return a;
+}
+
+
+void main(){
+  int a = numero(12);
+print(a);
+  String ab = cadena("mundo");
+print(ab);
+
+  
+  return;
+}

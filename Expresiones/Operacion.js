@@ -14,8 +14,12 @@ class Operacion {
         this.op_derecha = op_derecha;
         this.operador = operacion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+        const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+        //const result
+        //return new Quadrupla("op","arg1","arg2",`${this.}`);   
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);

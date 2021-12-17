@@ -5,6 +5,7 @@ import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Llamada } from "./Llamada";
 
 export class Declaracion implements Instruccion {
@@ -22,14 +23,14 @@ export class Declaracion implements Instruccion {
         this.tipo = tipo;
     }
 
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
         let valor;
         let tipoValor;
-        if (this.expresion != null) {
+        if (this.expresion != null) {   //INT A = suma(a,b);
             if (this.expresion instanceof Llamada) {
                 valor = this.expresion.ejecutar(ent, arbol);
                 if (valor instanceof Excepcion) return valor;

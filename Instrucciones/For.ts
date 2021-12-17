@@ -4,6 +4,7 @@ import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Return } from "./Return";
 
 export class For implements Instruccion {
@@ -26,7 +27,7 @@ export class For implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         let value = this.valorInicial.ejecutar(ent, arbol);
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

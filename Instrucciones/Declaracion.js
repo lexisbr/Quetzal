@@ -13,13 +13,13 @@ class Declaracion {
         this.identificador = identificador;
         this.tipo = tipo;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
         let valor;
         let tipoValor;
-        if (this.expresion != null) {
+        if (this.expresion != null) { //INT A = suma(a,b);
             if (this.expresion instanceof Llamada_1.Llamada) {
                 valor = this.expresion.ejecutar(ent, arbol);
                 if (valor instanceof Excepcion_1.Excepcion)

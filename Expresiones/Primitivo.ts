@@ -2,6 +2,8 @@ import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
+import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 
 export class Primitivo implements Expresion {
     linea: number;
@@ -14,8 +16,8 @@ export class Primitivo implements Expresion {
         this.valor = valor;
     }
 
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla | undefined {
+        return new Quadrupla("op","arg1","arg2",`${this.valor}`);   //AL SER UN VALOR PRIMITIVO, NO NECESITAMOS GUARDAR TEMP, PORQUE SE RETORNA EL VALOR 
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {

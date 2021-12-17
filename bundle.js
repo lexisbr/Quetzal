@@ -161,8 +161,8 @@ class Simbolo {
         this.tipo = tipo;
         this.valor = valor;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         return this.tipo;
@@ -217,7 +217,7 @@ class Decremento {
             return op1;
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -257,8 +257,8 @@ class Identificador {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La variable no existe");
         }
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
 }
 exports.Identificador = Identificador;
@@ -283,7 +283,7 @@ class Incremento {
             return op1;
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -304,8 +304,8 @@ class Logica {
         this.op_derecha = op_derecha;
         this.operador = operador;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -390,8 +390,8 @@ class TipoParse {
         this.tipoParse = tipoParse;
         this.expresion = expresion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -472,8 +472,8 @@ class ToDouble {
         this.columna = columna;
         this.expresion = expresion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -530,8 +530,8 @@ class ToInt {
         this.columna = columna;
         this.expresion = expresion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -588,8 +588,8 @@ class ToString {
         this.columna = columna;
         this.expresion = expresion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -649,8 +649,8 @@ class Typeof {
         this.columna = columna;
         this.expresion = expresion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -720,8 +720,8 @@ class CharOfPosition {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -778,8 +778,8 @@ class Length {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -836,8 +836,8 @@ class SubString {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -896,8 +896,8 @@ class ToLower {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -952,8 +952,8 @@ class ToUpper {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -1013,8 +1013,12 @@ class Operacion {
         this.op_derecha = op_derecha;
         this.operador = operacion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+        const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+        //const result
+        //return new Quadrupla("op","arg1","arg2",`${this.}`);   
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -1223,14 +1227,15 @@ exports.Operacion = Operacion;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Primitivo = void 0;
 const Tipo_1 = require("../AST/Tipo");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Primitivo {
     constructor(valor, linea, columna) {
         this.linea = linea;
         this.columna = columna;
         this.valor = valor;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return new Quadrupla_1.Quadrupla("op", "arg1", "arg2", `${this.valor}`); //AL SER UN VALOR PRIMITIVO, NO NECESITAMOS GUARDAR TEMP, PORQUE SE RETORNA EL VALOR 
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -1273,7 +1278,7 @@ class Primitivo {
 }
 exports.Primitivo = Primitivo;
 
-},{"../AST/Tipo":6}],23:[function(require,module,exports){
+},{"../AST/Tipo":6,"../Traductor/Quadrupla":39}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Relacional = void 0;
@@ -1288,8 +1293,8 @@ class Relacional {
         this.op_derecha = op_derecha;
         this.operador = relacional;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -1426,8 +1431,8 @@ class Ternario {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor_Condicional = this.condicion.getValorImplicito(ent, arbol);
@@ -2490,7 +2495,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }
 }
 }).call(this)}).call(this,require('_process'))
-},{"../AST/Operador.js":4,"../AST/Tipo.js":6,"../Expresiones/Decremento.js":7,"../Expresiones/Identificador.js":8,"../Expresiones/Incremento.js":9,"../Expresiones/Logica.js":10,"../Expresiones/Nativas/TipoParse.js":11,"../Expresiones/Nativas/ToDouble.js":12,"../Expresiones/Nativas/ToInt.js":13,"../Expresiones/Nativas/ToString.js":14,"../Expresiones/Nativas/Typeof.js":15,"../Expresiones/NativasString/CharOfPosition.js":16,"../Expresiones/NativasString/Length.js":17,"../Expresiones/NativasString/SubString.js":18,"../Expresiones/NativasString/ToLower.js":19,"../Expresiones/NativasString/ToUpper.js":20,"../Expresiones/Operacion.js":21,"../Expresiones/Primitivo.js":22,"../Expresiones/Relacional.js":23,"../Expresiones/Ternario.js":24,"../Instrucciones/Asignacion.js":26,"../Instrucciones/Break.js":27,"../Instrucciones/Continue.js":28,"../Instrucciones/Declaracion.js":29,"../Instrucciones/DoWhile.js":30,"../Instrucciones/Funcion.js":31,"../Instrucciones/If.js":32,"../Instrucciones/Llamada.js":33,"../Instrucciones/Main.js":34,"../Instrucciones/Print.js":35,"../Instrucciones/Return.js":36,"../Instrucciones/While.js":37,"_process":42,"fs":40,"path":41}],26:[function(require,module,exports){
+},{"../AST/Operador.js":4,"../AST/Tipo.js":6,"../Expresiones/Decremento.js":7,"../Expresiones/Identificador.js":8,"../Expresiones/Incremento.js":9,"../Expresiones/Logica.js":10,"../Expresiones/Nativas/TipoParse.js":11,"../Expresiones/Nativas/ToDouble.js":12,"../Expresiones/Nativas/ToInt.js":13,"../Expresiones/Nativas/ToString.js":14,"../Expresiones/Nativas/Typeof.js":15,"../Expresiones/NativasString/CharOfPosition.js":16,"../Expresiones/NativasString/Length.js":17,"../Expresiones/NativasString/SubString.js":18,"../Expresiones/NativasString/ToLower.js":19,"../Expresiones/NativasString/ToUpper.js":20,"../Expresiones/Operacion.js":21,"../Expresiones/Primitivo.js":22,"../Expresiones/Relacional.js":23,"../Expresiones/Ternario.js":24,"../Instrucciones/Asignacion.js":26,"../Instrucciones/Break.js":27,"../Instrucciones/Continue.js":28,"../Instrucciones/Declaracion.js":29,"../Instrucciones/DoWhile.js":30,"../Instrucciones/Funcion.js":31,"../Instrucciones/If.js":32,"../Instrucciones/Llamada.js":33,"../Instrucciones/Main.js":34,"../Instrucciones/Print.js":35,"../Instrucciones/Return.js":36,"../Instrucciones/While.js":37,"_process":43,"fs":41,"path":42}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Asignacion = void 0;
@@ -2503,7 +2508,7 @@ class Asignacion {
         this.columna = columna;
         this.identificador = identificador;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
@@ -2551,7 +2556,7 @@ class Break {
     ejecutar(ent, arbol) {
         return this;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -2569,7 +2574,7 @@ class Continue {
     ejecutar(ent, arbol) {
         return this;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -2591,13 +2596,13 @@ class Declaracion {
         this.identificador = identificador;
         this.tipo = tipo;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
         let valor;
         let tipoValor;
-        if (this.expresion != null) {
+        if (this.expresion != null) { //INT A = suma(a,b);
             if (this.expresion instanceof Llamada_1.Llamada) {
                 valor = this.expresion.ejecutar(ent, arbol);
                 if (valor instanceof Excepcion_1.Excepcion)
@@ -2688,6 +2693,7 @@ class DoWhile {
         if (this.condicion.getTipo(ent, arbol) == Tipo_1.Tipo.BOOL) {
             let nuevoEntorno = new Entorno_1.Entorno(ent);
             nuevoEntorno.setEntorno("DoWhile");
+            arbol.tablas.push(nuevoEntorno); //GUARDANDO LAS TABLAS PARA EL RECORRIDO EN 3D
             do {
                 for (let i in this.instrucciones) {
                     let instruccion = this.instrucciones[i];
@@ -2704,7 +2710,7 @@ class DoWhile {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "El tipo de dato en condicion debe ser booleano");
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -2726,7 +2732,7 @@ class Funcion {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
@@ -2780,7 +2786,7 @@ class If {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
@@ -2791,6 +2797,7 @@ class If {
             if (condicion) { //SI EL VALOR DE LA CONDICION SE CUMPLE
                 let nuevoEntorno = new Entorno_1.Entorno(ent);
                 nuevoEntorno.setEntorno("If");
+                arbol.tablas.push(nuevoEntorno); //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
                 for (let i in this.instruccionesIf) {
                     let instruccion = this.instruccionesIf[i];
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -2805,6 +2812,7 @@ class If {
                 if (this.instruccionesElse != null) {
                     let nuevoEntorno = new Entorno_1.Entorno(ent);
                     nuevoEntorno.setEntorno("Else");
+                    arbol.tablas.push(nuevoEntorno); //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
                     for (let i in this.instruccionesElse) {
                         let instruccion = this.instruccionesElse[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -2861,6 +2869,7 @@ class Llamada {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La funcion llamada no existe");
         }
         let nuevoEntorno = new Entorno_1.Entorno(ent);
+        arbol.tablas.push(nuevoEntorno); //REVISAR POR QUE SE CREA UN NUEVO ENTORNO
         let parametrosFuncion = funcion.getParametros();
         if (this.parametros.length == parametrosFuncion.length) {
             for (let i in this.parametros) {
@@ -2888,7 +2897,7 @@ class Llamada {
             return result;
         return result;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     getTipo(arbol) {
@@ -2918,6 +2927,7 @@ class Main {
     ejecutar(ent, arbol) {
         let nuevoEntorno = new Entorno_1.Entorno(ent);
         nuevoEntorno.setEntorno("Main");
+        arbol.tablas.push(nuevoEntorno); //GUARDANDO LAS TS PARA EL RECORRIDO EN 3D
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
             if (value instanceof Excepcion_1.Excepcion) {
@@ -2932,7 +2942,7 @@ class Main {
             }
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -2950,7 +2960,7 @@ class Print {
         this.columna = columna;
         this.salto = salto;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
@@ -2990,7 +3000,7 @@ class Return {
         this.value = value;
         return this;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     getTipo() {
@@ -3026,6 +3036,7 @@ class While {
                 if (condicion) {
                     let nuevoEntorno = new Entorno_1.Entorno(ent);
                     nuevoEntorno.setEntorno("While");
+                    arbol.tablas.push(nuevoEntorno);
                     for (let i in this.instrucciones) {
                         let instruccion = this.instrucciones[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -3044,7 +3055,7 @@ class While {
             }
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
@@ -3055,6 +3066,23 @@ exports.While = While;
 Object.defineProperty(exports, "__esModule", { value: true });
 
 },{}],39:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Quadrupla = void 0;
+class Quadrupla {
+    constructor(operacion, arg1, arg2, resultado) {
+        this.operacion = operacion;
+        this.arg1 = arg1;
+        this.arg2 = arg2;
+        this.resultado = resultado;
+    }
+    toString() {
+        return `operacion: ${this.operacion}, arg1: ${this.arg1}, arg2 ${this.arg2}, resultado: ${this.resultado}`;
+    }
+}
+exports.Quadrupla = Quadrupla;
+
+},{}],40:[function(require,module,exports){
 const AST = require("./AST/AST.js");
 const Entorno = require("./AST/Entorno.js");
 const Instruccion = require("./Interfaces/Instruccion.js");
@@ -3122,9 +3150,9 @@ if (typeof window !== 'undefined') {
 }
 
 
-},{"./AST/AST.js":1,"./AST/Entorno.js":2,"./AST/Excepcion.js":3,"./Gramatica/grammar.js":25,"./Instrucciones/Declaracion.js":29,"./Instrucciones/Funcion.js":31,"./Instrucciones/Main.js":34,"./Instrucciones/Return.js":36,"./Interfaces/Instruccion.js":38}],40:[function(require,module,exports){
+},{"./AST/AST.js":1,"./AST/Entorno.js":2,"./AST/Excepcion.js":3,"./Gramatica/grammar.js":25,"./Instrucciones/Declaracion.js":29,"./Instrucciones/Funcion.js":31,"./Instrucciones/Main.js":34,"./Instrucciones/Return.js":36,"./Interfaces/Instruccion.js":38}],41:[function(require,module,exports){
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -3657,7 +3685,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":42}],42:[function(require,module,exports){
+},{"_process":43}],43:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -3843,4 +3871,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[39]);
+},{}]},{},[40]);

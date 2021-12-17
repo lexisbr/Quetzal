@@ -6,6 +6,7 @@ import { Excepcion } from "../AST/Excepcion";
 import { Funcion } from "./Funcion";
 import { Expresion } from "../Interfaces/Expresion";
 import { Simbolo } from "../AST/Simbolo";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 export class Llamada implements Instruccion {
     nombre: string;
@@ -27,6 +28,7 @@ export class Llamada implements Instruccion {
         }
         
         let nuevoEntorno = new Entorno(ent);
+        arbol.tablas.push(nuevoEntorno);    //REVISAR POR QUE SE CREA UN NUEVO ENTORNO
         let parametrosFuncion = funcion.getParametros();
         if(this.parametros.length == parametrosFuncion.length){
             for(let i in this.parametros){
@@ -58,7 +60,7 @@ export class Llamada implements Instruccion {
        
     }
     
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
     

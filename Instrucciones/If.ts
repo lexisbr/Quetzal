@@ -5,6 +5,7 @@ import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Return } from "./Return";
 
 export class If implements Instruccion {
@@ -26,10 +27,9 @@ export class If implements Instruccion {
     }
 
 
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
-
     ejecutar(ent: Entorno, arbol: AST) {
         let condicion = this.condicion.getValorImplicito(ent, arbol);
 
@@ -39,6 +39,7 @@ export class If implements Instruccion {
             if (condicion) {  //SI EL VALOR DE LA CONDICION SE CUMPLE
                 let nuevoEntorno = new Entorno(ent);
                 nuevoEntorno.setEntorno("If");
+                arbol.tablas.push(nuevoEntorno);    //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
                 for (let i in this.instruccionesIf) {
                     let instruccion = this.instruccionesIf[i];
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -52,6 +53,8 @@ export class If implements Instruccion {
                 if (this.instruccionesElse != null) {
                     let nuevoEntorno = new Entorno(ent);
                     nuevoEntorno.setEntorno("Else");
+                    arbol.tablas.push(nuevoEntorno);    //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
+               
                     for (let i in this.instruccionesElse) {
                         let instruccion = this.instruccionesElse[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);

@@ -13,7 +13,7 @@ class For {
     ejecutar(ent, arbol) {
         let value = this.valorInicial.ejecutar(ent, arbol);
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }
