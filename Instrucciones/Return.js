@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Return = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
+const Tipo_1 = require("../AST/Tipo");
 class Return {
     constructor(expresion, linea, columna) {
         this.linea = linea;
@@ -12,6 +13,10 @@ class Return {
     }
     ejecutar(ent, arbol) {
         console.log("Expresion", this.expresion);
+        if (this.expresion == null) {
+            this.tipo = Tipo_1.Tipo.VOID;
+            return this;
+        }
         let value = this.expresion.getValorImplicito(ent, arbol);
         if (value instanceof Excepcion_1.Excepcion)
             return value;
