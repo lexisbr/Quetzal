@@ -61,3 +61,34 @@ println("LOGICAS & RELACIONALES CON BOOLEANOS");   //FUNCIONAN BIEN
 println((a==b) && (a!=b));
 println((a==b) || (a!=b));
 println(!(a==b));
+
+void main(){
+  
+  println("hola");
+  int edad = 0;
+  
+  String respuesta = edad >= 50 ? "Puede vacunarse" : "No puede vacunarse";
+ 	
+  println(respuesta);
+  
+  String hola = "hola "&respuesta;
+  
+  println(hola^3);
+  
+  println(hola.caracterOfPosition(6));
+  
+  println(hola.toUpperCase());
+  
+  println(hola.toLowerCase());
+  
+  println(hola.subString(2,4));
+  
+  println(hola.length());
+  
+  
+  
+  
+  
+  
+  
+}

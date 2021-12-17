@@ -212,7 +212,7 @@ RAIZ:
     | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
     | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
     | ASIGNACION semicolon                  { $$ = $1; }
-    | CONDICIONAL_IF                        { $$ = $1; }
+    | IF                                    { $$ = $1; }
     | MAIN                                  { $$ = $1; }
 ;
 
@@ -294,10 +294,10 @@ ASIGNACION:
     identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }
 ;
 
-CONDICIONAL_IF:
-    if lparen EXPR rparen allave RAICES cllave                              { $$ = new If($3,$6,[],@1.first_line, @1.first_column);}
-    | if lparen EXPR rparen allave RAICES cllave else allave RAICES cllave  { $$ = new If($3,$6,$10 ,@1.first_line, @1.first_column);}
-    | if lparen EXPR rparen allave RAICES cllave else CONDICIONAL_IF        { $$ = new If($3,$6,[$9],@1.first_line, @1.first_column);}
+IF:
+    if lparen EXPR rparen allave RAICES cllave                              { $$ = new If($3,$6,null,null,@1.first_line, @1.first_column);}
+    | if lparen EXPR rparen allave RAICES cllave else allave RAICES cllave  { $$ = new If($3,$6,$10,null,@1.first_line, @1.first_column);}
+    | if lparen EXPR rparen allave RAICES cllave else IF                    { $$ = new If($3,$6,null,$9,@1.first_line, @1.first_column);}
 ;
 
 PRINT:

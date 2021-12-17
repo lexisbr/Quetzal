@@ -19,7 +19,7 @@ export class Identificador implements Expresion {
     }
 
     getTipo(ent: Entorno, arbol: AST): any {
-        if (ent.existeEnActual(this.identificador)) {
+        if (ent.existe(this.identificador)) {
             let simbolo: Simbolo = ent.getSimbolo(this.identificador);
             return simbolo.getTipo(ent, arbol);
         }
