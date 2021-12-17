@@ -137,5 +137,9 @@ println("FUNCIONES NATIVAS");
     println(typeof(5 + 5.5)); // double
     println(typeof(5.5 + 5.5)); // double
 
+void main(){
 double prueba = 5.5 + 5.5;
 println(typeof(prueba));
+  
+  return;
+}
