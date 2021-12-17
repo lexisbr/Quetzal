@@ -1,3 +1,4 @@
+void main(){
 /**
 *   PRUEBA DE OPERACIONES ARITMETICAS, LOGICAS Y RELACIONALES
 */
@@ -88,11 +89,11 @@ String respuesta;
 int edad = 35;
 respuesta = edad <= 50 ? "Puede vacunarse" : "No puede vacunarse";
 println(respuesta);
-/*
+
 println("CONDICION IF");
 if(edad<=50){
 	println("Puede Vacunarse");
-}*/
+}
 println("NATIVAS DE CADENAS");
 String cadenaNativa;
 cadenaNativa = "para" & "caidismo";
@@ -108,10 +109,10 @@ println(animal.subString(2,4)); //gre
 println(animal.toUpperCase());
 println(animal.toLowerCase());
 println(animal.length());
-a=0;
-while(a<15){
-    println("Hola" + a);
-    a=a+5;
+int z=0;
+while(z<15){
+    println("Hola" + z);
+    z++;
 }
 println("FUNCIONES NATIVAS");
     println(int.parse("8235"));
@@ -137,7 +138,7 @@ println("FUNCIONES NATIVAS");
     println(typeof(5 + 5.5)); // double
     println(typeof(5.5 + 5.5)); // double
 
-void main(){
+
 double prueba = 5.5 + 5.5;
 println(typeof(prueba));
   

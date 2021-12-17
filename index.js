@@ -15,6 +15,7 @@ if (typeof window !== 'undefined') {
         const instrucciones = grammar.parse(input);
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
+        ast.tablas.push(entornoGlobal); //GUARDO EL ENTORNO/TABLA PARA EL CODIGO EN 3D
         ast.instrucciones.forEach(function (element) {
             let value;
             if (element instanceof Funcion.Funcion) {

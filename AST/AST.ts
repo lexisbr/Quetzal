@@ -1,6 +1,7 @@
 import { Instruccion } from "../Interfaces/Instruccion";
 import { Funcion } from "../Instrucciones/Funcion";
 import { Excepcion } from "./Excepcion";
+import { Entorno } from "./Entorno";
 
 export class AST{
     
@@ -9,6 +10,7 @@ export class AST{
     public funciones: Array<Funcion>;
     public excepciones: Array<Excepcion>;
     public consola: Array<any>;
+    public tablas: Entorno[];
 
     constructor(instrucciones:Array<Instruccion>){
         this.instrucciones = instrucciones;
@@ -16,6 +18,7 @@ export class AST{
         this.funciones = [];
         this.consola = [];
         this.excepciones = [];
+        this.tablas = [];
     }
 
     updateConsola(line:string){
