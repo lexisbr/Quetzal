@@ -65,6 +65,7 @@ BSL                             "\\".
 "toInt"                             return 'toInt';
 "toDouble"                          return 'toDouble';
 "toString"                          return 'toSTRING';
+"string"                            return 'stringNative';
 'typeof'                            return 'typeof';
 
 
@@ -366,10 +367,11 @@ NATIVA:
     int dot parse lparen EXPR rparen    {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
     | double dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.DOUBLE,$5,@1.first_line, @1.first_column);}
     | boolean dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.BOOL,$5,@1.first_line, @1.first_column);}
-    | toInt lparen EXPR rparen      {$$ = new ToInt($3,@1.first_line, @1.first_column);}
-    | toDouble lparen EXPR rparen      {$$ = new ToDouble($3,@1.first_line, @1.first_column);}
-    | toSTRING lparen EXPR rparen      {$$ = new ToString($3,@1.first_line, @1.first_column);}
-    | typeof lparen EXPR rparen      {$$ = new Typeof($3,@1.first_line, @1.first_column);}
+    | toInt lparen EXPR rparen          {$$ = new ToInt($3,@1.first_line, @1.first_column);}
+    | toDouble lparen EXPR rparen       {$$ = new ToDouble($3,@1.first_line, @1.first_column);}
+    | toSTRING lparen EXPR rparen       {$$ = new ToString($3,@1.first_line, @1.first_column);}
+    | stringNative lparen EXPR rparen   {$$ = new ToString($3,@1.first_line, @1.first_column);}
+    | typeof lparen EXPR rparen         {$$ = new Typeof($3,@1.first_line, @1.first_column);}
 ;
 
 TIPO:

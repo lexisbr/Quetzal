@@ -96,8 +96,8 @@ if(edad<=50){
 println("NATIVAS DE CADENAS");
 String cadenaNativa;
 cadenaNativa = "para" & "caidismo";
-
-println(cadenaNativa);
+String animal = "TiGrE";
+println(cadenaNativa & animal & cadenaNativa);
 println($cadenaNativa);
 println(cadenaNativa^3);
 
