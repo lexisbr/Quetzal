@@ -165,6 +165,7 @@ BSL                             "\\".
     const {Main} = require("../Instrucciones/Main.js");
     const {While} = require("../Instrucciones/While.js");
     const {DoWhile} = require("../Instrucciones/DoWhile.js");
+    const {For} = require("../Instrucciones/For.js");
 %}
 
 /* operator associations and precedence */
@@ -207,6 +208,7 @@ RAIZ:
     | FUNCION                               { $$ = $1; }
     | WHILE                                 { $$ = $1; }
     | DO_WHILE semicolon                    { $$ = $1; }
+    | FOR                                   { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
     | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
@@ -265,12 +267,17 @@ DO_WHILE:
 ;
 
 FOR:
-    for lparen FOR_VARIABLE semicolon EXPRESION semicolon RAICES rparen allave ASIGNACION cllave
+    for lparen FOR_VARIABLE semicolon EXPR semicolon FOR_INSTRUCCION rparen allave RAICES cllave {$$ = new For($10,$3,$5,$7,@1.first_line,@1); }
 ;
 
 FOR_VARIABLE:
-    DECLARACION
-    | ASIGNACION 
+    DECLARACION {$$ = $1}
+    | ASIGNACION {$$ = $1}
+;
+
+FOR_INSTRUCCION:
+    identifier incremento        { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
+    | identifier decremento      { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
 ;
 
 RETURN:

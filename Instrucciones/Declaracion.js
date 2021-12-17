@@ -36,6 +36,7 @@ class Declaracion {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
+                    return simbolo;
                 }
                 else {
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");

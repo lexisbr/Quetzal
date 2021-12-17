@@ -43,6 +43,7 @@ export class Declaracion implements Instruccion {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
+                    return simbolo;
                 } else {
                     return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
                 }

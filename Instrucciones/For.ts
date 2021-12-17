@@ -4,6 +4,8 @@ import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { Declaracion } from "./Declaracion";
+import { If } from "./If";
 import { Return } from "./Return";
 
 export class For implements Instruccion {
@@ -24,7 +26,56 @@ export class For implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        let value = this.valorInicial.ejecutar(ent, arbol);
+        let valorInicial;
+        let isDeclaracion:boolean = false;
+        let nuevoEntorno = new Entorno(ent);
+        if(this.valorInicial instanceof Declaracion){
+            nuevoEntorno.setEntorno("For");
+            valorInicial = this.valorInicial.ejecutar(nuevoEntorno, arbol);
+            isDeclaracion = true;
+        }else{
+            valorInicial = this.valorInicial.ejecutar(ent, arbol);
+        }
+
+        if(valorInicial instanceof Excepcion) return valorInicial;
+        console.log(valorInicial);
+        while (true){
+            let condicion;
+            if(isDeclaracion){
+                condicion = this.condicion.getValorImplicito(nuevoEntorno, arbol);
+            }else{
+                condicion = this.condicion.getValorImplicito(ent, arbol);
+            }
+            console.log("condicion",condicion);
+
+            if(condicion instanceof Excepcion) return condicion;
+
+            if(condicion == true || condicion == false){
+                if(condicion){
+                    let nuevoEntornoAux;
+                    if(isDeclaracion){
+                        nuevoEntornoAux = new Entorno(nuevoEntorno);
+                    }else{
+                        nuevoEntornoAux = new Entorno(ent);
+                    }
+
+                    console.log(this.instrucciones);
+                    for(let i in this.instrucciones){
+                        let result = this.instrucciones[i].ejecutar(nuevoEntornoAux, arbol);
+                        if(result instanceof Excepcion) return result;
+                        else if (result instanceof Return) return result;
+                    }
+                    console.log(this.asignacion);
+                    this.asignacion.ejecutar(nuevoEntornoAux, arbol);
+                }else{
+                    break;
+                }
+            }else{
+                return new Excepcion(this.linea, this.columna, "\nSemantico","La condicion del For no es de tipo Booleano");
+            }
+
+ 
+        }
     }
     traducir(ent: Entorno, arbol: AST) {
         throw new Error("Method not implemented.");
