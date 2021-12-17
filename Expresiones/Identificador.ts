@@ -19,7 +19,7 @@ export class Identificador implements Expresion {
     }
 
     getTipo(ent: Entorno, arbol: AST): any {
-        if (ent.existeEnActual(this.identificador)) {
+        if (ent.existe(this.identificador)) {
             let simbolo: Simbolo = ent.getSimbolo(this.identificador);
             return simbolo.getTipo(ent, arbol);
         }
@@ -31,7 +31,7 @@ export class Identificador implements Expresion {
         return this.identificador;
     }
     getValorImplicito(ent: Entorno, arbol: AST) {
-        if (ent.existeEnActual(this.identificador)) {
+        if (ent.existe(this.identificador)) {
             let simbolo: Simbolo = ent.getSimbolo(this.identificador);
             this.tipo = simbolo.getTipo(ent, arbol);
             return simbolo.getValorImplicito(ent, arbol);

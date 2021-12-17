@@ -40,6 +40,10 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+"main"                              return 'main';
+"while"                             return 'while';
+"do"                                return 'do';
+"for"                               return 'for';
 
 "break"                             return 'break';
 'continue'                          return 'continue';
@@ -165,6 +169,8 @@ BSL                             "\\".
     const {Return} = require("../Instrucciones/Return.js");
 
     const {Main} = require("../Instrucciones/Main.js");
+    const {While} = require("../Instrucciones/While.js");
+    const {DoWhile} = require("../Instrucciones/DoWhile.js");
 
     const {Break} = require("../Instrucciones/Break.js");
     const {Continue} = require("../Instrucciones/Continue.js");
@@ -209,6 +215,8 @@ RAIZ:
     | DECLARACION_NULA semicolon            { $$ = $1; }
     | DECLARACION semicolon                 { $$ = $1; }
     | FUNCION                               { $$ = $1; }
+    | WHILE                                 { $$ = $1; }
+    | DO_WHILE semicolon                    { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
     | break semicolon                       { $$ = new Break(@1.first_line, @1.first_column);}
     | continue semicolon                    { $$ = new Continue(@1.first_line, @1.first_column);}
@@ -216,7 +224,7 @@ RAIZ:
     | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
     | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
     | ASIGNACION semicolon                  { $$ = $1; }
-    | CONDICIONAL_IF                        { $$ = $1; }
+    | IF                                    { $$ = $1; }
     | MAIN                                  { $$ = $1; }
 ;
 
@@ -260,6 +268,23 @@ ARGUMENTO:
     EXPR  { $$ = $1; }
 ;
 
+WHILE:
+    while lparen EXPR rparen allave RAICES cllave { $$ = new While($6,$3,@1.first_line,@1.first_column); }
+;
+
+DO_WHILE:
+    do allave RAICES cllave while lparen EXPR rparen  { $$ = new DoWhile($3,$7,@1.first_line,@1.first_column); }
+;
+
+FOR:
+    for lparen FOR_VARIABLE semicolon EXPRESION semicolon RAICES rparen allave ASIGNACION cllave
+;
+
+FOR_VARIABLE:
+    DECLARACION
+    | ASIGNACION 
+;
+
 RETURN:
     return RETURN_OP { $$ = new Return($2,@1.first_line, @1.first_column); }
 ;
@@ -281,10 +306,10 @@ ASIGNACION:
     identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }
 ;
 
-CONDICIONAL_IF:
-    if lparen EXPR rparen allave RAICES cllave                              { $$ = new If($3,$6,[],@1.first_line, @1.first_column);}
-    | if lparen EXPR rparen allave RAICES cllave else allave RAICES cllave  { $$ = new If($3,$6,$10 ,@1.first_line, @1.first_column);}
-    | if lparen EXPR rparen allave RAICES cllave else CONDICIONAL_IF        { $$ = new If($3,$6,[$9],@1.first_line, @1.first_column);}
+IF:
+    if lparen EXPR rparen allave RAICES cllave                              { $$ = new If($3,$6,null,null,@1.first_line, @1.first_column);}
+    | if lparen EXPR rparen allave RAICES cllave else allave RAICES cllave  { $$ = new If($3,$6,$10,null,@1.first_line, @1.first_column);}
+    | if lparen EXPR rparen allave RAICES cllave else IF                    { $$ = new If($3,$6,null,$9,@1.first_line, @1.first_column);}
 ;
 
 PRINT:

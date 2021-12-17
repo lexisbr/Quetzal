@@ -4,11 +4,13 @@ exports.If = void 0;
 const Entorno_1 = require("../AST/Entorno");
 const Excepcion_1 = require("../AST/Excepcion");
 const Tipo_1 = require("../AST/Tipo");
+const Return_1 = require("./Return");
 class If {
-    constructor(condicion, instrucciones_If, instrucciones_Else, linea, columna) {
+    constructor(condicion, instruccionesIf, instruccionesElse, elseIf, linea, columna) {
         this.condicion = condicion;
-        this.instrucciones_If = instrucciones_If;
-        this.instrucciones_Else = instrucciones_Else;
+        this.instruccionesIf = instruccionesIf;
+        this.instruccionesElse = instruccionesElse;
+        this.elseIf = elseIf;
         this.linea = linea;
         this.columna = columna;
     }
@@ -16,60 +18,49 @@ class If {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
-        let entorno_Instrucciones = new Entorno_1.Entorno(ent);
-        let valor_Condicional = this.condicion.getValorImplicito(ent, arbol);
+        let condicion = this.condicion.getValorImplicito(ent, arbol);
+        if (condicion instanceof Excepcion_1.Excepcion)
+            return condicion;
         if (this.condicion.getTipo(ent, arbol) == Tipo_1.Tipo.BOOL) {
-            if (valor_Condicional) { //SI EL VALOR DE LA CONDICION SE CUMPLE
-                for (let instrucciones of this.instrucciones_If) {
-                    entorno_Instrucciones.setEntorno("If");
-                    let salidaInstrucciones = instrucciones.ejecutar(entorno_Instrucciones, arbol);
-                    console.log(salidaInstrucciones);
-                    //BREAK
-                    if (salidaInstrucciones != null) {
-                        return salidaInstrucciones;
+            if (condicion) { //SI EL VALOR DE LA CONDICION SE CUMPLE
+                let nuevoEntorno = new Entorno_1.Entorno(ent);
+                nuevoEntorno.setEntorno("If");
+                for (let i in this.instruccionesIf) {
+                    let instruccion = this.instruccionesIf[i];
+                    let result = instruccion.ejecutar(nuevoEntorno, arbol);
+                    console.log(result);
+                    if (result instanceof Excepcion_1.Excepcion)
+                        return result;
+                    else if (result instanceof Return_1.Return)
+                        return result;
+                }
+            }
+            else {
+                if (this.instruccionesElse != null) {
+                    let nuevoEntorno = new Entorno_1.Entorno(ent);
+                    nuevoEntorno.setEntorno("Else");
+                    for (let i in this.instruccionesElse) {
+                        let instruccion = this.instruccionesElse[i];
+                        let result = instruccion.ejecutar(nuevoEntorno, arbol);
+                        console.log("Else", result);
+                        if (result instanceof Excepcion_1.Excepcion)
+                            return result;
+                        else if (result instanceof Return_1.Return)
+                            return result;
                     }
-                    else {
-                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Error en la Sentencia If");
-                    }
+                }
+                else if (this.elseIf != null) {
+                    let result = this.elseIf.ejecutar(ent, arbol);
+                    if (result instanceof Excepcion_1.Excepcion)
+                        return result;
+                    else if (result instanceof Return_1.Return)
+                        return result;
                 }
             }
         }
         else {
-            for (let instrucciones of this.instrucciones_Else) {
-                entorno_Instrucciones.setEntorno("Else");
-                let salidaInstrucciones = instrucciones.ejecutar(entorno_Instrucciones, arbol);
-                if (salidaInstrucciones != null) {
-                    return salidaInstrucciones;
-                }
-                else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Error en la Sentencia Else");
-                }
-            }
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La condicion en If debe ser booleana");
         }
-        /*
-                if (this.expresion != null) {
-                    let valor = this.expresion.getValorImplicito(ent, arbol);
-                    const tipoValor = this.expresion.getTipo(ent, arbol);
-                    if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
-                        if (!ent.existe(this.identificador)) {
-                            let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
-                            ent.agregar(this.identificador, simbolo);
-                        } else {
-                            return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
-                        }
-                    } else {
-                        return new Excepcion(this.linea, this.columna, "Semantico", "El tipo asignado a la variable no es correcto");
-                    }
-                } else {
-                    if (!ent.existe(this.identificador)) {
-                        let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
-                        ent.agregar(this.identificador, simbolo);
-                    } else {
-                        return new Excepcion(this.linea, this.columna, "Semantico", "La variable ya existe");
-                    }
-                }
-            }
-        */
     }
     getTipo(ent, arbol) {
         let type_Condicional = this.condicion.getTipo(ent, arbol);

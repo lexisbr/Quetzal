@@ -24,7 +24,6 @@ if (typeof window !== 'undefined') {
             } else if (element instanceof Declaracion.Declaracion) {
 
                 value = element.ejecutar(entornoGlobal, ast);
-                console.log("ENTORNO",entornoGlobal);
             }
 
             if (value instanceof Excepcion.Excepcion) {
@@ -45,10 +44,19 @@ if (typeof window !== 'undefined') {
                     } 
                 }else{
                     let excepcion = new Excepcion.Excepcion(value.linea,value.columna,"\nSemantico","Existe mas de una funcion Main")
-                    ast.addExcepcion(value);
+                    ast.addExcepcion(excepcion);
                     ast.updateConsola(excepcion);
                     return;
                 }
+            } 
+            
+        });
+
+        ast.instrucciones.forEach(function (element) {
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion)) {
+                let excepcion = new Excepcion.Excepcion(element.linea,element.columna,"\nSemantico","Sentencias fuera de Main")
+                ast.addExcepcion(excepcion);
+                ast.updateConsola(excepcion)
             } 
             
         });

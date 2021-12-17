@@ -22,7 +22,6 @@ export class Return implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        console.log("Expresion", this.expresion);
         if (this.expresion == null) {
             this.tipo = Tipo.VOID;
             return this;

@@ -10,7 +10,7 @@ class Identificador {
         this.identificador = identificador;
     }
     getTipo(ent, arbol) {
-        if (ent.existeEnActual(this.identificador)) {
+        if (ent.existe(this.identificador)) {
             let simbolo = ent.getSimbolo(this.identificador);
             return simbolo.getTipo(ent, arbol);
         }
@@ -22,7 +22,7 @@ class Identificador {
         return this.identificador;
     }
     getValorImplicito(ent, arbol) {
-        if (ent.existeEnActual(this.identificador)) {
+        if (ent.existe(this.identificador)) {
             let simbolo = ent.getSimbolo(this.identificador);
             this.tipo = simbolo.getTipo(ent, arbol);
             return simbolo.getValorImplicito(ent, arbol);

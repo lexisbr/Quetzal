@@ -165,7 +165,7 @@ class Operacion {
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No es un Identificador");
                 }
                 if (typeOp1 == Tipo_1.Tipo.INT || typeOp1 == Tipo_1.Tipo.DOUBLE) {
-                    if (ent.existeEnActual(this.op_izquierda.getId())) {
+                    if (ent.existe(this.op_izquierda.getId())) {
                         let simbolo = new Simbolo_1.Simbolo(typeOp1, this.op_izquierda.getId(), this.linea, this.columna, op1 + 1);
                         ent.reemplazar(this.op_izquierda.getId(), simbolo);
                         return op1;
@@ -183,7 +183,7 @@ class Operacion {
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No es un Identificador");
                 }
                 if (typeOp1 == Tipo_1.Tipo.INT || typeOp1 == Tipo_1.Tipo.DOUBLE) {
-                    if (ent.existeEnActual(this.op_izquierda.getId())) {
+                    if (ent.existe(this.op_izquierda.getId())) {
                         let simbolo = new Simbolo_1.Simbolo(typeOp1, this.op_izquierda.getId(), this.linea, this.columna, op1 - 1);
                         ent.reemplazar(this.op_izquierda.getId(), simbolo);
                         return op1;

@@ -22,7 +22,6 @@ export class Llamada implements Instruccion {
 
     ejecutar(ent: Entorno, arbol: AST) {
         let funcion:any = arbol.getFuncion(this.nombre);
-        console.log("Funcion",funcion)
         if(funcion === null){
             return new Excepcion (this.linea,this.columna,"Semantico","La funcion llamada no existe");
         }

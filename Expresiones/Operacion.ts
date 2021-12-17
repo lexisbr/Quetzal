@@ -208,10 +208,9 @@ export class Operacion implements Expresion {
                 if(!(this.op_izquierda instanceof Identificador)){
                     return new Excepcion(this.linea,this.columna,"Semantico","No es un Identificador");
                 } 
-                
                 if (typeOp1 == Tipo.INT || typeOp1 == Tipo.DOUBLE)
                 {   
-                    if(ent.existeEnActual(this.op_izquierda.getId())){
+                    if(ent.existe(this.op_izquierda.getId())){
                         let simbolo = new Simbolo(typeOp1,this.op_izquierda.getId(),this.linea,this.columna,op1 + 1);
                         ent.reemplazar(this.op_izquierda.getId(),simbolo);
                         return op1;
@@ -232,7 +231,7 @@ export class Operacion implements Expresion {
                 
                 if (typeOp1 == Tipo.INT || typeOp1 == Tipo.DOUBLE)
                 {   
-                    if(ent.existeEnActual(this.op_izquierda.getId())){
+                    if(ent.existe(this.op_izquierda.getId())){
                         let simbolo = new Simbolo(typeOp1,this.op_izquierda.getId(),this.linea,this.columna,op1 - 1);
                         ent.reemplazar(this.op_izquierda.getId(),simbolo);
                         return op1;

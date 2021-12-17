@@ -17,7 +17,7 @@ class Asignacion {
         let valor = this.expresion.getValorImplicito(ent, arbol);
         const tipoValor = this.expresion.getTipo(ent, arbol);
         if (!(valor instanceof Excepcion_1.Excepcion)) {
-            if (ent.existeEnActual(this.identificador)) {
+            if (ent.existe(this.identificador)) {
                 let simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent, arbol);
                 if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING) || (tipoValor == Tipo_js_1.Tipo.INT && simboloValor == Tipo_js_1.Tipo.DOUBLE)) {
@@ -26,6 +26,7 @@ class Asignacion {
                     }
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
+                    return simbolo;
                 }
                 else {
                     return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Los tipos no coinciden");
