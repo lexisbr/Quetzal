@@ -40,6 +40,8 @@ BSL                             "\\".
 "print"                             return 'print';
 "println"                           return 'println';
 "return"                            return 'return';
+"break"                             return 'break';
+"continue"                          return 'continue';
 "main"                              return 'main';
 "while"                             return 'while';
 "do"                                return 'do';
@@ -216,9 +218,10 @@ RAIZ:
     | FUNCION                               { $$ = $1; }
     | WHILE                                 { $$ = $1; }
     | DO_WHILE semicolon                    { $$ = $1; }
+    | FOR                                   { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
-    | break semicolon                       { $$ = new Break(@1.first_line, @1.first_column);}
-    | continue semicolon                    { $$ = new Continue(@1.first_line, @1.first_column);}
+    | BREAK semicolon                       { $$ = $1; }
+    | CONTINUE semicolon                       { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
     | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
     | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
@@ -246,7 +249,11 @@ PARAMETROS:
 ;
 
 PARAMETRO:
-    DECLARACION_NULA  { $$ = $1; }
+    DECLARACION_PARAMETROS  { $$ = $1; }
+;
+
+DECLARACION_PARAMETROS:
+    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); }
 ;
 
 LLAMADA:
@@ -276,16 +283,29 @@ DO_WHILE:
 ;
 
 FOR:
-    for lparen FOR_VARIABLE semicolon EXPRESION semicolon RAICES rparen allave ASIGNACION cllave
+    for lparen FOR_VARIABLE semicolon EXPR semicolon FOR_INSTRUCCION rparen allave RAICES cllave {$$ = new For($10,$3,$5,$7,@1.first_line,@1); }
 ;
 
 FOR_VARIABLE:
-    DECLARACION
-    | ASIGNACION 
+    DECLARACION {$$ = $1}
+    | ASIGNACION {$$ = $1}
+;
+
+FOR_INSTRUCCION:
+    identifier incremento        { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
+    | identifier decremento      { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
 ;
 
 RETURN:
     return RETURN_OP { $$ = new Return($2,@1.first_line, @1.first_column); }
+;
+
+BREAK:
+    break {$$ = new Break(@1.first_line, @1.first_column); } 
+;
+
+CONTINUE:
+    continue {$$ = new Continue(@1.first_line, @1.first_column);}
 ;
 
 RETURN_OP:
@@ -294,12 +314,22 @@ RETURN_OP:
 ;
 
 DECLARACION:
-    TIPO identifier asig EXPR        { $$ = new Declaracion($2,$4,$1,@1.first_line, @1.first_column); }
+    TIPO identifier asig EXPR    { $$ = new Declaracion($2,$4,$1,[],@1.first_line, @1.first_column); }
 ;
 
 DECLARACION_NULA:
-    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); }
+    TIPO LIST_IDENTIFIERS  { $$ = new Declaracion(null,null,$1,$2,@1.first_line, @1.first_column); }
 ;
+
+LIST_IDENTIFIERS:
+    LIST_IDENTIFIERS coma IDENTIFIER  { $1.push($3); $$ = $1;}
+    | IDENTIFIER { $$ = [$1]; }
+;
+
+IDENTIFIER:
+    identifier  { $$ = $1; }
+;
+
 
 ASIGNACION:
     identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }

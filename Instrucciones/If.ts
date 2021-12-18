@@ -5,6 +5,8 @@ import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { Break } from "./Break";
+import { Continue } from "./Continue";
 import { Return } from "./Return";
 
 export class If implements Instruccion {
@@ -34,7 +36,6 @@ export class If implements Instruccion {
         let condicion = this.condicion.getValorImplicito(ent, arbol);
 
         if (condicion instanceof Excepcion) return condicion;
-
         if (this.condicion.getTipo(ent, arbol) == Tipo.BOOL) {
             if (condicion) {  //SI EL VALOR DE LA CONDICION SE CUMPLE
                 let nuevoEntorno = new Entorno(ent);
@@ -42,10 +43,11 @@ export class If implements Instruccion {
                 for (let i in this.instruccionesIf) {
                     let instruccion = this.instruccionesIf[i];
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
-                    console.log(result);
 
                     if (result instanceof Excepcion) return result;
                     else if (result instanceof Return) return result;
+                    else if (result instanceof Break) return result;
+                    else if (result instanceof Continue) return result;
                 }
 
             } else {
@@ -55,14 +57,17 @@ export class If implements Instruccion {
                     for (let i in this.instruccionesElse) {
                         let instruccion = this.instruccionesElse[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
-                        console.log("Else", result);
                         if (result instanceof Excepcion) return result;
                         else if (result instanceof Return) return result;
+                        else if (result instanceof Break) return result;
+                        else if (result instanceof Continue) return result;
                     }
                 } else if (this.elseIf != null) {
                     let result = this.elseIf.ejecutar(ent, arbol);
                     if (result instanceof Excepcion) return result;
                     else if (result instanceof Return) return result;
+                    else if (result instanceof Break) return result; 
+                    else if (result instanceof Continue) return result;
                 }
             }
         } else {
