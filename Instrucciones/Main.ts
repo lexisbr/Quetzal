@@ -1,9 +1,7 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
-import { Simbolo } from "../AST/Simbolo";
 import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
-import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { Return } from "./Return";
 

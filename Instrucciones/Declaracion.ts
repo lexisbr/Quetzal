@@ -57,6 +57,7 @@ export class Declaracion implements Instruccion {
             if (this.identificadores.length > 0) {
                 for (let i in this.identificadores) {
                     let identificador = this.identificadores[i];
+                    console.log(identificador);
                     if (!ent.existe(identificador)) {
                         let simbolo: Simbolo = new Simbolo(this.tipo, identificador, this.linea, this.columna, null);
                         ent.agregar(identificador, simbolo);
