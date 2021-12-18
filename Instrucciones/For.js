@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.For = void 0;
 const Entorno_1 = require("../AST/Entorno");
 const Excepcion_1 = require("../AST/Excepcion");
+const Break_1 = require("./Break");
+const Continue_1 = require("./Continue");
 const Declaracion_1 = require("./Declaracion");
 const Return_1 = require("./Return");
 class For {
@@ -56,6 +58,10 @@ class For {
                             return result;
                         else if (result instanceof Return_1.Return)
                             return result;
+                        else if (result instanceof Break_1.Break)
+                            return;
+                        else if (result instanceof Continue_1.Continue)
+                            break;
                     }
                     console.log(this.asignacion);
                     this.asignacion.ejecutar(nuevoEntornoAux, arbol);

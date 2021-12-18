@@ -1,11 +1,11 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Excepcion } from "../AST/Excepcion";
-import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { Break } from "./Break";
+import { Continue } from "./Continue";
 import { Declaracion } from "./Declaracion";
-import { If } from "./If";
 import { Return } from "./Return";
 
 export class For implements Instruccion {
@@ -64,6 +64,9 @@ export class For implements Instruccion {
                         let result = this.instrucciones[i].ejecutar(nuevoEntornoAux, arbol);
                         if(result instanceof Excepcion) return result;
                         else if (result instanceof Return) return result;
+                        else if (result instanceof Break) return;
+                        else if (result instanceof Continue) break;
+
                     }
                     console.log(this.asignacion);
                     this.asignacion.ejecutar(nuevoEntornoAux, arbol);

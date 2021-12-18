@@ -4,6 +4,8 @@ import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { Break } from "./Break";
+import { Continue } from "./Continue";
 import { Return } from "./Return";
 
 export class DoWhile implements Instruccion {
@@ -20,7 +22,6 @@ export class DoWhile implements Instruccion {
     }
 
     ejecutar(ent: Entorno, arbol: AST) {
-
         let condicion = this.condicion.getValorImplicito(ent, arbol);
         if (condicion instanceof Excepcion) return condicion;
         if (this.condicion.getTipo(ent, arbol) == Tipo.BOOL) {
@@ -32,6 +33,8 @@ export class DoWhile implements Instruccion {
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
                     if (result instanceof Excepcion) return result;
                     else if (result instanceof Return) return result;
+                    else if (result instanceof Break) return;
+                    else if (result instanceof Continue) break;
                 }
                 condicion = this.condicion.getValorImplicito(ent, arbol);
             } while (condicion);

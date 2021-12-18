@@ -3,6 +3,7 @@ import { Entorno } from "../AST/Entorno";
 import { Excepcion } from "../AST/Excepcion";
 import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
+import { Identificador } from "../Expresiones/Identificador";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { Llamada } from "./Llamada";
@@ -12,14 +13,16 @@ export class Declaracion implements Instruccion {
     columna: number;
     expresion: any;
     tipo: Tipo;
-    identificador: string;
+    identificador: any;
+    identificadores: Array<string>;
 
-    constructor(identificador: string, expresion: any, tipo: Tipo, linea: number, columna: number) {
+    constructor(identificador: any, expresion: any, tipo: Tipo, identificadores: Array<string>, linea: number, columna: number) {
         this.expresion = expresion;
         this.linea = linea;
         this.columna = columna;
         this.identificador = identificador;
         this.tipo = tipo;
+        this.identificadores = identificadores;
     }
 
     traducir(ent: Entorno, arbol: AST) {
@@ -33,7 +36,7 @@ export class Declaracion implements Instruccion {
             if (this.expresion instanceof Llamada) {
                 valor = this.expresion.ejecutar(ent, arbol);
                 if (valor instanceof Excepcion) return valor;
-                tipoValor = this.expresion.getTipo(arbol);
+                tipoValor = this.expresion.getTipo(ent, arbol);
             } else {
                 valor = this.expresion.getValorImplicito(ent, arbol);
                 if (valor instanceof Excepcion) return valor;
@@ -51,11 +54,16 @@ export class Declaracion implements Instruccion {
                 return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo asignado a la variable no es correcto");
             }
         } else {
-            if (!ent.existe(this.identificador)) {
-                let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
-                ent.agregar(this.identificador, simbolo);
-            } else {
-                return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
+            if (this.identificadores.length > 0) {
+                for (let i in this.identificadores) {
+                    let identificador = this.identificadores[i];
+                    if (!ent.existe(identificador)) {
+                        let simbolo: Simbolo = new Simbolo(this.tipo, identificador, this.linea, this.columna, null);
+                        ent.agregar(identificador, simbolo);
+                    } else {
+                        return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
+                    }
+                }
             }
         }
     }

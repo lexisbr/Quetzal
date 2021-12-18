@@ -4,6 +4,8 @@ exports.If = void 0;
 const Entorno_1 = require("../AST/Entorno");
 const Excepcion_1 = require("../AST/Excepcion");
 const Tipo_1 = require("../AST/Tipo");
+const Break_1 = require("./Break");
+const Continue_1 = require("./Continue");
 const Return_1 = require("./Return");
 class If {
     constructor(condicion, instruccionesIf, instruccionesElse, elseIf, linea, columna) {
@@ -28,10 +30,13 @@ class If {
                 for (let i in this.instruccionesIf) {
                     let instruccion = this.instruccionesIf[i];
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
-                    console.log(result);
                     if (result instanceof Excepcion_1.Excepcion)
                         return result;
                     else if (result instanceof Return_1.Return)
+                        return result;
+                    else if (result instanceof Break_1.Break)
+                        return result;
+                    else if (result instanceof Continue_1.Continue)
                         return result;
                 }
             }
@@ -42,10 +47,13 @@ class If {
                     for (let i in this.instruccionesElse) {
                         let instruccion = this.instruccionesElse[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
-                        console.log("Else", result);
                         if (result instanceof Excepcion_1.Excepcion)
                             return result;
                         else if (result instanceof Return_1.Return)
+                            return result;
+                        else if (result instanceof Break_1.Break)
+                            return result;
+                        else if (result instanceof Continue_1.Continue)
                             return result;
                     }
                 }
@@ -54,6 +62,10 @@ class If {
                     if (result instanceof Excepcion_1.Excepcion)
                         return result;
                     else if (result instanceof Return_1.Return)
+                        return result;
+                    else if (result instanceof Break_1.Break)
+                        return result;
+                    else if (result instanceof Continue_1.Continue)
                         return result;
                 }
             }
