@@ -64,7 +64,7 @@ export class Llamada implements Instruccion {
         throw new Error("Method not implemented.");
     }
     
-    getTipo(arbol: AST) {
+    getTipo(ent: Entorno, arbol: AST) {
         let funcion:any = arbol.getFuncion(this.nombre);
         return funcion.getTipo();
     }

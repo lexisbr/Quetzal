@@ -49,7 +49,7 @@ class Llamada {
     traducir(controlador) {
         throw new Error("Method not implemented.");
     }
-    getTipo(arbol) {
+    getTipo(ent, arbol) {
         let funcion = arbol.getFuncion(this.nombre);
         return funcion.getTipo();
     }

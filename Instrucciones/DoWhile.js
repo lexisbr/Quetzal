@@ -4,6 +4,8 @@ exports.DoWhile = void 0;
 const Entorno_1 = require("../AST/Entorno");
 const Excepcion_1 = require("../AST/Excepcion");
 const Tipo_1 = require("../AST/Tipo");
+const Break_1 = require("./Break");
+const Continue_1 = require("./Continue");
 const Return_1 = require("./Return");
 class DoWhile {
     constructor(instrucciones, condicion, linea, columna) {
@@ -28,6 +30,10 @@ class DoWhile {
                         return result;
                     else if (result instanceof Return_1.Return)
                         return result;
+                    else if (result instanceof Break_1.Break)
+                        return;
+                    else if (result instanceof Continue_1.Continue)
+                        break;
                 }
                 condicion = this.condicion.getValorImplicito(ent, arbol);
             } while (condicion);

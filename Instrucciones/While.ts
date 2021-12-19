@@ -5,6 +5,8 @@ import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
+import { Break } from "./Break";
+import { Continue } from "./Continue";
 import { Return } from "./Return";
 
 export class While implements Instruccion {
@@ -35,6 +37,8 @@ export class While implements Instruccion {
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
                         if(result instanceof Excepcion) return result;
                         else if (result instanceof Return) return result;
+                        else if (result instanceof Break) return;
+                        else if (result instanceof Continue) break;
                     }
                 }else{
                     break;
