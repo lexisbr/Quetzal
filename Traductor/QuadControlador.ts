@@ -3,8 +3,8 @@ import { Quadrupla } from "./Quadrupla";
 
 export class QuadControlador{
     quads: Quadrupla[]; // ARREGLO DE QUADRUPLAS
-    labels: number[];   //ARREGLO DE ETIQUETAS
-    temps: number[];    //ARREGLO DE TEMPORALES
+    labels: number;   //ARREGLO DE ETIQUETAS
+    temps: number;    //ARREGLO DE TEMPORALES
     arbol: AST;
 /*
     isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
@@ -27,8 +27,8 @@ export class QuadControlador{
      constructor(arbol: AST) {
 
 		this.quads = [];
-		this.labels = [];
-		this.temps = [];
+		this.labels = 0;
+		this.temps = 0;
         this.arbol = arbol;
 		/*
         this.isTrue = [];
@@ -40,5 +40,15 @@ export class QuadControlador{
         */
     }
 
+	getTemp(): string{	//AUMENTAR LOS TEMPORALES EXISTENTES
+		return `t${this.temps++}`;
+	}
 
+	getLabel(): string{	//AUMENTAR LOS LABELS EXISTENTES
+		return `L${this.labels++}`;
+	}
+
+	addQuad(quad: Quadrupla): void {
+		this.quads.push(quad);
+	}
 }

@@ -31,7 +31,7 @@ export class Asignacion implements Instruccion {
             if (ent.existe(this.identificador)) {
                 let simbolo:Simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent,arbol);
-                if( simboloValor == tipoValor || (tipoValor == Tipo.NULL && simboloValor == Tipo.STRING)|| (tipoValor == Tipo.INT && simboloValor == Tipo.DOUBLE)) {
+                if( simboloValor == tipoValor || (tipoValor == Tipo.NULL && simboloValor == Tipo.STRING)|| (tipoValor == Tipo.INT && simboloValor == Tipo.DOUBLE) || (tipoValor == Tipo.CHAR && simboloValor == Tipo.STRING)) {
                     if(this.isDouble(tipoValor,simboloValor)){
                         valor = valor.toFixed(2);
                     }

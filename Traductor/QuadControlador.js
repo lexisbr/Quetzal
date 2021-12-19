@@ -22,8 +22,8 @@ class QuadControlador {
     */
     constructor(arbol) {
         this.quads = [];
-        this.labels = [];
-        this.temps = [];
+        this.labels = 0;
+        this.temps = 0;
         this.arbol = arbol;
         /*
         this.isTrue = [];
@@ -33,6 +33,15 @@ class QuadControlador {
         this.stack = [];
         this.returns = [];
         */
+    }
+    getTemp() {
+        return `t${this.temps++}`;
+    }
+    getLabel() {
+        return `L${this.labels++}`;
+    }
+    addQuad(quad) {
+        this.quads.push(quad);
     }
 }
 exports.QuadControlador = QuadControlador;

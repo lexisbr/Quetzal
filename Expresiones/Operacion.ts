@@ -25,12 +25,23 @@ export class Operacion implements Expresion {
     }
     
     traducir(controlador:QuadControlador): Quadrupla | undefined {
-       const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-       const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-       //const result
-       
-       
-       //return new Quadrupla("op","arg1","arg2",`${this.}`);   
+        switch(this.operador){
+            case Operador.SUMA:
+            case Operador.RESTA:
+            case Operador.MULTIPLICACION:
+            case Operador.DIVISION:
+            case Operador.MODULO:
+                const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const resultado = controlador.getTemp();
+                if(izq && der){
+                    const quad = new Quadrupla(`${this.operador}`,`${izq.resultado}`,`${der.resultado}`,`${resultado}`);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+            break;
+        }
+        
        return;
     }
 

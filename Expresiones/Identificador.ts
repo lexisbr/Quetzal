@@ -45,6 +45,8 @@ export class Identificador implements Expresion {
     }
 
     traducir(controlador:QuadControlador):Quadrupla|undefined{
+            
+
         return;
     }
 

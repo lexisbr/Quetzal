@@ -6,6 +6,7 @@ const Simbolo_1 = require("../AST/Simbolo");
 const Operador_1 = require("../AST/Operador");
 const Excepcion_1 = require("../AST/Excepcion");
 const Identificador_1 = require("./Identificador");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Operacion {
     constructor(op_izquierda, op_derecha, operacion, linea, columna) {
         this.linea = linea;
@@ -15,10 +16,22 @@ class Operacion {
         this.operador = operacion;
     }
     traducir(controlador) {
-        const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-        const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-        //const result
-        //return new Quadrupla("op","arg1","arg2",`${this.}`);   
+        switch (this.operador) {
+            case Operador_1.Operador.SUMA:
+            case Operador_1.Operador.RESTA:
+            case Operador_1.Operador.MULTIPLICACION:
+            case Operador_1.Operador.DIVISION:
+            case Operador_1.Operador.MODULO:
+                const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const resultado = controlador.getTemp();
+                if (izq && der) {
+                    const quad = new Quadrupla_1.Quadrupla(`${this.operador}`, `${izq.resultado}`, `${der.resultado}`, `${resultado}`);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                break;
+        }
         return;
     }
     getTipo(ent, arbol) {

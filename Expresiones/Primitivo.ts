@@ -26,7 +26,7 @@ export class Primitivo implements Expresion {
             return Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
-            if (this.isChar(valor)) {
+            if (valor.length == 1) {
                 return Tipo.CHAR;
             }
             return Tipo.STRING;

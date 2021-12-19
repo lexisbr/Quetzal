@@ -18,7 +18,7 @@ class Primitivo {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
-            if (this.isChar(valor)) {
+            if (valor.length == 1) {
                 return Tipo_1.Tipo.CHAR;
             }
             return Tipo_1.Tipo.STRING;

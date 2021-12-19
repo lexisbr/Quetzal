@@ -31,8 +31,8 @@ class Declaracion {
                 if (valor instanceof Excepcion_1.Excepcion)
                     return valor;
                 tipoValor = this.expresion.getTipo(ent, arbol);
-            }
-            if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor)) {
+            } //ARREGLAR PARA UN STRING Y CHAR
+            if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo_1.Tipo.CHAR && this.tipo == Tipo_1.Tipo.STRING)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);

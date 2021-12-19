@@ -39,8 +39,8 @@ export class Declaracion implements Instruccion {
                 valor = this.expresion.getValorImplicito(ent, arbol);
                 if (valor instanceof Excepcion) return valor;
                 tipoValor = this.expresion.getTipo(ent, arbol);
-            }
-            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
+            }   //ARREGLAR PARA UN STRING Y CHAR
+            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo.CHAR && this.tipo == Tipo.STRING)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
@@ -96,3 +96,4 @@ export class Declaracion implements Instruccion {
         return tipoValor == Tipo.INT && this.tipo == Tipo.DOUBLE
     }
 }
+
