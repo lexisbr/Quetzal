@@ -3,27 +3,24 @@ import { Entorno } from "../AST/Entorno";
 import { Excepcion } from "../AST/Excepcion";
 import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
-import { Identificador } from "../Expresiones/Identificador";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
 import { Llamada } from "./Llamada";
 
-export class Declaracion implements Instruccion {
+export class DeclaracionArreglo implements Instruccion {
     linea: number;
     columna: number;
     expresion: any;
     tipo: Tipo;
-    identificador: any;
-    identificadores: Array<string>;
+    identificador: string;
 
-    constructor(identificador: any, expresion: any, tipo: Tipo, identificadores: Array<string>, linea: number, columna: number) {
+    constructor(identificador: string, expresion: any, tipo: Tipo, linea: number, columna: number) {
         this.expresion = expresion;
         this.linea = linea;
         this.columna = columna;
         this.identificador = identificador;
         this.tipo = tipo;
-        this.identificadores = identificadores;
     }
 
     traducir(controlador:QuadControlador) {
@@ -33,21 +30,20 @@ export class Declaracion implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         let valor;
         let tipoValor;
-        if (this.expresion != null) {   //INT A = suma(a,b);
+        if (this.expresion != null) {
             if (this.expresion instanceof Llamada) {
                 valor = this.expresion.ejecutar(ent, arbol);
                 if (valor instanceof Excepcion) return valor;
-                tipoValor = this.expresion.getTipo(ent, arbol);
+                tipoValor = this.expresion.getTipo(arbol);
             } else {
                 valor = this.expresion.getValorImplicito(ent, arbol);
                 if (valor instanceof Excepcion) return valor;
                 tipoValor = this.expresion.getTipo(ent, arbol);
-            }   //ARREGLAR PARA UN STRING Y CHAR
-            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo.CHAR && this.tipo == Tipo.STRING)) {
+            }
+            if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
                     ent.agregar(this.identificador, simbolo);
-                    return simbolo;
                 } else {
                     return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
                 }
@@ -55,17 +51,11 @@ export class Declaracion implements Instruccion {
                 return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo asignado a la variable no es correcto");
             }
         } else {
-            if (this.identificadores.length > 0) {
-                for (let i in this.identificadores) {
-                    let identificador = this.identificadores[i];
-                    console.log(identificador);
-                    if (!ent.existe(identificador)) {
-                        let simbolo: Simbolo = new Simbolo(this.tipo, identificador, this.linea, this.columna, null);
-                        ent.agregar(identificador, simbolo);
-                    } else {
-                        return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
-                    }
-                }
+            if (!ent.existe(this.identificador)) {
+                let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, null);
+                ent.agregar(this.identificador, simbolo);
+            } else {
+                return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
             }
         }
     }
@@ -106,4 +96,3 @@ export class Declaracion implements Instruccion {
         return tipoValor == Tipo.INT && this.tipo == Tipo.DOUBLE
     }
 }
-

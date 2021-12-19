@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Primitivo = void 0;
 const Tipo_1 = require("../AST/Tipo");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Primitivo {
     constructor(valor, linea, columna) {
         this.linea = linea;
         this.columna = columna;
         this.valor = valor;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return new Quadrupla_1.Quadrupla("op", "arg1", "arg2", `${this.valor}`); //AL SER UN VALOR PRIMITIVO, NO NECESITAMOS GUARDAR TEMP, PORQUE SE RETORNA EL VALOR 
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);
@@ -17,7 +18,7 @@ class Primitivo {
             return Tipo_1.Tipo.BOOL;
         }
         else if (typeof (valor) === 'string') {
-            if (this.isChar(valor)) {
+            if (valor.length == 1) {
                 return Tipo_1.Tipo.CHAR;
             }
             return Tipo_1.Tipo.STRING;

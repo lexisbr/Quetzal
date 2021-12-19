@@ -16,7 +16,7 @@ class If {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
@@ -27,6 +27,7 @@ class If {
             if (condicion) { //SI EL VALOR DE LA CONDICION SE CUMPLE
                 let nuevoEntorno = new Entorno_1.Entorno(ent);
                 nuevoEntorno.setEntorno("If");
+                arbol.tablas.push(nuevoEntorno); //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
                 for (let i in this.instruccionesIf) {
                     let instruccion = this.instruccionesIf[i];
                     let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -44,6 +45,7 @@ class If {
                 if (this.instruccionesElse != null) {
                     let nuevoEntorno = new Entorno_1.Entorno(ent);
                     nuevoEntorno.setEntorno("Else");
+                    arbol.tablas.push(nuevoEntorno); //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
                     for (let i in this.instruccionesElse) {
                         let instruccion = this.instruccionesElse[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);

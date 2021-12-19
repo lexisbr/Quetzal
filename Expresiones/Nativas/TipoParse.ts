@@ -3,6 +3,8 @@ import { Entorno } from "../../AST/Entorno";
 import { Tipo } from "../../AST/Tipo";
 import { Expresion } from "../../Interfaces/Expresion";
 import { Excepcion } from "../../AST/Excepcion";
+import { QuadControlador } from "../../Traductor/QuadControlador";
+import { Quadrupla } from "../../Traductor/Quadrupla";
 
 
 
@@ -19,8 +21,8 @@ export class TipoParse implements Expresion {
         this.tipoParse = tipoParse;
         this.expresion = expresion;
     }
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla|undefined{
+        return;
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {

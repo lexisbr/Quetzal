@@ -10,7 +10,7 @@ class Asignacion {
         this.columna = columna;
         this.identificador = identificador;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
@@ -20,7 +20,7 @@ class Asignacion {
             if (ent.existe(this.identificador)) {
                 let simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent, arbol);
-                if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING) || (tipoValor == Tipo_js_1.Tipo.INT && simboloValor == Tipo_js_1.Tipo.DOUBLE)) {
+                if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING) || (tipoValor == Tipo_js_1.Tipo.INT && simboloValor == Tipo_js_1.Tipo.DOUBLE) || (tipoValor == Tipo_js_1.Tipo.CHAR && simboloValor == Tipo_js_1.Tipo.STRING)) {
                     if (this.isDouble(tipoValor, simboloValor)) {
                         valor = valor.toFixed(2);
                     }

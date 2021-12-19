@@ -13,10 +13,15 @@ export class Entorno{
     }
 
     agregar(id:string, simbolo:Simbolo){
+
+
+        simbolo.identificador = simbolo.identificador;
+
         this.tabla[id] = simbolo;
     }
 
     eliminar(id:string):boolean{
+
         for (let e:Entorno = this; e != null; e = e.anterior)
         {   
             const value = e.tabla[id]
@@ -30,6 +35,7 @@ export class Entorno{
     }
 
     existe(id:string):boolean{
+
         for (let e:Entorno = this; e != null; e = e.anterior)
         {
             const value = e.tabla[id]
@@ -42,6 +48,7 @@ export class Entorno{
     }
 
     existeEnActual(id:string):boolean{
+
         if (this.tabla[id]!==undefined)
         {
             return true;
@@ -50,6 +57,7 @@ export class Entorno{
     }
 
     getSimbolo(id:string):any{
+
         for (let e:Entorno = this; e != null; e = e.anterior)
         {
             if (e.tabla[id]!==undefined)

@@ -1,4 +1,6 @@
 import { Expresion } from "../Interfaces/Expresion";
+import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 import { AST } from "./AST";
 import { Entorno } from "./Entorno";
 import { Tipo } from "./Tipo";
@@ -17,9 +19,8 @@ export class Simbolo implements Expresion {
         this.tipo = tipo;
         this.valor = valor;
     }
-    
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla|undefined{
+        return;
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {

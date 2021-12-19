@@ -75,7 +75,7 @@ class For {
             }
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

@@ -4,6 +4,7 @@ import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 export class Return implements Instruccion {
     linea: number;
@@ -35,7 +36,7 @@ export class Return implements Instruccion {
 
         return this;
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

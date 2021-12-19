@@ -18,6 +18,7 @@ class Llamada {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La funcion llamada no existe");
         }
         let nuevoEntorno = new Entorno_1.Entorno(ent);
+        arbol.tablas.push(nuevoEntorno); //REVISAR POR QUE SE CREA UN NUEVO ENTORNO
         let parametrosFuncion = funcion.getParametros();
         if (this.parametros.length == parametrosFuncion.length) {
             for (let i in this.parametros) {
@@ -45,7 +46,7 @@ class Llamada {
             return result;
         return result;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     getTipo(ent, arbol) {

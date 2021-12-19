@@ -2,6 +2,7 @@ import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 // print("hola mundo");
 
@@ -18,10 +19,9 @@ export class Print implements Instruccion {
         this.salto = salto;
     }
 
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
-
     ejecutar(ent: Entorno, arbol: AST) {
         let valor = this.expresion.getValorImplicito(ent, arbol);
         valor = this.addSalto(valor);
