@@ -46,10 +46,14 @@ BSL                             "\\".
 "while"                             return 'while';
 "do"                                return 'do';
 "for"                               return 'for';
+"in"                                return 'in';
 
 "break"                             return 'break';
 'continue'                          return 'continue';
 
+"switch"                            return 'switch';
+"case"                              return 'case';
+"default"                           return 'default';
 "if"                                return 'if';
 "else"                              return 'else';
 "main"                              return 'main';
@@ -161,6 +165,8 @@ BSL                             "\\".
     const {ToString} = require("../Expresiones/Nativas/ToString.js");
     const {Typeof} = require("../Expresiones/Nativas/Typeof.js");
     const {If} = require("../Instrucciones/If.js");
+    const {Switch} = require("../Instrucciones/Switch.js");
+    const {Case} = require("../Instrucciones/Case.js");
 
     const {Tipo} = require("../AST/Tipo.js");
     const {Declaracion} = require("../Instrucciones/Declaracion.js");
@@ -172,6 +178,8 @@ BSL                             "\\".
     const {Main} = require("../Instrucciones/Main.js");
     const {While} = require("../Instrucciones/While.js");
     const {DoWhile} = require("../Instrucciones/DoWhile.js");
+    const {For} = require("../Instrucciones/For.js");
+    const {ForIn} = require("../Instrucciones/ForIn.js");
 
     const {Break} = require("../Instrucciones/Break.js");
     const {Continue} = require("../Instrucciones/Continue.js");
@@ -219,14 +227,16 @@ RAIZ:
     | WHILE                                 { $$ = $1; }
     | DO_WHILE semicolon                    { $$ = $1; }
     | FOR                                   { $$ = $1; }
+    | FOR_IN                                { $$ = $1; }
     | RETURN semicolon                      { $$ = $1; }
     | BREAK semicolon                       { $$ = $1; }
-    | CONTINUE semicolon                       { $$ = $1; }
+    | CONTINUE semicolon                    { $$ = $1; }
     | LLAMADA semicolon                     { $$ = $1; }
     | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
     | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
     | ASIGNACION semicolon                  { $$ = $1; }
     | IF                                    { $$ = $1; }
+    | SWITCH                                { $$ = $1; }
     | MAIN                                  { $$ = $1; }
 ;
 
@@ -296,6 +306,10 @@ FOR_INSTRUCCION:
     | identifier decremento      { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
 ;
 
+FOR_IN:
+    for identifier in EXPR allave RAICES cllave {$$ = new ForIn($6,$2,$4,@1.first_line,@1.first_column); }
+;
+
 RETURN:
     return RETURN_OP { $$ = new Return($2,@1.first_line, @1.first_column); }
 ;
@@ -339,6 +353,25 @@ IF:
     if lparen EXPR rparen allave RAICES cllave                              { $$ = new If($3,$6,null,null,@1.first_line, @1.first_column);}
     | if lparen EXPR rparen allave RAICES cllave else allave RAICES cllave  { $$ = new If($3,$6,$10,null,@1.first_line, @1.first_column);}
     | if lparen EXPR rparen allave RAICES cllave else IF                    { $$ = new If($3,$6,null,$9,@1.first_line, @1.first_column);}
+;
+
+SWITCH:
+    switch lparen EXPR rparen allave CASES cllave { $$ = new Switch($3,$6,null,@1.first_line, @1.first_column); }
+    | switch lparen EXPR rparen allave CASES DEFAULT cllave { $$ = new Switch($3,$6,$7,@1.first_line, @1.first_column); }
+    | switch lparen EXPR rparen allave DEFAULT cllave  { $$ = new Switch($3,null,$7,@1.first_line, @1.first_column); }
+;
+
+CASES:
+    CASES CASE { $1.push($2); $$ = $1;}
+    | CASE {$$ = [$1]; }
+;
+
+CASE: 
+    case EXPR colon RAICES { $$ = new Case($2,$4,@1.first_line, @1.first_column); }
+;
+
+DEFAULT:
+    default colon RAICES { $$ = new Case($1,$3,@1.first_line, @1.first_column); }
 ;
 
 PRINT:
