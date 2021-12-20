@@ -17,7 +17,7 @@ class Decremento {
             return op1;
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

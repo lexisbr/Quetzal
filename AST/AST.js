@@ -8,6 +8,7 @@ class AST {
         this.funciones = [];
         this.consola = [];
         this.excepciones = [];
+        this.tablas = [];
     }
     updateConsola(line) {
         this.consola.push(line);

@@ -13,7 +13,7 @@ class Funcion {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {

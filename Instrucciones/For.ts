@@ -3,9 +3,13 @@ import { Entorno } from "../AST/Entorno";
 import { Excepcion } from "../AST/Excepcion";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+
+import { QuadControlador } from "../Traductor/QuadControlador";
+
 import { Break } from "./Break";
 import { Continue } from "./Continue";
 import { Declaracion } from "./Declaracion";
+
 import { Return } from "./Return";
 
 export class For implements Instruccion {
@@ -80,7 +84,7 @@ export class For implements Instruccion {
  
         }
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

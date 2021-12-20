@@ -14,6 +14,7 @@ class Main {
     ejecutar(ent, arbol) {
         let nuevoEntorno = new Entorno_1.Entorno(ent);
         nuevoEntorno.setEntorno("Main");
+        arbol.tablas.push(nuevoEntorno); //GUARDANDO LAS TS PARA EL RECORRIDO EN 3D
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
             if (value instanceof Excepcion_1.Excepcion) {
@@ -28,7 +29,7 @@ class Main {
             }
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

@@ -6,6 +6,8 @@ import { Operador } from "../AST/Operador";
 import { Expresion } from "../Interfaces/Expresion";
 import { Excepcion } from "../AST/Excepcion";
 import { Identificador } from "./Identificador";
+import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 
 export class Operacion implements Expresion {
     linea: number;
@@ -21,8 +23,26 @@ export class Operacion implements Expresion {
         this.op_derecha = op_derecha;
         this.operador = operacion;
     }
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    
+    traducir(controlador:QuadControlador): Quadrupla | undefined {
+        switch(this.operador){
+            case Operador.SUMA:
+            case Operador.RESTA:
+            case Operador.MULTIPLICACION:
+            case Operador.DIVISION:
+            case Operador.MODULO:
+                const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const resultado = controlador.getTemp();
+                if(izq && der){
+                    const quad = new Quadrupla(`${this.operador}`,`${izq.resultado}`,`${der.resultado}`,`${resultado}`);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+            break;
+        }
+        
+       return;
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {

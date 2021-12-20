@@ -1,6 +1,10 @@
 /* description: Quetzal is a programming language inspired by C & Java */
 
 /* lexical grammar */
+%{
+    //reporte = new ReporteGramatical();
+%}
+
 %lex
 
 %options case-sensitive
@@ -75,6 +79,7 @@ BSL                             "\\".
 "toInt"                             return 'toInt';
 "toDouble"                          return 'toDouble';
 "toString"                          return 'toSTRING';
+"string"                            return 'stringNative';
 'typeof'                            return 'typeof';
 
 
@@ -112,6 +117,8 @@ BSL                             "\\".
 "?"                                 return 'question';
 "{"                                 return 'allave';
 "}"                                 return 'cllave';
+"["                                 return 'corcheteA';
+"]"                                 return 'corcheteC';
 ","                                 return 'coma';
 "."                                 return 'dot';
 
@@ -184,6 +191,7 @@ BSL                             "\\".
     const {Break} = require("../Instrucciones/Break.js");
     const {Continue} = require("../Instrucciones/Continue.js");
 
+    const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
 %}
 
 /* operator associations and precedence */
@@ -223,6 +231,7 @@ RAIZ:
     PRINT semicolon                         { $$ = $1; }
     | DECLARACION_NULA semicolon            { $$ = $1; }
     | DECLARACION semicolon                 { $$ = $1; }
+   // | DECLARACION_ARRAY                     { $$ = $1; }
     | FUNCION                               { $$ = $1; }
     | WHILE                                 { $$ = $1; }
     | DO_WHILE semicolon                    { $$ = $1; }
@@ -326,12 +335,22 @@ RETURN_OP:
     EXPR {$$ = $1; }
     | {$$ = null; }
 ;
-
+/*
+DECLARACION_ARRAY:
+    TIPO corcheteA corcheteC 
+;
+*/
 DECLARACION:
     TIPO identifier asig EXPR    { $$ = new Declaracion($2,$4,$1,[],@1.first_line, @1.first_column); }
 ;
 
 DECLARACION_NULA:
+
+    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); 
+                                        //reporte.setGramatica("TIPO identificador");
+                                        //console.log(reporte.getGramatica());}
+                                    }
+
     TIPO LIST_IDENTIFIERS  { $$ = new Declaracion(null,null,$1,$2,@1.first_line, @1.first_column); }
 ;
 
@@ -342,6 +361,7 @@ LIST_IDENTIFIERS:
 
 IDENTIFIER:
     identifier  { $$ = $1; }
+
 ;
 
 
@@ -454,10 +474,11 @@ NATIVA:
     int dot parse lparen EXPR rparen    {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
     | double dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.DOUBLE,$5,@1.first_line, @1.first_column);}
     | boolean dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.BOOL,$5,@1.first_line, @1.first_column);}
-    | toInt lparen EXPR rparen      {$$ = new ToInt($3,@1.first_line, @1.first_column);}
-    | toDouble lparen EXPR rparen      {$$ = new ToDouble($3,@1.first_line, @1.first_column);}
-    | toSTRING lparen EXPR rparen      {$$ = new ToString($3,@1.first_line, @1.first_column);}
-    | typeof lparen EXPR rparen      {$$ = new Typeof($3,@1.first_line, @1.first_column);}
+    | toInt lparen EXPR rparen          {$$ = new ToInt($3,@1.first_line, @1.first_column);}
+    | toDouble lparen EXPR rparen       {$$ = new ToDouble($3,@1.first_line, @1.first_column);}
+    | toSTRING lparen EXPR rparen       {$$ = new ToString($3,@1.first_line, @1.first_column);}
+    | stringNative lparen EXPR rparen   {$$ = new ToString($3,@1.first_line, @1.first_column);}
+    | typeof lparen EXPR rparen         {$$ = new Typeof($3,@1.first_line, @1.first_column);}
 ;
 
 TIPO:

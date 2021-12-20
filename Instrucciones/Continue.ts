@@ -1,6 +1,7 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 export class Continue implements Instruccion {
     linea: number;
@@ -14,7 +15,7 @@ export class Continue implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         return this;
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

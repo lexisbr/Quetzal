@@ -9,7 +9,7 @@ class Continue {
     ejecutar(ent, arbol) {
         return this;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

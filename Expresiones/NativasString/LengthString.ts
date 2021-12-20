@@ -4,6 +4,8 @@ import { Tipo } from "../../AST/Tipo";
 import { Simbolo } from "../../AST/Simbolo";
 import { Expresion } from "../../Interfaces/Expresion";
 import { Excepcion } from "../../AST/Excepcion";
+import { QuadControlador } from "../../Traductor/QuadControlador";
+import { Quadrupla } from "../../Traductor/Quadrupla";
 
 export class LengthString implements Expresion {
     linea: number;
@@ -15,10 +17,9 @@ export class LengthString implements Expresion {
         this.linea = linea;
         this.columna = columna;   
     }
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla|undefined{
+        return;
     }
-
     getTipo(ent: Entorno, arbol: AST): Tipo {
         const valor = this.getValorImplicito(ent, arbol);
         if (typeof(valor) === 'boolean')

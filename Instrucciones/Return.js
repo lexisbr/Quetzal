@@ -23,7 +23,7 @@ class Return {
         this.value = value;
         return this;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     getTipo() {

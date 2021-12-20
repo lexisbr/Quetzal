@@ -21,6 +21,7 @@ class DoWhile {
         if (this.condicion.getTipo(ent, arbol) == Tipo_1.Tipo.BOOL) {
             let nuevoEntorno = new Entorno_1.Entorno(ent);
             nuevoEntorno.setEntorno("DoWhile");
+            arbol.tablas.push(nuevoEntorno); //GUARDANDO LAS TABLAS PARA EL RECORRIDO EN 3D
             do {
                 for (let i in this.instrucciones) {
                     let instruccion = this.instrucciones[i];
@@ -41,7 +42,7 @@ class DoWhile {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "El tipo de dato en condicion debe ser booleano");
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

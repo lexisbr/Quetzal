@@ -4,6 +4,8 @@ import { Simbolo } from "../AST/Simbolo";
 import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
+import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 
 export class Identificador implements Expresion {
     linea: number;
@@ -42,8 +44,10 @@ export class Identificador implements Expresion {
         }
     }
 
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla|undefined{
+            
+
+        return;
     }
 
     

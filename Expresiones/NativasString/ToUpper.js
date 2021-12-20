@@ -9,8 +9,8 @@ class ToUpper {
         this.linea = linea;
         this.columna = columna;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);

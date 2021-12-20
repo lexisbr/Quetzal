@@ -4,6 +4,7 @@ import { Excepcion } from "../AST/Excepcion";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
 import { Return } from "./Return";
@@ -30,6 +31,7 @@ export class While implements Instruccion {
                 if(condicion){
                     let nuevoEntorno:Entorno = new Entorno(ent);
                     nuevoEntorno.setEntorno("While");
+                    arbol.tablas.push(nuevoEntorno);
                     for(let i in this.instrucciones){
                         let instruccion = this.instrucciones[i];
                         let result = instruccion.ejecutar(nuevoEntorno, arbol);
@@ -46,7 +48,7 @@ export class While implements Instruccion {
             }
         }
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

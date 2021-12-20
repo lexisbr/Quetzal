@@ -10,8 +10,8 @@ class TipoParse {
         this.tipoParse = tipoParse;
         this.expresion = expresion;
     }
-    traducir(ent, arbol) {
-        throw new Error("Method not implemented.");
+    traducir(controlador) {
+        return;
     }
     getTipo(ent, arbol) {
         const valor = this.getValorImplicito(ent, arbol);

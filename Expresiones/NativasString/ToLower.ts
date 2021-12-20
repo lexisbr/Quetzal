@@ -4,6 +4,8 @@ import { Tipo } from "../../AST/Tipo";
 import { Operador } from "../../AST/Operador";
 import { Expresion } from "../../Interfaces/Expresion";
 import { Excepcion } from "../../AST/Excepcion";
+import { QuadControlador } from "../../Traductor/QuadControlador";
+import { Quadrupla } from "../../Traductor/Quadrupla";
 
 export class ToLower implements Expresion {
     linea: number;
@@ -15,8 +17,8 @@ export class ToLower implements Expresion {
         this.linea = linea;
         this.columna = columna;   
     }
-    traducir(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+    traducir(controlador:QuadControlador):Quadrupla|undefined{
+        return;
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {
