@@ -1,9 +1,7 @@
 /* description: Quetzal is a programming language inspired by C & Java */
 
 /* lexical grammar */
-%{
-    //reporte = new ReporteGramatical();
-%}
+
 
 %lex
 
@@ -321,22 +319,13 @@ RETURN_OP:
     EXPR {$$ = $1; }
     | {$$ = null; }
 ;
-/*
-DECLARACION_ARRAY:
-    TIPO corcheteA corcheteC 
-;
-*/
+
 DECLARACION:
     TIPO identifier asig EXPR    { $$ = new Declaracion($2,$4,$1,[],@1.first_line, @1.first_column); }
 ;
 
 DECLARACION_NULA:
-
-    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); 
-                                        //reporte.setGramatica("TIPO identificador");
-                                        //console.log(reporte.getGramatica());}
-                                    }
-
+    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column);}
     TIPO LIST_IDENTIFIERS  { $$ = new Declaracion(null,null,$1,$2,@1.first_line, @1.first_column); }
 ;
 
@@ -347,7 +336,6 @@ LIST_IDENTIFIERS:
 
 IDENTIFIER:
     identifier  { $$ = $1; }
-
 ;
 
 

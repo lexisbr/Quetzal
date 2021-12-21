@@ -69,10 +69,10 @@ class Relacional {
                 return op1 == op2;
             }
             else if (typeOp1 === Tipo_1.Tipo.STRING && typeOp2 === Tipo_1.Tipo.STRING) {
-                return op1 === op2;
+                return op1 == op2;
             }
             else if (typeOp1 === Tipo_1.Tipo.CHAR && typeOp2 === Tipo_1.Tipo.CHAR) {
-                return op1 === op2;
+                return op1 == op2;
             }
             else if (typeof (op1 === null) && typeof (op2 === null)) {
                 return op1 == op2;
