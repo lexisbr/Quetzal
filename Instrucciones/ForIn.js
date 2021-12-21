@@ -50,7 +50,7 @@ class ForIn {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Valor en For in debe ser String");
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
 }

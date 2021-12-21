@@ -8,9 +8,7 @@ class Entorno {
         this.entorno = '';
     }
     agregar(id, simbolo) {
-
         simbolo.identificador = simbolo.identificador;
-
         this.tabla[id] = simbolo;
     }
     eliminar(id) {

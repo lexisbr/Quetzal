@@ -34,7 +34,7 @@ export class DeclaracionArreglo implements Instruccion {
             if (this.expresion instanceof Llamada) {
                 valor = this.expresion.ejecutar(ent, arbol);
                 if (valor instanceof Excepcion) return valor;
-                tipoValor = this.expresion.getTipo(arbol);
+                tipoValor = this.expresion.getTipo(ent, arbol);
             } else {
                 valor = this.expresion.getValorImplicito(ent, arbol);
                 if (valor instanceof Excepcion) return valor;

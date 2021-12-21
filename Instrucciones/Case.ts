@@ -5,6 +5,7 @@ import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
 import { Return } from "./Return";
@@ -32,7 +33,8 @@ export class Case implements Instruccion {
             return new Excepcion(this.linea, this.columna, "\nSemantico", "Continue fuera de loop");
         }
     }
-    traducir(ent: Entorno, arbol: AST) {
+    
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

@@ -3,6 +3,7 @@ import { Entorno } from "../AST/Entorno";
 import { Excepcion } from "../AST/Excepcion";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Break } from "./Break";
 import { Case } from "./Case";
 import { Continue } from "./Continue";
@@ -23,7 +24,7 @@ export class Switch implements Instruccion {
         this.default_s = default_s;
 
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 

@@ -6,6 +6,7 @@ import { Tipo } from "../AST/Tipo";
 import { Identificador } from "../Expresiones/Identificador";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
+import { QuadControlador } from "../Traductor/QuadControlador";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
 import { Declaracion } from "./Declaracion";
@@ -55,7 +56,7 @@ export class ForIn implements Instruccion {
         }
 
     }
-    traducir(ent: Entorno, arbol: AST) {
+    traducir(controlador:QuadControlador) {
         throw new Error("Method not implemented.");
     }
 }

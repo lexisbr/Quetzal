@@ -23,7 +23,7 @@ class Case {
                 return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Continue fuera de loop");
         }
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     getExpresion() {

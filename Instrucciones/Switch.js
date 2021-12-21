@@ -12,7 +12,7 @@ class Switch {
         this.cases = cases;
         this.default_s = default_s;
     }
-    traducir(ent, arbol) {
+    traducir(controlador) {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
