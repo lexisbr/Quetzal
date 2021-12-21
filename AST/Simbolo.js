@@ -8,6 +8,7 @@ class Simbolo {
         this.columna = columna;
         this.tipo = tipo;
         this.valor = valor;
+        this.posicion = 0;
     }
     traducir(controlador) {
         return;

@@ -11,6 +11,7 @@ export class Simbolo implements Expresion {
     private tipo: Tipo;
     linea: number;
     columna: number;
+    posicion: number;
 
     constructor(tipo:Tipo, id:string, linea:number, columna:number, valor:any){
         this.identificador = id;
@@ -18,6 +19,7 @@ export class Simbolo implements Expresion {
         this.columna = columna;
         this.tipo = tipo;
         this.valor = valor;
+        this.posicion = 0;
     }
     traducir(controlador:QuadControlador):Quadrupla|undefined{
         return;

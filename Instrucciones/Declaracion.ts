@@ -1,12 +1,16 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Excepcion } from "../AST/Excepcion";
+import { Operador } from "../AST/Operador";
 import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Identificador } from "../Expresiones/Identificador";
+import { Operacion } from "../Expresiones/Operacion";
+import { Primitivo } from "../Expresiones/Primitivo";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 import { Llamada } from "./Llamada";
 
 export class Declaracion implements Instruccion {
@@ -40,13 +44,23 @@ export class Declaracion implements Instruccion {
                 tipoValor = this.expresion.getTipo(ent, arbol);
             } else {
                 valor = this.expresion.getValorImplicito(ent, arbol);
+                
                 if (valor instanceof Excepcion) return valor;
                 tipoValor = this.expresion.getTipo(ent, arbol);
             }   //ARREGLAR PARA UN STRING Y CHAR
             if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo.CHAR && this.tipo == Tipo.STRING)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
+                        if(this.tipo == Tipo.INT || this.tipo == Tipo.DOUBLE){
+                        if(this.expresion instanceof Operacion){
+                            arbol.controlador.addQuad(new Quadrupla(`=`,`${this.expresion.etiqueta}`,`${arbol.posiciones}`,`STACK`));
+                        } else if(this.expresion instanceof Primitivo){
+                            arbol.controlador.addQuad(new Quadrupla(`=`,`${valor}`,`${arbol.posiciones}`,`STACK`));
+                        }
+                    }
+                    simbolo.posicion = arbol.posiciones++;
                     ent.agregar(this.identificador, simbolo);
+                    console.log(arbol.controlador);
                     return simbolo;
                 } else {
                     return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
@@ -61,6 +75,7 @@ export class Declaracion implements Instruccion {
                     console.log(identificador);
                     if (!ent.existe(identificador)) {
                         let simbolo: Simbolo = new Simbolo(this.tipo, identificador, this.linea, this.columna, null);
+                        simbolo.posicion = arbol.posiciones++;
                         ent.agregar(identificador, simbolo);
                     } else {
                         return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");

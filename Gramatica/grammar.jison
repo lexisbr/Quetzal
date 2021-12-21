@@ -325,7 +325,6 @@ DECLARACION:
 ;
 
 DECLARACION_NULA:
-    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column);}
     TIPO LIST_IDENTIFIERS  { $$ = new Declaracion(null,null,$1,$2,@1.first_line, @1.first_column); }
 ;
 

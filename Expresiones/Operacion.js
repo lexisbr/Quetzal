@@ -14,24 +14,27 @@ class Operacion {
         this.op_izquierda = op_izquierda;
         this.op_derecha = op_derecha;
         this.operador = operacion;
+        this.etiqueta = "";
+        this.bandera = false;
     }
     traducir(controlador) {
-        switch (this.operador) {
-            case Operador_1.Operador.SUMA:
-            case Operador_1.Operador.RESTA:
-            case Operador_1.Operador.MULTIPLICACION:
-            case Operador_1.Operador.DIVISION:
-            case Operador_1.Operador.MODULO:
-                const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-                const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-                const resultado = controlador.getTemp();
-                if (izq && der) {
-                    const quad = new Quadrupla_1.Quadrupla(`${this.operador}`, `${izq.resultado}`, `${der.resultado}`, `${resultado}`);
-                    controlador.addQuad(quad);
-                    return quad;
-                }
-                break;
-        }
+        /* switch(this.operador){
+             case Operador.SUMA:
+             case Operador.RESTA:
+             case Operador.MULTIPLICACION:
+             case Operador.DIVISION:
+             case Operador.MODULO:
+                 const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                 const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                 const resultado = controlador.getTemp();
+                 if(izq && der){
+                     const quad = new Quadrupla(`${this.operador}`,`${izq.resultado}`,`${der.resultado}`,`${resultado}`);
+                     controlador.addQuad(quad);
+                     return quad;
+                 }
+             break;
+         }
+         */
         return;
     }
     getTipo(ent, arbol) {
@@ -56,6 +59,23 @@ class Operacion {
         }
         return Tipo_1.Tipo.VOID;
     }
+    generateQuad2(arbol, quad) {
+        if (!this.bandera) {
+            let temporal = "";
+            temporal = arbol.controlador.getTemp();
+            if (this.op_izquierda instanceof Operacion) {
+                quad.arg1 = this.op_izquierda.etiqueta;
+            }
+            if (this.op_derecha instanceof Operacion) {
+                quad.arg2 = this.op_derecha.etiqueta;
+            }
+            quad.resultado = temporal;
+            arbol.controlador.addQuad(quad);
+            arbol.controlador.codigo3D.push(temporal + " = " + " " + quad.arg1 + " " + quad.operacion + " " + quad.arg2 + " ;");
+            this.bandera = true;
+            this.etiqueta = quad.resultado;
+        }
+    }
     getValorImplicito(ent, arbol) {
         if (this.operador !== Operador_1.Operador.MENOS_UNARIO) {
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
@@ -65,6 +85,7 @@ class Operacion {
             //suma
             if (this.operador == Operador_1.Operador.SUMA) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.SUMA}`, `${op1}`, `${op2}`, ""));
                     return op1 + op2;
                 }
                 else {
@@ -74,6 +95,7 @@ class Operacion {
             //resta
             else if (this.operador == Operador_1.Operador.RESTA) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.RESTA}`, `${op1}`, `${op2}`, ""));
                     return op1 - op2;
                 }
                 else {
@@ -83,6 +105,7 @@ class Operacion {
             //multiplicación
             else if (this.operador == Operador_1.Operador.MULTIPLICACION) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.MULTIPLICACION}`, `${op1}`, `${op2}`, ""));
                     return op1 * op2;
                 }
                 else {
@@ -95,6 +118,7 @@ class Operacion {
                     if (op2 === 0) {
                         return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No puede realizar una Operacion entre cero");
                     }
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.DIVISION}`, `${op1}`, `${op2}`, ""));
                     return op1 / op2;
                 }
                 else {
@@ -107,6 +131,7 @@ class Operacion {
                     if (op2 === 0) {
                         return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No puede realizar una Operacion entre cero");
                     }
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.MODULO}`, `${op1}`, `${op2}`, ""));
                     return op1 % op2;
                 }
                 else {
@@ -115,6 +140,7 @@ class Operacion {
             }
             else if (this.operador == Operador_1.Operador.POW) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.MODULO}`, `${op1}`, `${op2}`, ""));
                     return Math.pow(op1, op2);
                 }
                 else {
@@ -163,6 +189,7 @@ class Operacion {
             }
             else if (this.operador == Operador_1.Operador.CONCAT) {
                 if (typeof (op1 === "string") && typeof (op2 === "string")) {
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.CONCAT}`, `${op1}`, `${op2}`, ""));
                     return op1 + op2;
                 }
                 else {
@@ -171,6 +198,7 @@ class Operacion {
             }
             else if (this.operador == Operador_1.Operador.REPEAT) {
                 if (typeof (op1 === "string") && (typeOp2 == Tipo_1.Tipo.INT || typeOp2 == Tipo_1.Tipo.DOUBLE)) {
+                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.REPEAT}`, `${op1}`, `${op2}`, ""));
                     return op1.repeat(op2);
                 }
                 else {

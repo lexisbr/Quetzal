@@ -4,6 +4,9 @@ exports.Declaracion = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
 const Simbolo_1 = require("../AST/Simbolo");
 const Tipo_1 = require("../AST/Tipo");
+const Operacion_1 = require("../Expresiones/Operacion");
+const Primitivo_1 = require("../Expresiones/Primitivo");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 const Llamada_1 = require("./Llamada");
 class Declaracion {
     constructor(identificador, expresion, tipo, identificadores, linea, columna) {
@@ -36,7 +39,17 @@ class Declaracion {
             if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo_1.Tipo.CHAR && this.tipo == Tipo_1.Tipo.STRING)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
+                    if (this.tipo == Tipo_1.Tipo.INT || this.tipo == Tipo_1.Tipo.DOUBLE) {
+                        if (this.expresion instanceof Operacion_1.Operacion) {
+                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${this.expresion.etiqueta}`, `${arbol.posiciones}`, `STACK`));
+                        }
+                        else if (this.expresion instanceof Primitivo_1.Primitivo) {
+                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor}`, `${arbol.posiciones}`, `STACK`));
+                        }
+                    }
+                    simbolo.posicion = arbol.posiciones++;
                     ent.agregar(this.identificador, simbolo);
+                    console.log(arbol.controlador);
                     return simbolo;
                 }
                 else {
@@ -54,6 +67,7 @@ class Declaracion {
                     console.log(identificador);
                     if (!ent.existe(identificador)) {
                         let simbolo = new Simbolo_1.Simbolo(this.tipo, identificador, this.linea, this.columna, null);
+                        simbolo.posicion = arbol.posiciones++;
                         ent.agregar(identificador, simbolo);
                     }
                     else {

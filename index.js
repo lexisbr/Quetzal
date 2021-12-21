@@ -7,7 +7,8 @@ const Declaracion = require("./Instrucciones/Declaracion.js");
 const Main = require("./Instrucciones/Main.js");
 const Return = require("./Instrucciones/Return.js");
 
-const grammar = require("./Gramatica/grammar.js")
+const grammar = require("./Gramatica/grammar.js");
+const { QuadControlador } = require("./Traductor/QuadControlador.js");
 
 
 if (typeof window !== 'undefined') {
@@ -15,7 +16,9 @@ if (typeof window !== 'undefined') {
         const instrucciones = grammar.parse(input);
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
+        const controlador = new QuadControlador(ast);
         ast.tablas.push(entornoGlobal); //GUARDO EL ENTORNO/TABLA PARA EL CODIGO EN 3D
+        console.log(ast.tablas);
         ast.instrucciones.forEach(function (element) {
             let value;
             if (element instanceof Funcion.Funcion) {
@@ -32,6 +35,7 @@ if (typeof window !== 'undefined') {
         });
 
         let main = false;
+        let main1;
         ast.instrucciones.forEach(function (element) {
             let value;
             if (element instanceof Main.Main) {
@@ -42,6 +46,7 @@ if (typeof window !== 'undefined') {
                         ast.addExcepcion(value);
                         ast.updateConsola(value);
                     } 
+                    main1 = element;
                 }else{
                     let excepcion = new Excepcion.Excepcion(value.linea,value.columna,"\nSemantico","Existe mas de una funcion Main")
                     ast.addExcepcion(excepcion);
@@ -60,6 +65,8 @@ if (typeof window !== 'undefined') {
             } 
             
         });
+
+       
         return ast.getConsola();
     }
 }
