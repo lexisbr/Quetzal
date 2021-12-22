@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AST = void 0;
+const QuadControlador_1 = require("../Traductor/QuadControlador");
 class AST {
     constructor(instrucciones) {
         this.instrucciones = instrucciones;
@@ -9,6 +10,8 @@ class AST {
         this.consola = [];
         this.excepciones = [];
         this.tablas = [];
+        this.controlador = new QuadControlador_1.QuadControlador(this);
+        this.posiciones = 0;
     }
     updateConsola(line) {
         this.consola.push(line);

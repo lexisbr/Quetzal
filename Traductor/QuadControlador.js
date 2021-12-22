@@ -24,15 +24,8 @@ class QuadControlador {
         this.quads = [];
         this.labels = 0;
         this.temps = 0;
+        this.codigo3D = [];
         this.arbol = arbol;
-        /*
-        this.isTrue = [];
-        this.isFalse = [];
-        this.breaks = [];
-        this.continues = [];
-        this.stack = [];
-        this.returns = [];
-        */
     }
     getTemp() {
         return `t${this.temps++}`;

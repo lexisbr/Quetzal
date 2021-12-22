@@ -2,6 +2,7 @@ import { Instruccion } from "../Interfaces/Instruccion";
 import { Funcion } from "../Instrucciones/Funcion";
 import { Excepcion } from "./Excepcion";
 import { Entorno } from "./Entorno";
+import { QuadControlador } from "../Traductor/QuadControlador";
 
 export class AST{
     
@@ -11,6 +12,8 @@ export class AST{
     public excepciones: Array<Excepcion>;
     public consola: Array<any>;
     public tablas: Entorno[];
+    public controlador: QuadControlador;
+    public posiciones: number;
 
     constructor(instrucciones:Array<Instruccion>){
         this.instrucciones = instrucciones;
@@ -19,6 +22,8 @@ export class AST{
         this.consola = [];
         this.excepciones = [];
         this.tablas = [];
+        this.controlador = new QuadControlador(this);
+        this.posiciones = 0;
     }
 
     updateConsola(line:string){
