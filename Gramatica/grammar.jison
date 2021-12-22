@@ -283,14 +283,9 @@ LIST_ARGUMENTOS:
 ;
 
 ARGUMENTOS:
-    //ARGUMENTOS coma EXPR  { $1.push($3); $$ = $1;}
     EXPR  { $$ = $1; }
-    //ARGUMENTO { $$ = [$1]; }
 ;
 
-//ARGUMENTO:
-    
-//;
 
 WHILE:
     while lparen EXPR rparen allave RAICES cllave { $$ = new While($6,$3,@1.first_line,@1.first_column); }
