@@ -9,10 +9,10 @@ import { QuadControlador } from "../Traductor/QuadControlador";
 export class Print implements Instruccion {
     linea: number;
     columna: number;
-    public expresion: Expresion;
+    public expresion: Array<Expresion>;
     salto: boolean;
 
-    constructor(exp: Expresion, linea: number, columna: number, salto: boolean) {
+    constructor(exp: Array<Expresion>, linea: number, columna: number, salto: boolean) {
         this.expresion = exp;
         this.linea = linea;
         this.columna = columna;
@@ -23,9 +23,13 @@ export class Print implements Instruccion {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent: Entorno, arbol: AST) {
-        let valor = this.expresion.getValorImplicito(ent, arbol);
-        valor = this.addSalto(valor);
-        arbol.updateConsola(valor);
+        
+        this.expresion.forEach(element => {
+            let valor = element.getValorImplicito(ent, arbol);
+            valor = this.addSalto(valor);
+            arbol.updateConsola(valor);
+        });
+        
     }
 
     addSalto(valor: any) {
