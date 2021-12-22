@@ -4,8 +4,8 @@ exports.Print = void 0;
 const Quadrupla_1 = require("../Traductor/Quadrupla");
 // print("hola mundo");
 class Print {
-    constructor(exp, linea, columna, salto) {
-        this.expresion = exp;
+    constructor(expresiones, linea, columna, salto) {
+        this.expresiones = expresiones;
         this.linea = linea;
         this.columna = columna;
         this.salto = salto;
@@ -22,6 +22,7 @@ class Print {
         }
     }
     ejecutar(ent, arbol) {
+<<<<<<< HEAD
         this.expresion.forEach(element => {
             let valor = element.getValorImplicito(ent, arbol);
             //valor = this.addSalto(valor);
@@ -29,6 +30,14 @@ class Print {
         });
         if (this.salto) {
             arbol.updateConsola("\n");
+=======
+        for (let i in this.expresiones) {
+            let valor = this.expresiones[i].getValorImplicito(ent, arbol);
+            arbol.updateConsola(valor);
+        }
+        if (this.salto) {
+            arbol.updateConsola('\n');
+>>>>>>> Lexis
         }
     }
     addSalto(valor) {

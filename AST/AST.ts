@@ -3,11 +3,12 @@ import { Funcion } from "../Instrucciones/Funcion";
 import { Excepcion } from "./Excepcion";
 import { Entorno } from "./Entorno";
 import { QuadControlador } from "../Traductor/QuadControlador";
+import { Struct } from "../Instrucciones/Struct";
 
-export class AST{
-    
-    public instrucciones:Array<Instruccion>;
-    public structs: Array<any>;
+export class AST {
+
+    public instrucciones: Array<Instruccion>;
+    public structs: Array<Struct>;
     public funciones: Array<Funcion>;
     public excepciones: Array<Excepcion>;
     public consola: Array<any>;
@@ -17,7 +18,7 @@ export class AST{
     public stack = "STACK";
     public heap = "HEAP";
 
-    constructor(instrucciones:Array<Instruccion>){
+    constructor(instrucciones: Array<Instruccion>) {
         this.instrucciones = instrucciones;
         this.structs = [];
         this.funciones = [];
@@ -28,29 +29,51 @@ export class AST{
         this.posiciones = 0;
     }
 
-    updateConsola(line:string){
+    updateConsola(line: string) {
         this.consola.push(line);
     }
 
-    getConsola(){
+    getConsola() {
         return this.consola;
     }
 
-    addFuncion(funcion:Funcion){
-        this.funciones.push(funcion);
+    addFuncion(funcion: Funcion) {
+        if (this.getFuncion(funcion.getNombre()) == null) {
+            this.funciones.push(funcion);
+        }else{
+            return new Excepcion(funcion.linea,funcion.columna,"Semantico","La funcion ya existe");
+        }
     }
 
-    getFuncion(name:string){
-        for(let i in this.funciones) {
-            let funcion:Funcion = this.funciones[i];
-            if(funcion.getNombre() === name){
+    getFuncion(name: string) {
+        for (let i in this.funciones) {
+            let funcion: Funcion = this.funciones[i];
+            if (funcion.getNombre() === name) {
                 return funcion;
             }
         }
         return null;
     }
 
-    addExcepcion(excepcion:Excepcion){
+    getStruct(identificador: string) {
+        for (let i in this.structs) {
+            let struct: Struct = this.structs[i];
+            if (struct.getIdentificador() === identificador) {
+                return struct;
+            }
+        }
+        return null;
+    }
+
+    addStruct(struct: Struct) {
+        if (this.getStruct(struct.getIdentificador()) == null) {
+            this.structs.push(struct);
+        }else{
+            return new Excepcion(struct.linea,struct.columna,"Semantico","El struct ya existe");
+        }
+    }
+
+    addExcepcion(excepcion: Excepcion) {
         this.excepciones.push(excepcion);
     }
 

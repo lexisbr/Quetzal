@@ -59,6 +59,10 @@ BSL                             "\\".
 "if"                                return 'if';
 "else"                              return 'else';
 "main"                              return 'main';
+
+"struct"                            return 'struct';
+
+
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
 "sqrt"                              return 'sqrt';
@@ -189,6 +193,9 @@ BSL                             "\\".
     const {Break} = require("../Instrucciones/Break.js");
     const {Continue} = require("../Instrucciones/Continue.js");
 
+    const {Struct} = require("../Instrucciones/Struct.js");
+    const {Atributo} = require("../Instrucciones/Atributo.js");
+
     const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
 %}
 
@@ -229,6 +236,7 @@ RAIZ:
     PRINT semicolon                         { $$ = $1; }
     | DECLARACION_NULA semicolon            { $$ = $1; }
     | DECLARACION semicolon                 { $$ = $1; }
+    | STRUCT semicolon                      { $$ = $1; }
    // | DECLARACION_ARRAY                     { $$ = $1; }
     | FUNCION                               { $$ = $1; }
     | WHILE                                 { $$ = $1; }
@@ -351,7 +359,6 @@ IDENTIFIER:
     identifier  { $$ = $1; }
 ;
 
-
 ASIGNACION:
     identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }
 ;
@@ -382,11 +389,28 @@ DEFAULT:
 ;
 
 PRINT:
-    print lparen ARGUMENTOS rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
-    | println lparen ARGUMENTOS rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
-
+    print lparen PRINT_EXPR rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
+    | println lparen PRINT_EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
 ;
 
+PRINT_EXPR:
+    PRINT_EXPR coma EXPR    { $1.push($3); $$ = $1;} 
+    | EXPR                  { $$ = [$1]; }
+;
+
+STRUCT:
+    struct identifier allave STRUCT_ATRIBUTOS cllave { $$ = new Struct($2,$4,@1.first_line, @1.first_column); }
+;
+
+STRUCT_ATRIBUTOS:
+    STRUCT_ATRIBUTOS coma STRUCT_ATRIBUTO   { $1.push($3); $$ = $1;} 
+    |  STRUCT_ATRIBUTO                      { $$ = [$1]; }
+;
+
+
+STRUCT_ATRIBUTO:
+    TIPO identifier { $$ = new Atributo($2,$1,@1.first_line, @1.first_column); }
+;
 
 EXPR:
     PRIMITIVA                           { $$ = $1 }
@@ -397,13 +421,11 @@ EXPR:
     | NATIVAS_STRING                    { $$ = $1 }
     | NATIVA                            { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
-    //| identifier dot length lparen rparen {$$ = new LengthString($1,@1.first_line,@1.first_column);}
     | LLAMADA                           { $$ = $1 }
 ;
 
 NATIVAS_STRING:
     EXPR concat EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
-    //| EXPR coma EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
     | EXPR repeat EXPR                                {$$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
     | EXPR dot charOfPos lparen EXPR rparen           {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
     | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}    
@@ -459,6 +481,7 @@ PRIMITIVA:
     | lparen EXPR rparen         { $$ = $2 }
     | dollar EXPR                { $$ = $2 }
 ;
+
 NATIVA:
     int dot parse lparen EXPR rparen    {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
     | double dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.DOUBLE,$5,@1.first_line, @1.first_column);}

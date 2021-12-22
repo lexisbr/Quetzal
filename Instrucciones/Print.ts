@@ -10,11 +10,11 @@ import { Quadrupla } from "../Traductor/Quadrupla";
 export class Print implements Instruccion {
     linea: number;
     columna: number;
-    public expresion: Array<Expresion>;
+    expresiones: Array<Expresion>;
     salto: boolean;
 
-    constructor(exp: Array<Expresion>, linea: number, columna: number, salto: boolean) {
-        this.expresion = exp;
+    constructor(expresiones: Array<Expresion>, linea: number, columna: number, salto: boolean) {
+        this.expresiones = expresiones;
         this.linea = linea;
         this.columna = columna;
         this.salto = salto;
@@ -32,11 +32,11 @@ export class Print implements Instruccion {
 			controlador.addQuad(new Quadrupla("PRINTF", "\n", "", ""));
 		}
 	}
+
     ejecutar(ent: Entorno, arbol: AST) {
         
         this.expresion.forEach(element => {
             let valor = element.getValorImplicito(ent, arbol);
-            //valor = this.addSalto(valor);
             arbol.updateConsola(valor);
         });
         if(this.salto){

@@ -3,6 +3,7 @@ const Entorno = require("./AST/Entorno.js");
 const Instruccion = require("./Interfaces/Instruccion.js");
 const Excepcion = require("./AST/Excepcion.js");
 const Funcion = require("./Instrucciones/Funcion.js");
+const Struct = require("./Instrucciones/Struct.js");
 const Declaracion = require("./Instrucciones/Declaracion.js");
 const Main = require("./Instrucciones/Main.js");
 const Return = require("./Instrucciones/Return.js");
@@ -22,8 +23,12 @@ if (typeof window !== 'undefined') {
         ast.instrucciones.forEach(function (element) {
             let value;
             if (element instanceof Funcion.Funcion) {
-                ast.addFuncion(element);
+                let value = ast.addFuncion(element);
+                if (value instanceof Excepcion.Excepcion) ast.updateConsola(value);
 
+            } else if (element instanceof Struct.Struct) {
+                let value = ast.addStruct(element);
+                if (value instanceof Excepcion.Excepcion) ast.updateConsola(value);
             } else if (element instanceof Declaracion.Declaracion) {
 
                 value = element.ejecutar(entornoGlobal, ast);
@@ -53,17 +58,17 @@ if (typeof window !== 'undefined') {
                     ast.updateConsola(excepcion);
                     return;
                 }
-            } 
-            
+            }
+
         });
 
         ast.instrucciones.forEach(function (element) {
-            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion)) {
-                let excepcion = new Excepcion.Excepcion(element.linea,element.columna,"\nSemantico","Sentencias fuera de Main")
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion || element instanceof Struct.Struct)) {
+                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "\nSemantico", "Sentencias fuera de Main")
                 ast.addExcepcion(excepcion);
                 ast.updateConsola(excepcion)
-            } 
-            
+            }
+
         });
 
        
