@@ -9,24 +9,7 @@ export class QuadControlador{
     codigo3D: Array<string>;
 	arbol: AST;
 	actual: Entorno;
-/*
-    isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
-    isFalse: Quadrupla[];
-	breaks: Quadrupla[];
-	continues: Quadrupla[];
 
-	tables: SymbolTable[];
-	 stack: SymbolTable[];
-
-	labelTrue: string | undefined;
-	labelFalse: string | undefined;
-
-	 sm: SemanticHandler;
-	 blocks: CodeBlock[];
-
-	 quadReturn?: Quadrupla;
-	 returns: Quadrupla[];
-*/
      constructor(arbol: AST) {
 
 		this.quads = [];

@@ -37,7 +37,10 @@ export class Return implements Instruccion {
         return this;
     }
     traducir(controlador:QuadControlador) {
-        throw new Error("Method not implemented.");
+        if (this.expresion == null) {
+            return; 
+        }
+        //AQUI DEBE IR EL CODIGO EN 3D PARA EL RETURN DE EXPRESIONES
     }
 
     getTipo() {

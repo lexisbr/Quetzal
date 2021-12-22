@@ -35,7 +35,11 @@ export class Main implements Instruccion {
     }
 
     traducir(controlador:QuadControlador) {
-        throw new Error("Method not implemented.");
+        
+        controlador.actual = controlador.arbol.tablas.shift()?? new Entorno(null);  //VERIFICA QUE EL ENTORNO NO SE UNDEFINED
+        this.instrucciones.forEach(instruccion =>{
+            instruccion.traducir(controlador);
+        });
     }
 
 }

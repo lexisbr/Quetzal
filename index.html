@@ -66,7 +66,7 @@
       <div class="buttonsDiv">
         <div class="buttons">
           <button onclick="parseText()">Compilar</button>
-          <button>Traducir</button>
+          <button onclick="traducirText()">Traducir</button>
         </div>
       </div>
     </div>
@@ -91,6 +91,11 @@
       function parseText() {
         let input = getText();
         let result = parseExternal(input);
+        addText(result);
+      }
+      function traducirText() {
+        let input = getText();
+        let result = traducirExternal(input);
         addText(result);
       }
     </script>

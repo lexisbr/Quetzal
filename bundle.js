@@ -207,7 +207,10 @@ var Tipo;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Decremento = void 0;
+const Operador_1 = require("../AST/Operador");
 const Excepcion_1 = require("../AST/Excepcion");
+const Identificador_1 = require("./Identificador");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Decremento {
     constructor(operacion, linea, columna) {
         this.linea = linea;
@@ -224,12 +227,44 @@ class Decremento {
         }
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        /*
+            // this.operacion.traducir(controlador);
+            t1 = P + pos;
+            t2 = stack[t1];
+
+            // decremento aca
+            t3 = t2 + 1
+
+            // obtener posicion
+            t4 = P + pos;
+            // asignar
+
+            stack[t4] = t3
+
+            return t2;
+        */
+        if (this.operacion instanceof Identificador_1.Identificador) {
+            const variable = controlador.actual.getSimbolo(this.operacion.getId());
+            const tmpQ = this.operacion.traducir(controlador);
+            if (tmpQ) {
+                const tmp1 = controlador.getTemp();
+                const tmp2 = controlador.getTemp();
+                // decremento
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.RESTA.toString(), tmpQ.resultado, "1", tmp1));
+                // obtener posicion
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp2));
+                // asignar decremento
+                controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", tmp1, "", `${controlador.arbol.stack}[${tmp2}]`));
+                // retornar valor anterior a decremento
+                return tmpQ;
+            }
+        }
+        return;
     }
 }
 exports.Decremento = Decremento;
 
-},{"../AST/Excepcion":3}],8:[function(require,module,exports){
+},{"../AST/Excepcion":3,"../AST/Operador":4,"../Traductor/Quadrupla":45,"./Identificador":8}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Identificador = void 0;
@@ -271,6 +306,7 @@ class Identificador {
         const tmp2 = controlador.getTemp();
         controlador.addQuad(new Quadrupla_1.Quadrupla(`${Operador_1.Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
         const quad = new Quadrupla_1.Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+        controlador.addQuad(quad);
         return quad;
     }
 }
@@ -280,7 +316,10 @@ exports.Identificador = Identificador;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Incremento = void 0;
+const Operador_1 = require("../AST/Operador");
 const Excepcion_1 = require("../AST/Excepcion");
+const Identificador_1 = require("./Identificador");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Incremento {
     constructor(operacion, linea, columna) {
         this.linea = linea;
@@ -297,12 +336,44 @@ class Incremento {
         }
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        /*
+            // this.operacion.traducir(controlador);
+            t1 = P + pos;
+            t2 = stack[t1];
+
+            // incremento aca
+            t3 = t2 + 1
+
+            // obtener posicion
+            t4 = P + pos;
+            // asignar
+
+            stack[t4] = t3
+
+            return t2;
+        */
+        if (this.operacion instanceof Identificador_1.Identificador) {
+            const variable = controlador.actual.getSimbolo(this.operacion.getId());
+            const tmpQ = this.operacion.traducir(controlador);
+            if (tmpQ) {
+                const tmp1 = controlador.getTemp();
+                const tmp2 = controlador.getTemp();
+                // incremento
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), tmpQ.resultado, "1", tmp1));
+                // obtener posicion
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp2));
+                // Asignar incremento
+                controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", tmp1, "", `${controlador.arbol.stack}[${tmp2}]`));
+                // Retornar valor anterior a incremento
+                return tmpQ;
+            }
+        }
+        return;
     }
 }
 exports.Incremento = Incremento;
 
-},{"../AST/Excepcion":3}],10:[function(require,module,exports){
+},{"../AST/Excepcion":3,"../AST/Operador":4,"../Traductor/Quadrupla":45,"./Identificador":8}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Logica = void 0;
@@ -1030,23 +1101,44 @@ class Operacion {
         this.bandera = false;
     }
     traducir(controlador) {
-        /* switch(this.operador){
-             case Operador.SUMA:
-             case Operador.RESTA:
-             case Operador.MULTIPLICACION:
-             case Operador.DIVISION:
-             case Operador.MODULO:
-                 const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-                 const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
-                 const resultado = controlador.getTemp();
-                 if(izq && der){
-                     const quad = new Quadrupla(`${this.operador}`,`${izq.resultado}`,`${der.resultado}`,`${resultado}`);
-                     controlador.addQuad(quad);
-                     return quad;
-                 }
-             break;
-         }
-         */
+        switch (this.operador) {
+            case Operador_1.Operador.SUMA:
+            case Operador_1.Operador.RESTA:
+            case Operador_1.Operador.MULTIPLICACION:
+            case Operador_1.Operador.DIVISION:
+            case Operador_1.Operador.MODULO:
+            case Operador_1.Operador.AND:
+            case Operador_1.Operador.OR:
+            case Operador_1.Operador.MAYOR_IGUAL_QUE:
+            case Operador_1.Operador.MAYOR_QUE:
+            case Operador_1.Operador.MENOR_IGUAL_QUE:
+            case Operador_1.Operador.MENOR_QUE:
+            case Operador_1.Operador.DIFERENTE_QUE:
+            case Operador_1.Operador.POW:
+            case Operador_1.Operador.CONCAT:
+                const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const resultado = controlador.getTemp();
+                if (izq && der) {
+                    const quad = new Quadrupla_1.Quadrupla(this.operador.toString(), `${izq.resultado}`, `${der.resultado}`, `${resultado}`);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                return;
+            case Operador_1.Operador.MENOS_UNARIO:
+            case Operador_1.Operador.SQRT:
+            case Operador_1.Operador.SENO:
+            case Operador_1.Operador.COSENO:
+            case Operador_1.Operador.TAN:
+                const left = this.op_izquierda.traducir(controlador);
+                const tmp1 = controlador.getTemp();
+                if (left) {
+                    const quad = new Quadrupla_1.Quadrupla(this.operador.toString(), left.resultado, "", tmp1);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                break;
+        }
         return;
     }
     getTipo(ent, arbol) {
@@ -1097,7 +1189,7 @@ class Operacion {
             //suma
             if (this.operador == Operador_1.Operador.SUMA) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.SUMA}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.SUMA}`,`${op1}`,`${op2}`,""));
                     return op1 + op2;
                 }
                 else {
@@ -1107,7 +1199,7 @@ class Operacion {
             //resta
             else if (this.operador == Operador_1.Operador.RESTA) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.RESTA}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.RESTA}`,`${op1}`,`${op2}`,""));
                     return op1 - op2;
                 }
                 else {
@@ -1117,7 +1209,7 @@ class Operacion {
             //multiplicación
             else if (this.operador == Operador_1.Operador.MULTIPLICACION) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.MULTIPLICACION}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.MULTIPLICACION}`,`${op1}`,`${op2}`,""));
                     return op1 * op2;
                 }
                 else {
@@ -1130,7 +1222,7 @@ class Operacion {
                     if (op2 === 0) {
                         return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No puede realizar una Operacion entre cero");
                     }
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.DIVISION}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.DIVISION}`,`${op1}`,`${op2}`,""));
                     return op1 / op2;
                 }
                 else {
@@ -1143,7 +1235,7 @@ class Operacion {
                     if (op2 === 0) {
                         return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No puede realizar una Operacion entre cero");
                     }
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.MODULO}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
                     return op1 % op2;
                 }
                 else {
@@ -1152,7 +1244,7 @@ class Operacion {
             }
             else if (this.operador == Operador_1.Operador.POW) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.MODULO}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
                     return Math.pow(op1, op2);
                 }
                 else {
@@ -1201,7 +1293,7 @@ class Operacion {
             }
             else if (this.operador == Operador_1.Operador.CONCAT) {
                 if (typeof (op1 === "string") && typeof (op2 === "string")) {
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.CONCAT}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.CONCAT}`,`${op1}`,`${op2}`,""));
                     return op1 + op2;
                 }
                 else {
@@ -1210,7 +1302,7 @@ class Operacion {
             }
             else if (this.operador == Operador_1.Operador.REPEAT) {
                 if (typeof (op1 === "string") && (typeOp2 == Tipo_1.Tipo.INT || typeOp2 == Tipo_1.Tipo.DOUBLE)) {
-                    this.generateQuad2(arbol, new Quadrupla_1.Quadrupla(`${Operador_1.Operador.REPEAT}`, `${op1}`, `${op2}`, ""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.REPEAT}`,`${op1}`,`${op2}`,""));
                     return op1.repeat(op2);
                 }
                 else {
@@ -1289,6 +1381,8 @@ class Primitivo {
         this.valor = valor;
     }
     traducir(controlador) {
+        //const value = `${this.valor}` == `true`? 1: `${this.valor}` == `false` ? 0: `${this.valor}`;
+        const value = `${this.valor}` === "true" ? "1" : `${this.valor}` === "false" ? "0" : `${this.valor}`;
         return new Quadrupla_1.Quadrupla("op", "arg1", "arg2", `${this.valor}`); //AL SER UN VALOR PRIMITIVO, NO NECESITAMOS GUARDAR TEMP, PORQUE SE RETORNA EL VALOR 
     }
     getTipo(ent, arbol) {
@@ -2615,6 +2709,7 @@ const Tipo_js_1 = require("../AST/Tipo.js");
 const Quadrupla_1 = require("../Traductor/Quadrupla");
 const Operacion_1 = require("../Expresiones/Operacion");
 const Primitivo_1 = require("../Expresiones/Primitivo");
+const Operador_1 = require("../AST/Operador");
 class Asignacion {
     constructor(identificador, exp, linea, columna) {
         this.expresion = exp;
@@ -2623,7 +2718,31 @@ class Asignacion {
         this.identificador = identificador;
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        const variable = controlador.actual.getSimbolo(this.identificador);
+        let simboloValor = variable.getTipo(controlador.actual, controlador.arbol);
+        let valor = this.expresion.getValorImplicito(controlador.actual, controlador.arbol);
+        if (simboloValor == Tipo_js_1.Tipo.STRING) {
+            const tmp = controlador.getTemp();
+            const tmp2 = controlador.getTemp();
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`ASSIGN`, `H`, ``, `${tmp}`));
+            for (let i = 0; i < valor.length; i++) {
+                controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[H]`));
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), `1`, `H`, `H`));
+            }
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `-1`, `H`, `${controlador.arbol.heap}`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `1`, `H`, `H`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `P`, `${variable.posicion.toString()}`, `${tmp2}`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${tmp}`, ``, `${controlador.arbol.stack}[${tmp2}]`));
+            console.log(controlador);
+        }
+        else if (simboloValor == Tipo_js_1.Tipo.INT || simboloValor == Tipo_js_1.Tipo.DOUBLE) {
+            const tmp = controlador.getTemp();
+            controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp));
+            const quad_expr = this.expresion.traducir(controlador);
+            const res = (quad_expr) ? quad_expr.resultado : "";
+            controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[" + tmp + "]"));
+        }
+        return;
     }
     ejecutar(ent, arbol) {
         let valor = this.expresion.getValorImplicito(ent, arbol);
@@ -2718,7 +2837,7 @@ class Asignacion {
 }
 exports.Asignacion = Asignacion;
 
-},{"../AST/Excepcion":3,"../AST/Tipo.js":6,"../Expresiones/Operacion":21,"../Expresiones/Primitivo":22,"../Traductor/Quadrupla":45}],27:[function(require,module,exports){
+},{"../AST/Excepcion":3,"../AST/Operador":4,"../AST/Tipo.js":6,"../Expresiones/Operacion":21,"../Expresiones/Primitivo":22,"../Traductor/Quadrupla":45}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Break = void 0;
@@ -2794,10 +2913,9 @@ exports.Continue = Continue;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Declaracion = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
+const Operador_1 = require("../AST/Operador");
 const Simbolo_1 = require("../AST/Simbolo");
 const Tipo_1 = require("../AST/Tipo");
-const Operacion_1 = require("../Expresiones/Operacion");
-const Primitivo_1 = require("../Expresiones/Primitivo");
 const Quadrupla_1 = require("../Traductor/Quadrupla");
 const Llamada_1 = require("./Llamada");
 class Declaracion {
@@ -2810,7 +2928,34 @@ class Declaracion {
         this.identificadores = identificadores;
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        if (this.expresion == null) {
+            return;
+        }
+        const variable = controlador.actual.getSimbolo(this.identificador);
+        let simboloValor = variable.getTipo(controlador.actual, controlador.arbol);
+        let valor = this.expresion.getValorImplicito(controlador.actual, controlador.arbol);
+        if (simboloValor == Tipo_1.Tipo.STRING) {
+            const tmp = controlador.getTemp();
+            const tmp2 = controlador.getTemp();
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`ASSIGN`, `H`, ``, `${tmp}`));
+            for (let i = 0; i < valor.length; i++) {
+                controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[H]`));
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), `1`, `H`, `H`));
+            }
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `-1`, `H`, `${controlador.arbol.heap}`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `1`, `H`, `H`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `P`, `${variable.posicion.toString()}`, `${tmp2}`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${tmp}`, ``, `${controlador.arbol.stack}[${tmp2}]`));
+            console.log(controlador);
+        }
+        else if (simboloValor == Tipo_1.Tipo.INT || simboloValor == Tipo_1.Tipo.DOUBLE) {
+            const tmp = controlador.getTemp();
+            controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp));
+            const quad_expr = this.expresion.traducir(controlador);
+            const res = (quad_expr) ? quad_expr.resultado : "";
+            controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[" + tmp + "]"));
+        }
+        return;
     }
     ejecutar(ent, arbol) {
         let valor;
@@ -2831,70 +2976,66 @@ class Declaracion {
             if (tipoValor == this.tipo || (tipoValor == Tipo_1.Tipo.NULL && this.tipo == Tipo_1.Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo_1.Tipo.CHAR && this.tipo == Tipo_1.Tipo.STRING)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo = new Simbolo_1.Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
-                    if (this.tipo == Tipo_1.Tipo.INT || this.tipo == Tipo_1.Tipo.DOUBLE) {
-                        if (this.expresion instanceof Operacion_1.Operacion) {
-                            let temp = arbol.controlador.getTemp();
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp}`));
-                            arbol.controlador.codigo3D.push(`${temp} = P + ${arbol.posiciones} ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${this.expresion.etiqueta}`, `${arbol.posiciones}`, `${arbol.stack}`));
-                            arbol.controlador.codigo3D.push(`${arbol.stack}[${temp}] = ${this.expresion.etiqueta} ;`);
-                        }
-                        else if (this.expresion instanceof Primitivo_1.Primitivo) {
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor}`, `${arbol.posiciones}`, `${arbol.stack}`));
-                        }
-                    }
-                    else if (this.tipo == Tipo_1.Tipo.STRING) {
-                        if (this.expresion instanceof Operacion_1.Operacion || this.expresion instanceof Primitivo_1.Primitivo) {
-                            let temp = arbol.controlador.getTemp();
-                            let temp2 = arbol.controlador.getTemp();
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `H`, ``, `${temp}`));
-                            arbol.controlador.codigo3D.push(`${temp} = H ;`);
-                            for (let i = 0; i < valor.length; i++) {
-                                arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor.charCodeAt(i)}`, `H`, `${arbol.heap}`));
-                                arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = ${valor.charCodeAt(i)} ;`);
-                                arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `1`, `H`, `H`));
-                                arbol.controlador.codigo3D.push(`H = H + 1 ;`);
-                            }
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `-1`, `H`, `${arbol.heap}`));
-                            arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = -1 ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `1`, `H`, `H`));
-                            arbol.controlador.codigo3D.push(`H = H + 1 ;`);
-                            arbol.controlador.codigo3D.push(`${temp2} = P + ${arbol.posiciones} ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp2}`));
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${temp}`, `${temp2}`, `${arbol.stack}`));
-                            arbol.controlador.codigo3D.push(`${arbol.stack}[(int)${temp2}] = ${temp} ;`);
-                            console.log("Imprimiendo string--------");
-                            console.log(arbol.controlador.codigo3D.join("\n"));
-                            console.log("Saliendo de imprimir string");
-                        }
-                    }
-                    else if (this.tipo == Tipo_1.Tipo.CHAR) {
-                        if (this.expresion instanceof Operacion_1.Operacion) {
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${this.expresion.etiqueta}`, `${arbol.posiciones}`, `${arbol.stack}`));
-                        }
-                        else if (this.expresion instanceof Primitivo_1.Primitivo) {
-                            let temp = arbol.controlador.getTemp();
-                            let temp2 = arbol.controlador.getTemp();
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `H`, ``, `${temp}`));
-                            arbol.controlador.codigo3D.push(`${temp} = H ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor.charCodeAt(0)}`, `H`, `${arbol.heap}`));
-                            arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = ${valor.charCodeAt(0)} ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `-1`, `H`, `${arbol.heap}`));
-                            arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = -1 ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `1`, `H`, `H`));
-                            arbol.controlador.codigo3D.push(`H = H + 1 ;`);
-                            arbol.controlador.codigo3D.push(`${temp2} = P + ${arbol.posiciones} ;`);
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp2}`));
-                            arbol.controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${temp}`, `${temp2}`, `${arbol.stack}`));
-                            arbol.controlador.codigo3D.push(`${arbol.stack}[(int)${temp2}] = ${temp} ;`);
-                            console.log("Imprimiendo string--------");
-                            console.log(arbol.controlador.codigo3D.join("\n"));
-                            console.log("Saliendo de imprimir string");
-                        }
-                    }
+                    //if (this.tipo == Tipo.INT || this.tipo == Tipo.DOUBLE) {
+                    /* if (this.expresion instanceof Operacion) {
+                         let temp = arbol.controlador.getTemp();
+                         arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp}`));
+                         arbol.controlador.codigo3D.push(`${temp} = P + ${arbol.posiciones} ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `${this.expresion.etiqueta}`, `${arbol.posiciones}`, `${arbol.stack}`));
+                         arbol.controlador.codigo3D.push(`${arbol.stack}[${temp}] = ${this.expresion.etiqueta} ;`);
+                     } else if (this.expresion instanceof Primitivo) {
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `${valor}`, `${arbol.posiciones}`, `${arbol.stack}`));
+                     }
+                 } else if (this.tipo == Tipo.STRING){
+                     if (this.expresion instanceof Operacion || this.expresion instanceof Primitivo) {
+                         let temp = arbol.controlador.getTemp();
+                         let temp2 = arbol.controlador.getTemp();
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `H`, ``, `${temp}`));
+                         arbol.controlador.codigo3D.push(`${temp} = H ;`);
+                         for (let i = 0; i < valor.length; i++){
+                             arbol.controlador.addQuad(new Quadrupla(`=`, `${valor.charCodeAt(i)}`, `H`, `${arbol.heap}`));
+                             arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = ${valor.charCodeAt(i)} ;`);
+                             arbol.controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
+                             arbol.controlador.codigo3D.push(`H = H + 1 ;`);
+                         }
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `-1`, `H`, `${arbol.heap}`));
+                         arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = -1 ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
+                         arbol.controlador.codigo3D.push(`H = H + 1 ;`);
+                         arbol.controlador.codigo3D.push(`${temp2} = P + ${arbol.posiciones} ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp2}`));
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `${temp}`, `${temp2}`, `${arbol.stack}`));
+                         arbol.controlador.codigo3D.push(`${arbol.stack}[(int)${temp2}] = ${temp} ;`);
+                         console.log("Imprimiendo string--------");
+                         console.log(arbol.controlador.codigo3D.join("\n"));
+                         console.log("Saliendo de imprimir string");
+                     }
+                 } else if (this.tipo == Tipo.CHAR){
+                     if (this.expresion instanceof Operacion) {
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `${this.expresion.etiqueta}`, `${arbol.posiciones}`, `${arbol.stack}`));
+                     } else if (this.expresion instanceof Primitivo) {
+                         let temp = arbol.controlador.getTemp();
+                         let temp2 = arbol.controlador.getTemp();
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `H`, ``, `${temp}`));
+                         arbol.controlador.codigo3D.push(`${temp} = H ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `${valor.charCodeAt(0)}`, `H`, `${arbol.heap}`));
+                         arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = ${valor.charCodeAt(0)} ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `-1`, `H`, `${arbol.heap}`));
+                         arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = -1 ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
+                         arbol.controlador.codigo3D.push(`H = H + 1 ;`);
+                         arbol.controlador.codigo3D.push(`${temp2} = P + ${arbol.posiciones} ;`);
+                         arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp2}`));
+                         arbol.controlador.addQuad(new Quadrupla(`=`, `${temp}`, `${temp2}`, `${arbol.stack}`));
+                         arbol.controlador.codigo3D.push(`${arbol.stack}[(int)${temp2}] = ${temp} ;`);
+                         console.log("Imprimiendo string--------");
+                         console.log(arbol.controlador.codigo3D.join("\n"));
+                         console.log("Saliendo de imprimir string");
+                     }*/
+                    //}
                     simbolo.posicion = arbol.posiciones++;
                     ent.agregar(this.identificador, simbolo);
-                    console.log(arbol.controlador);
+                    //console.log(arbol.controlador);
                     return simbolo;
                 }
                 else {
@@ -2954,7 +3095,7 @@ class Declaracion {
 }
 exports.Declaracion = Declaracion;
 
-},{"../AST/Excepcion":3,"../AST/Simbolo":5,"../AST/Tipo":6,"../Expresiones/Operacion":21,"../Expresiones/Primitivo":22,"../Traductor/Quadrupla":45,"./Llamada":36}],31:[function(require,module,exports){
+},{"../AST/Excepcion":3,"../AST/Operador":4,"../AST/Simbolo":5,"../AST/Tipo":6,"../Traductor/Quadrupla":45,"./Llamada":36}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DoWhile = void 0;
@@ -3387,7 +3528,11 @@ class Main {
         }
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        var _a;
+        controlador.actual = (_a = controlador.arbol.tablas.shift()) !== null && _a !== void 0 ? _a : new Entorno_1.Entorno(null); //VERIFICA QUE EL ENTORNO NO SE UNDEFINED
+        this.instrucciones.forEach(instruccion => {
+            instruccion.traducir(controlador);
+        });
     }
 }
 exports.Main = Main;
@@ -3396,6 +3541,7 @@ exports.Main = Main;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Print = void 0;
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 // print("hola mundo");
 class Print {
     constructor(exp, linea, columna, salto) {
@@ -3405,14 +3551,25 @@ class Print {
         this.salto = salto;
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        this.expresion.forEach(element => {
+            const tmpQ = element.traducir(controlador);
+            if (tmpQ) {
+                controlador.addQuad(new Quadrupla_1.Quadrupla("PRINTF", tmpQ.resultado, "", ""));
+            }
+        });
+        if (this.salto) {
+            controlador.addQuad(new Quadrupla_1.Quadrupla("PRINTF", "\n", "", ""));
+        }
     }
     ejecutar(ent, arbol) {
         this.expresion.forEach(element => {
             let valor = element.getValorImplicito(ent, arbol);
-            valor = this.addSalto(valor);
+            //valor = this.addSalto(valor);
             arbol.updateConsola(valor);
         });
+        if (this.salto) {
+            arbol.updateConsola("\n");
+        }
     }
     addSalto(valor) {
         return this.salto ? valor + "\n" : valor;
@@ -3420,7 +3577,7 @@ class Print {
 }
 exports.Print = Print;
 
-},{}],39:[function(require,module,exports){
+},{"../Traductor/Quadrupla":45}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Return = void 0;
@@ -3447,7 +3604,10 @@ class Return {
         return this;
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        if (this.expresion == null) {
+            return;
+        }
+        //AQUI DEBE IR EL CODIGO EN 3D PARA EL RETURN DE EXPRESIONES
     }
     getTipo() {
         return this.tipo;
@@ -3604,24 +3764,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuadControlador = void 0;
 const Entorno_1 = require("../AST/Entorno");
 class QuadControlador {
-    /*
-        isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
-        isFalse: Quadrupla[];
-        breaks: Quadrupla[];
-        continues: Quadrupla[];
-    
-        tables: SymbolTable[];
-         stack: SymbolTable[];
-    
-        labelTrue: string | undefined;
-        labelFalse: string | undefined;
-    
-         sm: SemanticHandler;
-         blocks: CodeBlock[];
-    
-         quadReturn?: Quadrupla;
-         returns: Quadrupla[];
-    */
     constructor(arbol) {
         this.quads = [];
         this.labels = 0;
@@ -3732,6 +3874,77 @@ if (typeof window !== 'undefined') {
         return ast.getConsola();
     }
 }
+
+if (typeof window !== 'undefined') {
+    window.traducirExternal = function (input) {
+        const instrucciones = grammar.parse(input);
+        const ast = new AST.AST(instrucciones);
+        const entornoGlobal = new Entorno.Entorno(null);
+        const controlador = new QuadControlador(ast);
+        ast.tablas.push(entornoGlobal); //GUARDO EL ENTORNO/TABLA PARA EL CODIGO EN 3D
+        //console.log(ast.tablas);
+        ast.instrucciones.forEach(function (element) {
+            let value;
+            if (element instanceof Funcion.Funcion) {
+                ast.addFuncion(element);
+
+            } else if (element instanceof Declaracion.Declaracion) {
+
+                value = element.ejecutar(entornoGlobal, ast);
+            }
+
+            if (value instanceof Excepcion.Excepcion) {
+                ast.updateConsola(value);
+            } 
+
+        });
+
+        let main = false;
+
+        ast.instrucciones.forEach(function (element) {
+            let value;
+            if (element instanceof Main.Main) {
+                if (main == false) {
+                    value = element.ejecutar(entornoGlobal, ast);
+                    main = true;
+                    if (value instanceof Excepcion.Excepcion) {
+                        ast.addExcepcion(value);
+                        ast.updateConsola(value);
+                    } 
+             
+                }else{
+                    let excepcion = new Excepcion.Excepcion(value.linea,value.columna,"\nSemantico","Existe mas de una funcion Main")
+                    ast.addExcepcion(excepcion);
+                    ast.updateConsola(excepcion);
+                    return;
+                }
+            } 
+            
+        });
+
+        ast.instrucciones.forEach(function (element) {
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion)) {
+                let excepcion = new Excepcion.Excepcion(element.linea,element.columna,"\nSemantico","Sentencias fuera de Main")
+                ast.addExcepcion(excepcion);
+                ast.updateConsola(excepcion)
+            } 
+            
+        });
+        if(ast.excepciones.length==0){
+            const controlador = new QuadControlador(ast);
+            controlador.actual = ast.tablas.shift();
+            ast.instrucciones.forEach(instruccion=>{
+                instruccion.traducir(controlador);  
+            });
+            //controlador.quads.forEach(console.log); //PASAR LA FIRMA DEL METODO CONSOLE.LOG
+            console.log(controlador.quads);
+            return "RETURN COMPLETED";  //luego vamos a devolver el codigo en 3d con sintaxis C
+        }
+       
+        return ast.getConsola();
+    }
+}
+
 
 
 },{"./AST/AST.js":1,"./AST/Entorno.js":2,"./AST/Excepcion.js":3,"./Gramatica/grammar.js":25,"./Instrucciones/Declaracion.js":30,"./Instrucciones/Funcion.js":34,"./Instrucciones/Main.js":37,"./Instrucciones/Return.js":39,"./Interfaces/Instruccion.js":42,"./Traductor/QuadControlador.js":44}],47:[function(require,module,exports){

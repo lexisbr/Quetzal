@@ -51,6 +51,7 @@ export class Identificador implements Expresion {
 		const tmp2 = controlador.getTemp();
 		controlador.addQuad(new Quadrupla(`${Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
 		const quad = new Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+        controlador.addQuad(quad);
 		return quad;
     }
 

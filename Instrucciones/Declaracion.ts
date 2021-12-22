@@ -31,8 +31,39 @@ export class Declaracion implements Instruccion {
     }
 
     traducir(controlador:QuadControlador) {
-        throw new Error("Method not implemented.");
+       if(this.expresion == null){
+
+        return;
+       }
+
+        const variable: Simbolo = controlador.actual.getSimbolo(this.identificador);
+        let simboloValor = variable.getTipo(controlador.actual, controlador.arbol);
+        let valor = this.expresion.getValorImplicito(controlador.actual, controlador.arbol);
+        if (simboloValor == Tipo.STRING) {
+            const tmp = controlador.getTemp();
+            const tmp2 = controlador.getTemp();
+            controlador.addQuad(new Quadrupla(`ASSIGN`, `H`, ``, `${tmp}`));
+            for (let i = 0; i < valor.length; i++) {
+                controlador.addQuad(new Quadrupla(`=`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[H]`));
+                controlador.addQuad(new Quadrupla(Operador.SUMA.toString(), `1`, `H`, `H`));
+            }
+            controlador.addQuad(new Quadrupla(`=`, `-1`, `H`, `${controlador.arbol.heap}`));
+            controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
+            controlador.addQuad(new Quadrupla(`+`, `P`, `${variable.posicion.toString()}`, `${tmp2}`));
+            controlador.addQuad(new Quadrupla(`=`, `${tmp}`, ``, `${controlador.arbol.stack}[${tmp2}]`));
+            console.log(controlador);
+        } else if (simboloValor == Tipo.INT || simboloValor == Tipo.DOUBLE) {
+            const tmp = controlador.getTemp();
+            controlador.addQuad(new Quadrupla(Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp));
+            const quad_expr = this.expresion.traducir(controlador);
+            const res = (quad_expr) ? quad_expr.resultado : "";
+            controlador.addQuad(new Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[" + tmp + "]"));
+        }
+        return;
     }
+
+
+    
 
     ejecutar(ent: Entorno, arbol: AST) {
         let valor;
@@ -51,8 +82,8 @@ export class Declaracion implements Instruccion {
             if (tipoValor == this.tipo || (tipoValor == Tipo.NULL && this.tipo == Tipo.STRING) || this.isDouble(tipoValor) || (tipoValor == Tipo.CHAR && this.tipo == Tipo.STRING)) {
                 if (!ent.existeEnActual(this.identificador)) {
                     let simbolo: Simbolo = new Simbolo(this.tipo, this.identificador, this.linea, this.columna, valor);
-                    if (this.tipo == Tipo.INT || this.tipo == Tipo.DOUBLE) {
-                        if (this.expresion instanceof Operacion) {
+                    //if (this.tipo == Tipo.INT || this.tipo == Tipo.DOUBLE) {
+                       /* if (this.expresion instanceof Operacion) {
                             let temp = arbol.controlador.getTemp();
                             arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${arbol.posiciones}`, `${temp}`));
                             arbol.controlador.codigo3D.push(`${temp} = P + ${arbol.posiciones} ;`);
@@ -106,12 +137,12 @@ export class Declaracion implements Instruccion {
                             console.log("Imprimiendo string--------");
                             console.log(arbol.controlador.codigo3D.join("\n"));
                             console.log("Saliendo de imprimir string");
-                        }
-                    }
+                        }*/
+                    //}
 
                     simbolo.posicion = arbol.posiciones++;
                     ent.agregar(this.identificador, simbolo);
-                    console.log(arbol.controlador);
+                    //console.log(arbol.controlador);
                     return simbolo;
                 } else {
                     return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
