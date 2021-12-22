@@ -4,6 +4,8 @@ exports.AST = void 0;
 const QuadControlador_1 = require("../Traductor/QuadControlador");
 class AST {
     constructor(instrucciones) {
+        this.stack = "STACK";
+        this.heap = "HEAP";
         this.instrucciones = instrucciones;
         this.structs = [];
         this.funciones = [];

@@ -14,6 +14,8 @@ export class AST{
     public tablas: Entorno[];
     public controlador: QuadControlador;
     public posiciones: number;
+    public stack = "STACK";
+    public heap = "HEAP";
 
     constructor(instrucciones:Array<Instruccion>){
         this.instrucciones = instrucciones;

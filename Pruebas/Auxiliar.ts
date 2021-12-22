@@ -1,11 +1,46 @@
-/**else if(typeof(op1 === "string") && typeof(op2==="string")){
-    return op1 + op2;
-}else
-{
-    if(typeof(op1!=="number") || typeof(op2!=="number")){
-        return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Suma (+)");
-    } else if(typeof(op1!=="string") || typeof(op2!=="string")){
-        return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Concatenacion (&)");  
-    } 
-}
-*/
+/*
+t0 =  Hola 24 3 ;
+t1 = H ;
+heap[(int)H] = 72 ;
+H = H + 1 ;
+heap[(int)H] = 111 ;
+H = H + 1 ;
+heap[(int)H] = 108 ;
+H = H + 1 ;
+heap[(int)H] = 97 ;
+H = H + 1 ;
+heap[(int)H] = 72 ;
+H = H + 1 ;
+heap[(int)H] = 111 ;
+H = H + 1 ;
+heap[(int)H] = 108 ;
+H = H + 1 ;
+heap[(int)H] = 97 ;
+H = H + 1 ;
+heap[(int)H] = 72 ;
+H = H + 1 ;
+heap[(int)H] = 111 ;
+H = H + 1 ;
+heap[(int)H] = 108 ;
+H = H + 1 ;
+heap[(int)H] = 97 ;
+H = H + 1 ;
+heap[(int)H] = -1 ;
+H = H + 1 ;
+t2 = P + 0 ;
+STACK[(int)t2] = t1 ;
+t3 = H ;
+heap[(int)H] = 97 ;
+H = H + 1 ;
+heap[(int)H] = 100 ;
+H = H + 1 ;
+heap[(int)H] = 105 ;
+H = H + 1 ;
+heap[(int)H] = 111 ;
+H = H + 1 ;
+heap[(int)H] = 115 ;
+H = H + 1 ;
+heap[(int)H] = -1 ;
+H = H + 1 ;
+t4 = P + 0 ;
+STACK[(int)t4] = t3 ; */
