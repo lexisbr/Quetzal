@@ -18,7 +18,7 @@ if (typeof window !== 'undefined') {
         const entornoGlobal = new Entorno.Entorno(null);
         const controlador = new QuadControlador(ast);
         ast.tablas.push(entornoGlobal); //GUARDO EL ENTORNO/TABLA PARA EL CODIGO EN 3D
-        console.log(ast.tablas);
+        //console.log(ast.tablas);
         ast.instrucciones.forEach(function (element) {
             let value;
             if (element instanceof Funcion.Funcion) {
