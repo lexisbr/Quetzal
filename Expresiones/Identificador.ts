@@ -6,6 +6,7 @@ import { Tipo } from "../AST/Tipo";
 import { Expresion } from "../Interfaces/Expresion";
 import { QuadControlador } from "../Traductor/QuadControlador";
 import { Quadrupla } from "../Traductor/Quadrupla";
+import { Operador } from "../AST/Operador";
 
 export class Identificador implements Expresion {
     linea: number;
@@ -45,9 +46,12 @@ export class Identificador implements Expresion {
     }
 
     traducir(controlador:QuadControlador):Quadrupla|undefined{
-            
-
-        return;
+        const variable: Simbolo = controlador.actual.getSimbolo(this.identificador);
+		const tmp = controlador.getTemp();
+		const tmp2 = controlador.getTemp();
+		controlador.addQuad(new Quadrupla(`${Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
+		const quad = new Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+		return quad;
     }
 
     

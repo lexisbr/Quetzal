@@ -127,31 +127,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Operador = void 0;
 var Operador;
 (function (Operador) {
-    Operador[Operador["SUMA"] = 0] = "SUMA";
-    Operador[Operador["RESTA"] = 1] = "RESTA";
-    Operador[Operador["MULTIPLICACION"] = 2] = "MULTIPLICACION";
-    Operador[Operador["DIVISION"] = 3] = "DIVISION";
-    Operador[Operador["MODULO"] = 4] = "MODULO";
-    Operador[Operador["MENOS_UNARIO"] = 5] = "MENOS_UNARIO";
-    Operador[Operador["MAYOR_QUE"] = 6] = "MAYOR_QUE";
-    Operador[Operador["MENOR_QUE"] = 7] = "MENOR_QUE";
-    Operador[Operador["IGUAL_IGUAL"] = 8] = "IGUAL_IGUAL";
-    Operador[Operador["DIFERENTE_QUE"] = 9] = "DIFERENTE_QUE";
-    Operador[Operador["INCREMENTO"] = 10] = "INCREMENTO";
-    Operador[Operador["DECREMENTO"] = 11] = "DECREMENTO";
-    Operador[Operador["AND"] = 12] = "AND";
-    Operador[Operador["OR"] = 13] = "OR";
-    Operador[Operador["NOT"] = 14] = "NOT";
-    Operador[Operador["MAYOR_IGUAL_QUE"] = 15] = "MAYOR_IGUAL_QUE";
-    Operador[Operador["MENOR_IGUAL_QUE"] = 16] = "MENOR_IGUAL_QUE";
-    Operador[Operador["POW"] = 17] = "POW";
-    Operador[Operador["SQRT"] = 18] = "SQRT";
-    Operador[Operador["LOG"] = 19] = "LOG";
-    Operador[Operador["SENO"] = 20] = "SENO";
-    Operador[Operador["COSENO"] = 21] = "COSENO";
-    Operador[Operador["TAN"] = 22] = "TAN";
-    Operador[Operador["CONCAT"] = 23] = "CONCAT";
-    Operador[Operador["REPEAT"] = 24] = "REPEAT";
+    Operador["SUMA"] = "+";
+    Operador["RESTA"] = "-";
+    Operador["MULTIPLICACION"] = "*";
+    Operador["DIVISION"] = "/";
+    Operador["MODULO"] = "%";
+    Operador["MENOS_UNARIO"] = "UMENOS";
+    Operador["MAYOR_QUE"] = ">";
+    Operador["MENOR_QUE"] = "<";
+    Operador["IGUAL_IGUAL"] = "==";
+    Operador["DIFERENTE_QUE"] = "!=";
+    Operador["INCREMENTO"] = "INCREMENTO";
+    Operador["DECREMENTO"] = "DECREMENTO";
+    Operador["AND"] = "&&";
+    Operador["OR"] = "||";
+    Operador["NOT"] = "!";
+    Operador["MAYOR_IGUAL_QUE"] = ">=";
+    Operador["MENOR_IGUAL_QUE"] = "<=";
+    Operador["POW"] = "POW";
+    Operador["SQRT"] = "SQRT";
+    Operador["LOG"] = "LOG";
+    Operador["SENO"] = "SENO";
+    Operador["COSENO"] = "COSENO";
+    Operador["TAN"] = "TAN";
+    Operador["CONCAT"] = "CONCAT";
+    Operador["REPEAT"] = "REPEAT";
 })(Operador = exports.Operador || (exports.Operador = {}));
 
 },{}],5:[function(require,module,exports){
@@ -234,6 +234,8 @@ exports.Decremento = Decremento;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Identificador = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
+const Operador_1 = require("../AST/Operador");
 class Identificador {
     constructor(identificador, linea, columna) {
         this.linea = linea;
@@ -264,12 +266,17 @@ class Identificador {
         }
     }
     traducir(controlador) {
-        return;
+        const variable = controlador.actual.getSimbolo(this.identificador);
+        const tmp = controlador.getTemp();
+        const tmp2 = controlador.getTemp();
+        controlador.addQuad(new Quadrupla_1.Quadrupla(`${Operador_1.Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
+        const quad = new Quadrupla_1.Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+        return quad;
     }
 }
 exports.Identificador = Identificador;
 
-},{"../AST/Excepcion":3}],9:[function(require,module,exports){
+},{"../AST/Excepcion":3,"../AST/Operador":4,"../Traductor/Quadrupla":45}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Incremento = void 0;
@@ -3595,6 +3602,7 @@ exports.ReporteGramatical = ReporteGramatical;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuadControlador = void 0;
+const Entorno_1 = require("../AST/Entorno");
 class QuadControlador {
     /*
         isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
@@ -3620,6 +3628,7 @@ class QuadControlador {
         this.temps = 0;
         this.codigo3D = [];
         this.arbol = arbol;
+        this.actual = new Entorno_1.Entorno(null);
     }
     getTemp() {
         return `t${this.temps++}`;
@@ -3633,7 +3642,7 @@ class QuadControlador {
 }
 exports.QuadControlador = QuadControlador;
 
-},{}],45:[function(require,module,exports){
+},{"../AST/Entorno":2}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Quadrupla = void 0;

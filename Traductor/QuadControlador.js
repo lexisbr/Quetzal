@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuadControlador = void 0;
+const Entorno_1 = require("../AST/Entorno");
 class QuadControlador {
     /*
         isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
@@ -26,6 +27,7 @@ class QuadControlador {
         this.temps = 0;
         this.codigo3D = [];
         this.arbol = arbol;
+        this.actual = new Entorno_1.Entorno(null);
     }
     getTemp() {
         return `t${this.temps++}`;

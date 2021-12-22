@@ -1,4 +1,5 @@
 import { AST } from "../AST/AST";
+import { Entorno } from "../AST/Entorno";
 import { Quadrupla } from "./Quadrupla";
 
 export class QuadControlador{
@@ -7,6 +8,7 @@ export class QuadControlador{
     temps: number;    //ARREGLO DE TEMPORALES
     codigo3D: Array<string>;
 	arbol: AST;
+	actual: Entorno;
 /*
     isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
     isFalse: Quadrupla[];
@@ -32,7 +34,7 @@ export class QuadControlador{
 		this.temps = 0;
 		this.codigo3D = [];
         this.arbol = arbol;
-
+		this.actual = new Entorno(null);
     }
 
 	getTemp(): string{	//AUMENTAR LOS TEMPORALES EXISTENTES

@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Identificador = void 0;
 const Excepcion_1 = require("../AST/Excepcion");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
+const Operador_1 = require("../AST/Operador");
 class Identificador {
     constructor(identificador, linea, columna) {
         this.linea = linea;
@@ -32,7 +34,12 @@ class Identificador {
         }
     }
     traducir(controlador) {
-        return;
+        const variable = controlador.actual.getSimbolo(this.identificador);
+        const tmp = controlador.getTemp();
+        const tmp2 = controlador.getTemp();
+        controlador.addQuad(new Quadrupla_1.Quadrupla(`${Operador_1.Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
+        const quad = new Quadrupla_1.Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+        return quad;
     }
 }
 exports.Identificador = Identificador;
