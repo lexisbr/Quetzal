@@ -1,23 +1,6 @@
 "use strict";
 /*
-t0 =  Hola 24 3 ;
-t1 = H ;
-heap[(int)H] = 72 ;
-H = H + 1 ;
-heap[(int)H] = 111 ;
-H = H + 1 ;
-heap[(int)H] = 108 ;
-H = H + 1 ;
-heap[(int)H] = 97 ;
-H = H + 1 ;
-heap[(int)H] = 72 ;
-H = H + 1 ;
-heap[(int)H] = 111 ;
-H = H + 1 ;
-heap[(int)H] = 108 ;
-H = H + 1 ;
-heap[(int)H] = 97 ;
-H = H + 1 ;
+t0 = H ;
 heap[(int)H] = 72 ;
 H = H + 1 ;
 heap[(int)H] = 111 ;
@@ -28,9 +11,9 @@ heap[(int)H] = 97 ;
 H = H + 1 ;
 heap[(int)H] = -1 ;
 H = H + 1 ;
-t2 = P + 0 ;
-STACK[(int)t2] = t1 ;
-t3 = H ;
+t1 = P + 0 ;
+STACK[(int)t1] = t0 ;
+t2 = H ;
 heap[(int)H] = 97 ;
 H = H + 1 ;
 heap[(int)H] = 100 ;
@@ -43,5 +26,6 @@ heap[(int)H] = 115 ;
 H = H + 1 ;
 heap[(int)H] = -1 ;
 H = H + 1 ;
-t4 = P + 0 ;
-STACK[(int)t4] = t3 ; */ 
+t3 = P + 0 ;
+STACK[(int)t3] = t2 ;
+*/ 

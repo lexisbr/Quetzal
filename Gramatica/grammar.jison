@@ -283,9 +283,13 @@ LIST_ARGUMENTOS:
 ;
 
 ARGUMENTOS:
-    EXPR  { $$ = $1; }
+    ARGUMENTOS coma ARGUMENTO   { $1.push($3); $$ = $1;}
+    | ARGUMENTO     { $$ = [$1]; }
 ;
 
+ARGUMENTO:
+    EXPR  { $$ = $1; }
+;
 
 WHILE:
     while lparen EXPR rparen allave RAICES cllave { $$ = new While($6,$3,@1.first_line,@1.first_column); }
@@ -378,8 +382,9 @@ DEFAULT:
 ;
 
 PRINT:
-    print lparen EXPR rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
-    | println lparen EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
+    print lparen ARGUMENTOS rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
+    | println lparen ARGUMENTOS rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
+
 ;
 
 
@@ -398,7 +403,7 @@ EXPR:
 
 NATIVAS_STRING:
     EXPR concat EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
-    | EXPR coma EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
+    //| EXPR coma EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
     | EXPR repeat EXPR                                {$$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
     | EXPR dot charOfPos lparen EXPR rparen           {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
     | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}    

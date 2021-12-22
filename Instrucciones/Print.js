@@ -13,9 +13,11 @@ class Print {
         throw new Error("Method not implemented.");
     }
     ejecutar(ent, arbol) {
-        let valor = this.expresion.getValorImplicito(ent, arbol);
-        valor = this.addSalto(valor);
-        arbol.updateConsola(valor);
+        this.expresion.forEach(element => {
+            let valor = element.getValorImplicito(ent, arbol);
+            valor = this.addSalto(valor);
+            arbol.updateConsola(valor);
+        });
     }
     addSalto(valor) {
         return this.salto ? valor + "\n" : valor;
