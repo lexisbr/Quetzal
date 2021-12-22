@@ -30,7 +30,11 @@ class Main {
         }
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        var _a;
+        controlador.actual = (_a = controlador.arbol.tablas.shift()) !== null && _a !== void 0 ? _a : new Entorno_1.Entorno(null); //VERIFICA QUE EL ENTORNO NO SE UNDEFINED
+        this.instrucciones.forEach(instruccion => {
+            instruccion.traducir(controlador);
+        });
     }
 }
 exports.Main = Main;

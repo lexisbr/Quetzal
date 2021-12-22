@@ -6,6 +6,9 @@ import { Expresion } from "../Interfaces/Expresion";
 import { Excepcion } from "../AST/Excepcion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
+import { Identificador } from "./Identificador";
+import { Simbolo } from "../AST/Simbolo";
+import { Quadrupla } from "../Traductor/Quadrupla";
 
 export class Incremento implements Instruccion {
     linea: number;
@@ -26,8 +29,44 @@ export class Incremento implements Instruccion {
             return op1;        
         }
     }
-    traducir(controlador:QuadControlador) {
-        throw new Error("Method not implemented.");
-    }
+    traducir(controlador:QuadControlador): Quadrupla | undefined {
+		/*
+			// this.operacion.traducir(controlador);
+			t1 = P + pos;
+			t2 = stack[t1];
+
+			// incremento aca
+			t3 = t2 + 1
+
+			// obtener posicion
+			t4 = P + pos;
+			// asignar
+
+			stack[t4] = t3
+
+			return t2;
+		*/
+		if(this.operacion instanceof Identificador) {
+			const variable: Simbolo = controlador.actual.getSimbolo(this.operacion.getId());
+			const tmpQ: Quadrupla | undefined = this.operacion.traducir(controlador);
+			if(tmpQ) {
+				const tmp1 = controlador.getTemp();
+				const tmp2 = controlador.getTemp();
+
+				// incremento
+				controlador.addQuad(new Quadrupla(Operador.SUMA.toString(), tmpQ.resultado, "1", tmp1));
+
+				// obtener posicion
+				controlador.addQuad(new Quadrupla(Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp2));
+
+				// Asignar incremento
+				controlador.addQuad(new Quadrupla("ASSIGN", tmp1, "", `${controlador.arbol.stack}[${tmp2}]`));
+
+				// Retornar valor anterior a incremento
+				return tmpQ;
+			}
+		}
+		return;
+	}
 
 }

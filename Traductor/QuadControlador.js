@@ -3,24 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuadControlador = void 0;
 const Entorno_1 = require("../AST/Entorno");
 class QuadControlador {
-    /*
-        isTrue: Quadrupla[] //ARREGLO PARA IF/ELSE/SWITCH
-        isFalse: Quadrupla[];
-        breaks: Quadrupla[];
-        continues: Quadrupla[];
-    
-        tables: SymbolTable[];
-         stack: SymbolTable[];
-    
-        labelTrue: string | undefined;
-        labelFalse: string | undefined;
-    
-         sm: SemanticHandler;
-         blocks: CodeBlock[];
-    
-         quadReturn?: Quadrupla;
-         returns: Quadrupla[];
-    */
     constructor(arbol) {
         this.quads = [];
         this.labels = 0;

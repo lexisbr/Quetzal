@@ -3,6 +3,7 @@ import { Entorno } from "../AST/Entorno";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
+import { Quadrupla } from "../Traductor/Quadrupla";
 
 // print("hola mundo");
 
@@ -20,16 +21,27 @@ export class Print implements Instruccion {
     }
 
     traducir(controlador:QuadControlador) {
-        throw new Error("Method not implemented.");
-    }
+		this.expresion.forEach(element => {
+			const tmpQ: Quadrupla | undefined = element.traducir(controlador);
+			if(tmpQ) {
+				controlador.addQuad(new Quadrupla("PRINTF", tmpQ.resultado, "", ""));
+			}
+		});
+
+		if(this.salto) {
+			controlador.addQuad(new Quadrupla("PRINTF", "\n", "", ""));
+		}
+	}
     ejecutar(ent: Entorno, arbol: AST) {
         
         this.expresion.forEach(element => {
             let valor = element.getValorImplicito(ent, arbol);
-            valor = this.addSalto(valor);
+            //valor = this.addSalto(valor);
             arbol.updateConsola(valor);
         });
-        
+        if(this.salto){
+        arbol.updateConsola("\n");
+        }
     }
 
     addSalto(valor: any) {

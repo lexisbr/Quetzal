@@ -1,7 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Incremento = void 0;
+const Operador_1 = require("../AST/Operador");
 const Excepcion_1 = require("../AST/Excepcion");
+const Identificador_1 = require("./Identificador");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Incremento {
     constructor(operacion, linea, columna) {
         this.linea = linea;
@@ -18,7 +21,39 @@ class Incremento {
         }
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        /*
+            // this.operacion.traducir(controlador);
+            t1 = P + pos;
+            t2 = stack[t1];
+
+            // incremento aca
+            t3 = t2 + 1
+
+            // obtener posicion
+            t4 = P + pos;
+            // asignar
+
+            stack[t4] = t3
+
+            return t2;
+        */
+        if (this.operacion instanceof Identificador_1.Identificador) {
+            const variable = controlador.actual.getSimbolo(this.operacion.getId());
+            const tmpQ = this.operacion.traducir(controlador);
+            if (tmpQ) {
+                const tmp1 = controlador.getTemp();
+                const tmp2 = controlador.getTemp();
+                // incremento
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), tmpQ.resultado, "1", tmp1));
+                // obtener posicion
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp2));
+                // Asignar incremento
+                controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", tmp1, "", `${controlador.arbol.stack}[${tmp2}]`));
+                // Retornar valor anterior a incremento
+                return tmpQ;
+            }
+        }
+        return;
     }
 }
 exports.Incremento = Incremento;

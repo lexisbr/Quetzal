@@ -24,7 +24,10 @@ class Return {
         return this;
     }
     traducir(controlador) {
-        throw new Error("Method not implemented.");
+        if (this.expresion == null) {
+            return;
+        }
+        //AQUI DEBE IR EL CODIGO EN 3D PARA EL RETURN DE EXPRESIONES
     }
     getTipo() {
         return this.tipo;

@@ -29,27 +29,49 @@ export class Operacion implements Expresion {
         this.bandera = false;
     }
     
+
     traducir(controlador:QuadControlador): Quadrupla | undefined {
-       /* switch(this.operador){
+		switch(this.operador){
             case Operador.SUMA:
             case Operador.RESTA:
             case Operador.MULTIPLICACION:
             case Operador.DIVISION:
             case Operador.MODULO:
+			case Operador.AND:
+			case Operador.OR:
+			case Operador.MAYOR_IGUAL_QUE:
+			case Operador.MAYOR_QUE:
+			case Operador.MENOR_IGUAL_QUE:
+			case Operador.MENOR_QUE:
+			case Operador.DIFERENTE_QUE:
+			case Operador.POW:
+			case Operador.CONCAT:
                 const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
                 const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
                 const resultado = controlador.getTemp();
                 if(izq && der){
-                    const quad = new Quadrupla(`${this.operador}`,`${izq.resultado}`,`${der.resultado}`,`${resultado}`);
+                    const quad = new Quadrupla(this.operador.toString(),`${izq.resultado}`,`${der.resultado}`,`${resultado}`);
                     controlador.addQuad(quad);
                     return quad;
                 }
-            break;
-        }
-        */
-       return;
-    }
+				return;
 
+			case Operador.MENOS_UNARIO:
+			case Operador.SQRT:
+			case Operador.SENO:
+			case Operador.COSENO:
+			case Operador.TAN:
+				const left = this.op_izquierda.traducir(controlador);
+				const tmp1 = controlador.getTemp();
+				if(left) {
+					const quad = new Quadrupla(this.operador.toString(), left.resultado, "", tmp1);
+					controlador.addQuad(quad);
+					return quad;
+				}
+				break;
+		}
+		return;
+    }
     getTipo(ent: Entorno, arbol: AST): Tipo {
         const valor = this.getValorImplicito(ent, arbol);
         if (typeof(valor) === 'boolean')
@@ -107,7 +129,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {  
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.SUMA}`,`${op1}`,`${op2}`,""));
+                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.SUMA}`,`${op1}`,`${op2}`,""));
                     return op1 + op2;
                 } else
                 {
@@ -119,7 +141,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.RESTA}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.RESTA}`,`${op1}`,`${op2}`,""));
                     return op1 - op2;
                 }
                 else
@@ -132,7 +154,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.MULTIPLICACION}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.MULTIPLICACION}`,`${op1}`,`${op2}`,""));
                     return op1 * op2;
                 }
                 else
@@ -148,7 +170,7 @@ export class Operacion implements Expresion {
                     if(op2===0){
                         return new Excepcion(this.linea,this.columna,"Semantico","No puede realizar una Operacion entre cero");
                     }
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.DIVISION}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.DIVISION}`,`${op1}`,`${op2}`,""));
                     return op1 / op2;
                 }
                 else
@@ -164,7 +186,7 @@ export class Operacion implements Expresion {
                     if(op2===0){
                         return new Excepcion(this.linea,this.columna,"Semantico","No puede realizar una Operacion entre cero");
                     }
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
                     return op1 % op2;
                 }
                 else
@@ -175,7 +197,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {   
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
                     return Math.pow(op1,op2);
                 }
                 else
@@ -238,7 +260,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="string") && typeof(op2==="string"))
                 {
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.CONCAT}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.CONCAT}`,`${op1}`,`${op2}`,""));
                     return op1 + op2;
                 } else
                 {
@@ -248,7 +270,7 @@ export class Operacion implements Expresion {
             {
                 if (typeof(op1==="string") && (typeOp2 == Tipo.INT || typeOp2 == Tipo.DOUBLE))
                 {
-                    this.generateQuad2(arbol,new Quadrupla(`${Operador.REPEAT}`,`${op1}`,`${op2}`,""));
+                   //this.generateQuad2(arbol,new Quadrupla(`${Operador.REPEAT}`,`${op1}`,`${op2}`,""));
                     return op1.repeat(op2);
                 } else
                 {
