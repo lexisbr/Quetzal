@@ -23,6 +23,49 @@ export class Logica implements Expresion {
         this.operador = operador;
     }
     traducir(controlador:QuadControlador):Quadrupla|undefined{
+        switch (this.operador) {
+            case Operador.SUMA:
+            case Operador.RESTA:
+            case Operador.MULTIPLICACION:
+            case Operador.DIVISION:
+            case Operador.MODULO:
+            case Operador.AND:
+            case Operador.OR:
+            case Operador.MAYOR_IGUAL_QUE:
+            case Operador.MAYOR_QUE:
+            case Operador.MENOR_IGUAL_QUE:
+            case Operador.MENOR_QUE:
+            case Operador.DIFERENTE_QUE:
+            case Operador.POW:
+            case Operador.CONCAT:
+            case Operador.REPEAT:
+            case Operador.IGUAL_IGUAL:
+                const izq = this.op_izquierda.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const der = this.op_derecha.traducir(controlador);   //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const resultado = controlador.getTemp();
+                if (izq && der) {
+                    const quad = new Quadrupla(this.operador.toString(), `${izq.resultado}`, `${der.resultado}`, `${resultado}`);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                return;
+
+            case Operador.NOT:
+            case Operador.MENOS_UNARIO:
+            case Operador.SQRT:
+            case Operador.SENO:
+            case Operador.COSENO:
+            case Operador.TAN:
+            case Operador.LOG:
+                const left = this.op_izquierda.traducir(controlador);
+                const tmp1 = controlador.getTemp();
+                if (left) {
+                    const quad = new Quadrupla(this.operador.toString(), left.resultado, "", tmp1);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                break;
+        }
         return;
     }
     getTipo(ent: Entorno, arbol: AST): Tipo {

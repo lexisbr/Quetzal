@@ -38,7 +38,7 @@ class Identificador {
         const tmp = controlador.getTemp();
         const tmp2 = controlador.getTemp();
         controlador.addQuad(new Quadrupla_1.Quadrupla(`${Operador_1.Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
-        const quad = new Quadrupla_1.Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+        const quad = new Quadrupla_1.Quadrupla("ASSIGN", `${controlador.arbol.stack}[(int)${tmp}]`, "", tmp2);
         controlador.addQuad(quad);
         return quad;
     }

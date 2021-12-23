@@ -1,8 +1,10 @@
 /* description: Quetzal is a programming language inspired by C & Java */
 
 /* lexical grammar */
-
-
+%{
+    let producciones = [];
+    let gramaticaDDS = [];
+%}
 %lex
 
 %options case-sensitive
@@ -197,10 +199,14 @@ BSL                             "\\".
 
     const {Struct} = require("../Instrucciones/Struct.js");
     const {Atributo} = require("../Instrucciones/Atributo.js");
-
-    const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
-
+    
+    //const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
+    //REPORTE GRAMATICAL
+    //const producciones = [];
+    //const gramaticaDDS = [];
+    
     const {Excepcion} = require("../AST/Excepcion.js");
+
 %}
 
 /* operator associations and precedence */
@@ -228,84 +234,135 @@ BSL                             "\\".
 
 
 /* Definición de la gramática */
-START : RAICES EOF         { $$ = $1; return $$; }
+START : RAICES EOF         { $$ = $1; return $$; 
+                            producciones.push(`<INICIO> ::= <INSTRUCCIONES> EOF`);
+                            gramaticaDDS.push(`Inicio.val := Instrucciones.val EOF`);}
 ;
 
 RAICES:
-    RAICES RAIZ           { $1.push($2); $$ = $1;}
-	| RAIZ                { $$ = [$1]; } 
+    RAICES RAIZ           { $1.push($2); $$ = $1; 
+                            producciones.push(`<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>`);
+                            gramaticaDDS.push(`Instrucciones.val := Instrucciones.val Instruccion.val`);}
+	| RAIZ                { $$ = [$1]; 
+                            producciones.push(`<INSTRUCCIONES> ::= <INSTRUCCION>`);
+                            gramaticaDDS.push(`Instrucciones.val := Instruccion.val`);} 
 ;
 
 RAIZ:
-    PRINT semicolon                         { $$ = $1; }
-    | DECLARACION_NULA semicolon            { $$ = $1; }
-    | DECLARACION semicolon                 { $$ = $1; }
+
+    PRINT semicolon                         { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <PRINT> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Print.val ';'`);}
+    | DECLARACION_NULA semicolon            { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <DECLARACION_NULA> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Declaracion_Nula.val ';'`);}
+    | DECLARACION semicolon                 { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <DECLARACION> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Declaracion.val ';'`);}
     | STRUCT semicolon                      { $$ = $1; }
-   // | DECLARACION_ARRAY                     { $$ = $1; }
-    | FUNCION                               { $$ = $1; }
-    | WHILE                                 { $$ = $1; }
-    | DO_WHILE semicolon                    { $$ = $1; }
-    | FOR                                   { $$ = $1; }
-    | FOR_IN                                { $$ = $1; }
-    | RETURN semicolon                      { $$ = $1; }
-    | BREAK semicolon                       { $$ = $1; }
-    | CONTINUE semicolon                    { $$ = $1; }
-    | LLAMADA semicolon                     { $$ = $1; }
-    | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }
-    | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); }    
-    | ASIGNACION semicolon                  { $$ = $1; }
-    | IF                                    { $$ = $1; }
-    | SWITCH                                { $$ = $1; }
-    | MAIN                                  { $$ = $1; }
-    | INVALID                               { $$ = $1; }
+// | DECLARACION_ARRAY                     { $$ = $1; }
+    | FUNCION                               { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <FUNCION>`);
+                                                        gramaticaDDS.push(`Instruccion.val := Funcion.val`);}
+    | WHILE                                 { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <WHILE>`);
+                                                        gramaticaDDS.push(`Instruccion.val := While.val`);}
+    | DO_WHILE semicolon                    { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <DO_WHILE> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Do_While.val ';'`);}
+    | FOR                                   { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <FOR>`);
+                                                        gramaticaDDS.push(`Instruccion.val := For.val`);}
+    | FOR_IN                                { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <FOR_IN>`);
+                                                        gramaticaDDS.push(`Instruccion.val := For_In.val`); }
+    | RETURN semicolon                      { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <RETURN> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Return.val ';'`);}
+    | BREAK semicolon                       { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <BREAK> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Break.val ';'`);}
+    | CONTINUE semicolon                    { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <CONTINUE> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Continue.val ';'`);}
+    | LLAMADA semicolon                     { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <LLAMADA> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Llamada.val ';'`);}
+    | identifier incremento semicolon       { $$ = new Incremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.INCREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); 
+                                                        producciones.push(`<INSTRUCCION> ::= <Identificador> '++' ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Identificador.val '++' ';'`);}
+    | identifier decremento semicolon       { $$ = new Decremento(new Operacion(new Identificador($1,@1.first_line, @1.first_column),new Identificador($1,@1.first_line, @1.first_column),Operador.DECREMENTO, @1.first_line, @1.first_column),@1.first_line, @1.first_column); 
+                                                        producciones.push(`<INSTRUCCION> ::= <Identificador> '--' ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Identificador.val '--' ';'`);}    
+    | ASIGNACION semicolon                  { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <ASIGNACION> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Asignacion.val ';'`);}
+    | IF                                    { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <IF>`);
+                                                        gramaticaDDS.push(`Instruccion.val := If.val`);}
+    | SWITCH                                { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <SWITCH>`);
+                                                        gramaticaDDS.push(`Instruccion.val := Switch.val`);}
+    | MAIN                                  { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <MAIN>`);
+                                                        gramaticaDDS.push(`Instruccion.val := Main.val`);}
+    | INVALID                               { $$ = $1; }                                                        
+
+
 ;
 
 MAIN:
-    void main lparen rparen allave RAICES cllave {$$ = new Main($6,@1.first_line, @1.first_column); }
+    void main lparen rparen allave RAICES cllave {$$ = new Main($6,@1.first_line, @1.first_column); 
+                                                        producciones.push(`<MAIN> ::= 'void' 'main' '(' ')' '{' <INSTRUCCIONES> '}'`);
+                                                        gramaticaDDS.push(`Main.val := 'void' 'main' '(' ')' '{' Instrucciones.val '}'`);}
 ;
 
 FUNCION:
-    TIPO identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column); }
+    TIPO identifier lparen LIST_PARAMETROS rparen allave RAICES cllave  { $$ = new Funcion($2,$4,$7,$1,@1.first_line, @1.first_column);
+                                                        producciones.push(`<FUNCION> ::= <Identificador> '(' <LISTA_PARAMETROS> ')' '{' <INSTRUCCIONES> '}'`);
+                                                        gramaticaDDS.push(`Funcion.val := Identificador.val '(' Lista_Parametros.val ')' '{' Instrucciones.val '}'`);
+                                                         }
 ;
 
 LIST_PARAMETROS:
-    PARAMETROS { $$ = $1; }
-    | { $$ = []; }
+    PARAMETROS { $$ = $1;                               producciones.push(`<LISTA_PARAMETROS> ::= <PARAMETRO>`);
+                                                        gramaticaDDS.push(`Lista_Parametros.val := Parametro.val`);}
+    | { $$ = [];                                        producciones.push(`<LISTA_PARAMETROS> ::= `);
+                                                        gramaticaDDS.push(`Lista_Parametros.val := `);}
 ;
 
 PARAMETROS:
-    PARAMETROS coma PARAMETRO  { $1.push($3); $$ = $1;}
-    | PARAMETRO { $$ = [$1]; }
+    PARAMETROS coma PARAMETRO  { $1.push($3); $$ = $1;  producciones.push(`<PARAMETROS> ::= <PARAMETROS> ',' <PARAMETRO>`);
+                                                        gramaticaDDS.push(`Parametros.val := Parametros.val ',' Parametro.val`);}
+    | PARAMETRO { $$ = [$1];                            producciones.push(`<PARAMETROS> ::= <PARAMETRO>`);
+                                                        gramaticaDDS.push(`Parametros.val := Parametro.val`);}
 ;
 
 PARAMETRO:
-    DECLARACION_PARAMETROS  { $$ = $1; }
+    DECLARACION_PARAMETROS  { $$ = $1;                  producciones.push(`<PARAMETRO> ::= <DECLARACION_PARAMETROS>`);
+                                                        gramaticaDDS.push(`Parametro.val := Declaracion_Parametros.val`);}
 ;
 
 DECLARACION_PARAMETROS:
-    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); }
+    TIPO identifier                  { $$ = new Declaracion($2,null,$1,@1.first_line, @1.first_column); 
+                                                        producciones.push(`<DECLARACION_PARAMETROS> ::= <TIPO> <Identificador>`);
+                                                        gramaticaDDS.push(`Declaracion_Parametros.val := Declaracion_Parametros.val`);}
 ;
 
 LLAMADA:
-    identifier lparen LIST_ARGUMENTOS rparen { $$ = new Llamada($1,$3,@1.first_line, @1.first_column);}
+    identifier lparen LIST_ARGUMENTOS rparen { $$ = new Llamada($1,$3,@1.first_line, @1.first_column);
+                                                        producciones.push(`<LLAMADA> ::= <Identificador>  '(' <LISTA_ARGUMENTOS> ')'`);
+                                                        gramaticaDDS.push(`Main.val := Identificador.val '(' Lista_Argumentos.val ')'`);}
 ;
 
 LIST_ARGUMENTOS:
-    ARGUMENTOS { $$ = $1; }
-    | { $$ = []; }
+    ARGUMENTOS { $$ = $1;                               producciones.push(`<LISTA_ARGUMENTOS> ::= <ARGUMENTOS>`);
+                                                        gramaticaDDS.push(`Lista_Argumentos.val := Argumentos.val`);}
+    | { $$ = [];                                        
+                                                        producciones.push(`<LISTA_ARGUMENTOS> ::= `);
+                                                        gramaticaDDS.push(`Lista_Argumentos.val := `);}
 ;
 
 ARGUMENTOS:
-    ARGUMENTOS coma ARGUMENTO   { $1.push($3); $$ = $1;}
-    | ARGUMENTO     { $$ = [$1]; }
+    ARGUMENTOS coma ARGUMENTO   { $1.push($3); $$ = $1; producciones.push(`<ARGUMENTOS> ::= <ARGUMENTOS> ',' <ARGUMENTO>`);
+                                                        gramaticaDDS.push(`Argumentos.val := Argumentos.val ',' Argumento.val`);}
+    | ARGUMENTO     { $$ = [$1];                        producciones.push(`<ARGUMENTOS> ::= <ARGUMENTO>`);
+                                                        gramaticaDDS.push(`Argumentos.val := Argumento.val`);}
 ;
 
 ARGUMENTO:
-    EXPR  { $$ = $1; }
+    EXPR  { $$ = $1;                                    producciones.push(`<ARGUMENTO> ::= <EXPRESION>`);
+                                                        gramaticaDDS.push(`Argumento.val := Expresion.val`);}
 ;
 
 WHILE:
-    while lparen EXPR rparen allave RAICES cllave { $$ = new While($6,$3,@1.first_line,@1.first_column); }
+    while lparen EXPR rparen allave RAICES cllave { $$ = new While($6,$3,@1.first_line,@1.first_column); 
+                                                        producciones.push(`<WHILE> ::= 'while' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}'`);
+                                                        gramaticaDDS.push(`While.val := 'while' '(' Expresion.val ')' '{' Instrucciones.val '}'`);}
 ;
 
 DO_WHILE:

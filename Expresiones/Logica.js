@@ -4,6 +4,7 @@ exports.Logica = void 0;
 const Tipo_1 = require("../AST/Tipo");
 const Excepcion_1 = require("../AST/Excepcion");
 const Operador_1 = require("../AST/Operador");
+const Quadrupla_1 = require("../Traductor/Quadrupla");
 class Logica {
     constructor(op_izquierda, op_derecha, operador, linea, columna) {
         this.linea = linea;
@@ -13,6 +14,48 @@ class Logica {
         this.operador = operador;
     }
     traducir(controlador) {
+        switch (this.operador) {
+            case Operador_1.Operador.SUMA:
+            case Operador_1.Operador.RESTA:
+            case Operador_1.Operador.MULTIPLICACION:
+            case Operador_1.Operador.DIVISION:
+            case Operador_1.Operador.MODULO:
+            case Operador_1.Operador.AND:
+            case Operador_1.Operador.OR:
+            case Operador_1.Operador.MAYOR_IGUAL_QUE:
+            case Operador_1.Operador.MAYOR_QUE:
+            case Operador_1.Operador.MENOR_IGUAL_QUE:
+            case Operador_1.Operador.MENOR_QUE:
+            case Operador_1.Operador.DIFERENTE_QUE:
+            case Operador_1.Operador.POW:
+            case Operador_1.Operador.CONCAT:
+            case Operador_1.Operador.REPEAT:
+            case Operador_1.Operador.IGUAL_IGUAL:
+                const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
+                const resultado = controlador.getTemp();
+                if (izq && der) {
+                    const quad = new Quadrupla_1.Quadrupla(this.operador.toString(), `${izq.resultado}`, `${der.resultado}`, `${resultado}`);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                return;
+            case Operador_1.Operador.NOT:
+            case Operador_1.Operador.MENOS_UNARIO:
+            case Operador_1.Operador.SQRT:
+            case Operador_1.Operador.SENO:
+            case Operador_1.Operador.COSENO:
+            case Operador_1.Operador.TAN:
+            case Operador_1.Operador.LOG:
+                const left = this.op_izquierda.traducir(controlador);
+                const tmp1 = controlador.getTemp();
+                if (left) {
+                    const quad = new Quadrupla_1.Quadrupla(this.operador.toString(), left.resultado, "", tmp1);
+                    controlador.addQuad(quad);
+                    return quad;
+                }
+                break;
+        }
         return;
     }
     getTipo(ent, arbol) {

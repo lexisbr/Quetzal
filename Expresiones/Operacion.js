@@ -33,6 +33,8 @@ class Operacion {
             case Operador_1.Operador.DIFERENTE_QUE:
             case Operador_1.Operador.POW:
             case Operador_1.Operador.CONCAT:
+            case Operador_1.Operador.REPEAT:
+            case Operador_1.Operador.IGUAL_IGUAL:
                 const izq = this.op_izquierda.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
                 const der = this.op_derecha.traducir(controlador); //SE LLAMA DE FORMA RECURSIVA Y TRADUCE EL VALOR DE SUS HIJOS
                 const resultado = controlador.getTemp();
@@ -42,11 +44,13 @@ class Operacion {
                     return quad;
                 }
                 return;
+            case Operador_1.Operador.NOT:
             case Operador_1.Operador.MENOS_UNARIO:
             case Operador_1.Operador.SQRT:
             case Operador_1.Operador.SENO:
             case Operador_1.Operador.COSENO:
             case Operador_1.Operador.TAN:
+            case Operador_1.Operador.LOG:
                 const left = this.op_izquierda.traducir(controlador);
                 const tmp1 = controlador.getTemp();
                 if (left) {

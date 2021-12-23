@@ -1,0 +1,68 @@
+
+
+
+Más información
+Eriksson José Hernández López
+2927191591415@ingenieria.usac.edu.gt
+
+
+
+producciones.push(`<INICIO> ::= <INSTRUCCIONES> EOF`);
+gramaticaDDS.push(`Inicio.val := Instrucciones.val EOF`);
+
+producciones.push(`<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>`);
+gramaticaDDS.push(`Instrucciones.val := Instrucciones.val Instruccion.val`);
+
+producciones.push(`<INSTRUCCIONES> ::= <INSTRUCCION>`);
+gramaticaDDS.push(`Instrucciones.val := Instruccion.val`);
+
+producciones.push(`<INSTRUCCION> ::= <PRINT> ";"`);
+gramaticaDDS.push(`Instruccion.val := Print.val ";"`);
+
+producciones.push(`<INSTRUCCION> ::= <DECLARACION_NULA> ";"`);
+gramaticaDDS.push(`Instruccion.val := Declaracion_Nula.val ";"`);
+
+producciones.push(`<INSTRUCCION> ::= <DECLARACION> ";"`);
+gramaticaDDS.push(`Instruccion.val := Declaracion.val ";"`);
+
+producciones.push(`<INSTRUCCION> ::= <DECLARACION_ARRAY> ";"`);
+gramaticaDDS.push(`Instruccion.val := Declaracion_Array.val ";"`);
+
+producciones.push(`<INSTRUCCION> ::= <FUNCION>`);
+gramaticaDDS.push(`Instruccion.val := Funcion.val`);
+
+producciones.push(`<INSTRUCCION> ::= <WHILE>`);
+gramaticaDDS.push(`Instruccion.val := While.val`);
+
+producciones.push(`<INSTRUCCION> ::= <DO_WHILE> ";"`);
+gramaticaDDS.push(`Instruccion.val := Do_While.val ";"`);
+
+producciones.push(`<INSTRUCCION> ::= <FOR>`);
+gramaticaDDS.push(`Instruccion.val := For.val`);
+
+producciones.push(`<INSTRUCCION> ::= <FOR_IN>`);
+gramaticaDDS.push(`Instruccion.val := For_In.val`);
+
+
+
+producciones.push(`<LLAMADA> ::= <Identificador>  '(' <LISTA_ARGUMENTOS> ')'`);
+gramaticaDDS.push(`Main.val := Identificador.val '(' Lista_Argumentos.val ')'`);
+
+
+producciones.push(`<LISTA_ARGUMENTOS> ::= <ARGUMENTOS>`);
+gramaticaDDS.push(`Lista_Argumentos.val := Argumentos.val`);
+
+producciones.push(`<LISTA_ARGUMENTOS> ::= `);
+gramaticaDDS.push(`Lista_Argumentos.val := `);
+
+producciones.push(`<ARGUMENTOS> ::= <ARGUMENTOS> ',' <ARGUMENTO>`);
+gramaticaDDS.push(`Argumentos.val := Argumentos.val ',' Argumento.val`);
+
+producciones.push(`<ARGUMENTOS> ::= <ARGUMENTO>`);
+gramaticaDDS.push(`Argumentos.val := Argumento.val`);
+
+producciones.push(`<ARGUMENTO> ::= <EXPRESION>`);
+gramaticaDDS.push(`Argumento.val := Expresion.val`);
+
+producciones.push(`<WHILE> ::= 'while' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}'`);
+gramaticaDDS.push(`While.val := 'while' '(' Expresion.val ')' '{' Instrucciones.val '}'`);

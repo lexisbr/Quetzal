@@ -18,7 +18,9 @@ class Llamada {
             return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La funcion llamada no existe", ent.getEntorno());
         }
         let nuevoEntorno = new Entorno_1.Entorno(ent);
+        //nuevoEntorno.setEntorno("Llamada a Funcion");
         arbol.tablas.push(nuevoEntorno); //REVISAR POR QUE SE CREA UN NUEVO ENTORNO
+        //console.log(nuevoEntorno);
         let parametrosFuncion = funcion.getParametros();
         if (this.parametros.length == parametrosFuncion.length) {
             for (let i in this.parametros) {

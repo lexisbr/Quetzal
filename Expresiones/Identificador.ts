@@ -49,7 +49,7 @@ export class Identificador implements Expresion {
 		const tmp = controlador.getTemp();
 		const tmp2 = controlador.getTemp();
 		controlador.addQuad(new Quadrupla(`${Operador.SUMA}`, "P", variable.posicion.toString(), tmp));
-		const quad = new Quadrupla("ASSIG", `${controlador.arbol.stack}[${tmp}]`, "", tmp2);
+		const quad = new Quadrupla("ASSIGN", `${controlador.arbol.stack}[(int)${tmp}]`, "", tmp2);
         controlador.addQuad(quad);
 		return quad;
     }
