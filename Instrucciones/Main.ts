@@ -24,12 +24,13 @@ export class Main implements Instruccion {
         for (let i in this.instrucciones) {
             if (!(this.instrucciones[i] instanceof Excepcion)) {
                 let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
+                console.log(nuevoEntorno.getTabla());
                 if (value instanceof Excepcion) {
                     arbol.addExcepcion(value);
                     arbol.updateConsola("\n" + value.toString());
                 } else if (value instanceof Return) {
                     if (value.getTipo() == Tipo.VOID) return this;
-                    else return new Excepcion(this.linea, this.columna, "Error Semantico", "Main no puede retornar un valor");
+                    else return new Excepcion(this.linea, this.columna, "Error Semantico", "Main no puede retornar un valor",nuevoEntorno.getEntorno());
                 }
             } else {
                 arbol.addExcepcion(this.instrucciones[i] as Excepcion);

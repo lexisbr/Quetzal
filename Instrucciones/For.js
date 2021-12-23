@@ -71,7 +71,7 @@ class For {
                 }
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La condicion del For no es de tipo Booleano");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La condicion del For no es de tipo Booleano", nuevoEntorno.getEntorno());
             }
         }
     }

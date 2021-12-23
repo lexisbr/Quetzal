@@ -46,7 +46,7 @@ class ToString {
             return valor.toString();
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toString No Puede Convertir un tipo de Dato Null o Vacio a una Cadena");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toString No Puede Convertir un tipo de Dato Null o Vacio a una Cadena", ent.getEntorno());
         }
     }
     isInt(n) {

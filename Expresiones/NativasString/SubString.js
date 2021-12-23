@@ -47,7 +47,7 @@ class SubString {
             return value.substring(positionInitial, positionFinal + 1);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion SubString");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion SubString", ent.getEntorno());
         }
     }
     isInt(n) {

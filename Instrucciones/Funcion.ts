@@ -42,12 +42,12 @@ export class Funcion implements Instruccion {
                     if(this.tipo != Tipo.VOID) return value.getValue();
                     else return this;
                 }
-                else return new Excepcion(this.linea, this.columna, "Error Semantico", "El valor de retorno no coincide con el tipo de la funcion.")
+                else return new Excepcion(this.linea, this.columna, "Error Semantico", "El valor de retorno no coincide con el tipo de la funcion.",ent.getEntorno())
             }
         }
         
         if(this.tipo != Tipo.VOID){
-            return new Excepcion(this.linea, this.columna, "Error Semantico", "La funcion debe retornar un valor")
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "La funcion debe retornar un valor",ent.getEntorno())
         }
     }
 

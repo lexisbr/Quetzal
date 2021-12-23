@@ -59,7 +59,7 @@ export class ToInt implements Expresion {
             {
                 return Math.trunc(valor);
             } else {
-                return new Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toInt solo permite Numeros Decimales para convertirlos a Enteros");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toInt solo permite Numeros Decimales para convertirlos a Enteros",ent.getEntorno());
             }
 
     }

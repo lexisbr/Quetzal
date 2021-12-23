@@ -18,6 +18,7 @@ class Main {
         for (let i in this.instrucciones) {
             if (!(this.instrucciones[i] instanceof Excepcion_1.Excepcion)) {
                 let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
+                console.log(nuevoEntorno.getTabla());
                 if (value instanceof Excepcion_1.Excepcion) {
                     arbol.addExcepcion(value);
                     arbol.updateConsola("\n" + value.toString());
@@ -26,7 +27,7 @@ class Main {
                     if (value.getTipo() == Tipo_1.Tipo.VOID)
                         return this;
                     else
-                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Main no puede retornar un valor");
+                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Main no puede retornar un valor", nuevoEntorno.getEntorno());
                 }
             }
             else {

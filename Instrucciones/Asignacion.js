@@ -52,11 +52,11 @@ class Asignacion {
                     return simbolo;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Los tipos no coinciden");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Los tipos no coinciden", ent.getEntorno());
                 }
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable no esta definida");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable no esta definida", ent.getEntorno());
             }
         }
         else {

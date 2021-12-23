@@ -8,12 +8,14 @@ export class Excepcion implements Instruccion {
     columna: number;
     tipo: string;
     descripcion: string;
+    ambito: string;
 
-    constructor(linea: number, columna: number, tipo: string, descripcion: string) {
+    constructor(linea: number, columna: number, tipo: string, descripcion: string, ambito: string) {
         this.linea = linea;
         this.columna = columna;
         this.tipo = tipo;
         this.descripcion = descripcion;
+        this.ambito = ambito;
     }
     ejecutar(ent: Entorno, arbol: AST) {
         throw new Error("Method not implemented.");

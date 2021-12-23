@@ -41,7 +41,7 @@ class ToUpper {
             return value.toUpperCase();
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion toUpperCase");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion toUpperCase", ent.getEntorno());
         }
     }
     isInt(n) {

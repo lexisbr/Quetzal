@@ -78,7 +78,7 @@ export class For implements Instruccion {
                     break;
                 }
             }else{
-                return new Excepcion(this.linea, this.columna, "Error Semantico","La condicion del For no es de tipo Booleano");
+                return new Excepcion(this.linea, this.columna, "Error Semantico","La condicion del For no es de tipo Booleano",nuevoEntorno.getEntorno());
             }
 
  

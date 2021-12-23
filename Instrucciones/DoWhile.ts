@@ -25,9 +25,9 @@ export class DoWhile implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         let condicion = this.condicion.getValorImplicito(ent, arbol);
         if (condicion instanceof Excepcion) return condicion;
+        let nuevoEntorno: Entorno = new Entorno(ent);
+        nuevoEntorno.setEntorno("DoWhile");
         if (this.condicion.getTipo(ent, arbol) == Tipo.BOOL) {
-            let nuevoEntorno: Entorno = new Entorno(ent);
-            nuevoEntorno.setEntorno("DoWhile");
             arbol.tablas.push(nuevoEntorno);    //GUARDANDO LAS TABLAS PARA EL RECORRIDO EN 3D
             do {
                 for (let i in this.instrucciones) {
@@ -41,7 +41,7 @@ export class DoWhile implements Instruccion {
                 condicion = this.condicion.getValorImplicito(ent, arbol);
             } while (condicion);
         } else {
-            return new Excepcion(this.linea, this.columna, "Error Semantico", "El tipo de dato en condicion debe ser booleano")
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "El tipo de dato en condicion debe ser booleano",nuevoEntorno.getEntorno())
         }
     }
     traducir(controlador:QuadControlador) {

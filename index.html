@@ -32,7 +32,7 @@
         <ul class="menu">
           <li><a href="#">Inicio</a></li>
           <li>
-            <a href="https://github.com/ErikssonHerlo" target="_blank">Servicios</a>
+            <a href="https://github.com/lexisbr/Quetzal.git" target="_blank">Repositorio</a>
           </li>
           <li><a href="#">Acerca De</a></li>
           <li><a href="#">Contáctanos</a></li>
@@ -91,6 +91,7 @@
 
   <script src="./bundle.js"></script>
   <script src="js/codemirror/codemirror.js"></script>
+  <script src="js/reports.js"></script>
   <script src="js/codemirror/clike.js"></script>
   <script src="js/codemirror/configInput.js"></script>
   <script src="js/codemirror/configOutput.js"></script>
@@ -98,11 +99,11 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
   <script>
-    const tablaErrores = [];
+    let tablaErrores = [];
     function parseText() {
       let input = getText();
       let result = parseExternal(input);
-      tablaErrores.push(result[1]);
+      tablaErrores = result[1];
       addText(result[0]);
     }
     function traducirText() {
@@ -111,7 +112,7 @@
       addText(result);
     }
     function getTablaErrores() {
-      console.log(tablaErrores);
+      renderTablaErrores(tablaErrores);
     }
   </script>
 </body>

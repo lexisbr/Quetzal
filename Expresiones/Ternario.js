@@ -30,7 +30,7 @@ class Ternario {
             return valor_Condicional ? this.op_Verdadera.getValorImplicito(ent, arbol) : this.op_Falsa.getValorImplicito(ent, arbol);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Operacion Condicional Erronea para Operacion Ternaria (?)");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Operacion Condicional Erronea para Operacion Ternaria (?)", ent.getEntorno());
         }
         return null;
     }

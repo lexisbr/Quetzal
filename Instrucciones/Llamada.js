@@ -15,7 +15,7 @@ class Llamada {
     ejecutar(ent, arbol) {
         let funcion = arbol.getFuncion(this.nombre);
         if (funcion === null) {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La funcion llamada no existe");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La funcion llamada no existe", ent.getEntorno());
         }
         let nuevoEntorno = new Entorno_1.Entorno(ent);
         arbol.tablas.push(nuevoEntorno); //REVISAR POR QUE SE CREA UN NUEVO ENTORNO
@@ -34,12 +34,12 @@ class Llamada {
                     nuevoEntorno.agregar(simbolo.getIdentificador(), simbolo);
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La tipos en la llamada no coinciden");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La tipos en la llamada no coinciden", nuevoEntorno.getEntorno());
                 }
             }
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La cantidad de parametros no es correcta");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La cantidad de parametros no es correcta", nuevoEntorno.getEntorno());
         }
         let result = funcion.ejecutar(nuevoEntorno, arbol);
         if (result instanceof Excepcion_1.Excepcion)

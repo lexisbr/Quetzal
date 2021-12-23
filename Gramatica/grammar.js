@@ -363,10 +363,10 @@ case 137:
 this.$ = Tipo.VOID; 
 break;
 case 138:
-this.$ = new Excepcion(_$[$0].first_line, _$[$0].first_column,"Error Lexico","El token de entrada no es valido"); 
+this.$ = new Excepcion(_$[$0].first_line, _$[$0].first_column,"Error Lexico","El token de entrada no es valido","Global"); 
 break;
 case 139:
-this.$ = new Excepcion(_$[$0].first_line, _$[$0].first_column,"Error Sintactico","Token no esperado"); 
+this.$ = new Excepcion(_$[$0].first_line, _$[$0].first_column,"Error Sintactico","Token no esperado","Global"); 
 break;
 }
 },

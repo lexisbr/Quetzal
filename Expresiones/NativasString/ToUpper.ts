@@ -58,7 +58,7 @@ export class ToUpper implements Expresion {
             return value.toUpperCase();
         } else
         {
-            return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion toUpperCase");
+            return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion toUpperCase",ent.getEntorno());
         }
            
     } 

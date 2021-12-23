@@ -10,13 +10,14 @@ const Return = require("./Instrucciones/Return.js");
 
 const grammar = require("./Gramatica/grammar.js");
 const { QuadControlador } = require("./Traductor/QuadControlador.js");
-
+const tablaSimbolos = [];
 
 if (typeof window !== 'undefined') {
     window.parseExternal = function (input) {
         const instrucciones = grammar.parse(input);
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
+        entornoGlobal.setEntorno("Global");
         const controlador = new QuadControlador(ast);
         ast.tablas.push(entornoGlobal); //GUARDO EL ENTORNO/TABLA PARA EL CODIGO EN 3D
         //console.log(ast.tablas);
@@ -24,11 +25,17 @@ if (typeof window !== 'undefined') {
             let value;
             if (element instanceof Funcion.Funcion) {
                 let value = ast.addFuncion(element);
-                if (value instanceof Excepcion.Excepcion) ast.updateConsola("\n" + value);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola("\n" + value);
+                }
 
             } else if (element instanceof Struct.Struct) {
                 let value = ast.addStruct(element);
-                if (value instanceof Excepcion.Excepcion) ast.updateConsola("\n" + value);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola("\n" + value);
+                }
             } else if (element instanceof Declaracion.Declaracion) {
                 value = element.ejecutar(entornoGlobal, ast);
                 if (value instanceof Excepcion.Excepcion) {
@@ -38,6 +45,7 @@ if (typeof window !== 'undefined') {
             }
 
             if (element instanceof Excepcion.Excepcion) {
+                ast.addExcepcion(element);
                 ast.updateConsola("\n" + element);
             }
         });
@@ -74,7 +82,8 @@ if (typeof window !== 'undefined') {
 
         });
 
-        return ast.getConsola();
+        console.log(entornoGlobal);
+        return [ast.getConsola(), ast.getExcepciones()];
     }
 }
 
@@ -92,12 +101,14 @@ if (typeof window !== 'undefined') {
                 ast.addFuncion(element);
 
             } else if (element instanceof Declaracion.Declaracion) {
-
                 value = element.ejecutar(entornoGlobal, ast);
-            }
-
-            if (value instanceof Excepcion.Excepcion) {
-                ast.updateConsola(value);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola(value);
+                }
+            }else if(element instanceof Excepcion.Excepcion) {
+                ast.addExcepcion(element);
+                ast.updateConsola(element.toString());
             }
 
         });
@@ -144,7 +155,7 @@ if (typeof window !== 'undefined') {
             console.log(controlador.quads);
             return "RETURN COMPLETED";  //luego vamos a devolver el codigo en 3d con sintaxis C
         }
-        return [ast.getConsola(),ast.getExcepciones()];
+        return ast.getConsola();
     }
 }
 

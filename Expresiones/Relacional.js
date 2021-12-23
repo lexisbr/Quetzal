@@ -48,7 +48,7 @@ class Relacional {
                 return op1 < op2;
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Menor Que (<)");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Menor Que (<)", ent.getEntorno());
             }
         }
         //MAYOR QUE
@@ -57,7 +57,7 @@ class Relacional {
                 return op1 > op2;
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Mayor Que (>)");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Mayor Que (>)", ent.getEntorno());
             }
         }
         //IGUAL IGUAL
@@ -78,7 +78,7 @@ class Relacional {
                 return op1 == op2;
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Igual Igual (==)");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Igual Igual (==)", ent.getEntorno());
             }
         } //MENOR IGUAL
         else if (this.operador == Operador_1.Operador.MENOR_IGUAL_QUE) {
@@ -89,7 +89,7 @@ class Relacional {
                 return op1 <= op2;
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Menor Igual (<=)");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Menor Igual (<=)", ent.getEntorno());
             } //MAYOR IGUAL
         }
         else if (this.operador == Operador_1.Operador.MAYOR_IGUAL_QUE) {
@@ -100,7 +100,7 @@ class Relacional {
                 return op1 >= op2;
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Mayor Igual (>=)");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Mayor Igual (>=)", ent.getEntorno());
             } //DIFERENTE QUE
         }
         else if (this.operador == Operador_1.Operador.DIFERENTE_QUE) {
@@ -120,7 +120,7 @@ class Relacional {
                 return op1 != op2;
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Diferente Que (!=)");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Operador Diferente Que (!=)", ent.getEntorno());
             }
         }
         return null;

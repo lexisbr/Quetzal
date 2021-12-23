@@ -508,6 +508,6 @@ TIPO:
 ;
 
 INVALID: 
-    error_lexico {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Lexico","El token de entrada no es valido"); }
-    | error {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Sintactico","Token no esperado"); }
+    error_lexico {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Lexico","El token de entrada no es valido","Global"); }
+    | error {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Sintactico","Token no esperado","Global"); }
 ;

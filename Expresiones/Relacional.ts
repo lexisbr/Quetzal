@@ -27,7 +27,7 @@ export class Relacional implements Expresion {
         this.op_derecha = op_derecha;
         this.operador = relacional;
     }
-    traducir(controlador:QuadControlador):Quadrupla|undefined{
+    traducir(controlador: QuadControlador): Quadrupla | undefined {
         return;
     }
 
@@ -67,7 +67,7 @@ export class Relacional implements Expresion {
                     this.linea,
                     this.columna,
                     "Error Semantico",
-                    "Tipo de Dato Erroneo para Operador Menor Que (<)"
+                    "Tipo de Dato Erroneo para Operador Menor Que (<)", ent.getEntorno()
                 );
             }
         }
@@ -80,7 +80,7 @@ export class Relacional implements Expresion {
                     this.linea,
                     this.columna,
                     "Error Semantico",
-                    "Tipo de Dato Erroneo para Operador Mayor Que (>)"
+                    "Tipo de Dato Erroneo para Operador Mayor Que (>)", ent.getEntorno()
                 );
             }
         }
@@ -101,7 +101,7 @@ export class Relacional implements Expresion {
                     this.linea,
                     this.columna,
                     "Error Semantico",
-                    "Tipo de Dato Erroneo para Operador Igual Igual (==)"
+                    "Tipo de Dato Erroneo para Operador Igual Igual (==)", ent.getEntorno()
                 );
             }
         } //MENOR IGUAL
@@ -115,7 +115,7 @@ export class Relacional implements Expresion {
                     this.linea,
                     this.columna,
                     "Error Semantico",
-                    "Tipo de Dato Erroneo para Operador Menor Igual (<=)"
+                    "Tipo de Dato Erroneo para Operador Menor Igual (<=)", ent.getEntorno()
                 );
             } //MAYOR IGUAL
         } else if (this.operador == Operador.MAYOR_IGUAL_QUE) {
@@ -128,7 +128,7 @@ export class Relacional implements Expresion {
                     this.linea,
                     this.columna,
                     "Error Semantico",
-                    "Tipo de Dato Erroneo para Operador Mayor Igual (>=)"
+                    "Tipo de Dato Erroneo para Operador Mayor Igual (>=)", ent.getEntorno()
                 );
             } //DIFERENTE QUE
         } else if (this.operador == Operador.DIFERENTE_QUE) {
@@ -147,7 +147,7 @@ export class Relacional implements Expresion {
                     this.linea,
                     this.columna,
                     "Error Semantico",
-                    "Tipo de Dato Erroneo para Operador Diferente Que (!=)"
+                    "Tipo de Dato Erroneo para Operador Diferente Que (!=)", ent.getEntorno()
                 );
             }
         }

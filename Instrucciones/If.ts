@@ -37,12 +37,11 @@ export class If implements Instruccion {
     }
     ejecutar(ent: Entorno, arbol: AST) {
         let condicion = this.condicion.getValorImplicito(ent, arbol);
-
+        let nuevoEntorno = new Entorno(ent);
+        nuevoEntorno.setEntorno("If");
         if (condicion instanceof Excepcion) return condicion;
         if (this.condicion.getTipo(ent, arbol) == Tipo.BOOL) {
             if (condicion) {  //SI EL VALOR DE LA CONDICION SE CUMPLE
-                let nuevoEntorno = new Entorno(ent);
-                nuevoEntorno.setEntorno("If");
                 arbol.tablas.push(nuevoEntorno);    //GUARDANDO EL NUEVO ENTORNO PARA RECORRIDO EN 3D
                 for (let i in this.instruccionesIf) {
                     let instruccion = this.instruccionesIf[i];
@@ -77,7 +76,7 @@ export class If implements Instruccion {
                 }
             }
         } else {
-            return new Excepcion(this.linea, this.columna, "Error Semantico", "La condicion en If debe ser booleana");
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "La condicion en If debe ser booleana",nuevoEntorno.getEntorno());
         }
 
     }

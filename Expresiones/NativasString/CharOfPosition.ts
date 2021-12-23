@@ -62,7 +62,7 @@ export class CharOfPosition implements Expresion {
                 return value.charAt(position);
             } else
             {
-                return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion CaracterOfPosition");
+                return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion CaracterOfPosition",ent.getEntorno());
             }
            
         } 

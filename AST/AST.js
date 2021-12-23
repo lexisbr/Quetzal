@@ -27,7 +27,7 @@ class AST {
             this.funciones.push(funcion);
         }
         else {
-            return new Excepcion_1.Excepcion(funcion.linea, funcion.columna, "Error Semantico", "La funcion ya existe");
+            return new Excepcion_1.Excepcion(funcion.linea, funcion.columna, "Error Semantico", "La funcion ya existe", "Global");
         }
     }
     getFuncion(name) {
@@ -53,7 +53,7 @@ class AST {
             this.structs.push(struct);
         }
         else {
-            return new Excepcion_1.Excepcion(struct.linea, struct.columna, "Error Semantico", "El struct ya existe");
+            return new Excepcion_1.Excepcion(struct.linea, struct.columna, "Error Semantico", "El struct ya existe", "Global");
         }
     }
     addExcepcion(excepcion) {

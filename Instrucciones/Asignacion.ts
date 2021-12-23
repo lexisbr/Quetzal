@@ -65,10 +65,10 @@ export class Asignacion implements Instruccion {
                     ent.reemplazar(this.identificador, simbolo);
                     return simbolo;
                 }else{
-                    return new Excepcion(this.linea, this.columna, "Error Semantico", "Los tipos no coinciden");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "Los tipos no coinciden",ent.getEntorno());
                 }
             } else {
-                return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable no esta definida");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable no esta definida",ent.getEntorno());
             }
 
         } else {
