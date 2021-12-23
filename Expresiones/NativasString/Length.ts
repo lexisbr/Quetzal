@@ -58,7 +58,7 @@ export class Length implements Expresion {
             return value.length;
         } else
         {
-            return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Funcion length");
+            return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion length");
         }
            
     } 

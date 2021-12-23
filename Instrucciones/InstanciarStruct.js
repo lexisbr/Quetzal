@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Excepcion = void 0;
-class Excepcion {
-    constructor(linea, columna, tipo, descripcion) {
+exports.InstanciarStruct = void 0;
+class InstanciarStruct {
+    constructor(identificador, atributos, linea, columna) {
         this.linea = linea;
         this.columna = columna;
-        this.tipo = tipo;
-        this.descripcion = descripcion;
+        this.identificador = identificador;
+        this.atributos = atributos;
     }
     ejecutar(ent, arbol) {
         throw new Error("Method not implemented.");
@@ -14,8 +14,5 @@ class Excepcion {
     traducir(controlador) {
         throw new Error("Method not implemented.");
     }
-    toString() {
-        return `${this.tipo} - ${this.descripcion} [${this.linea},${this.columna}]\n`;
-    }
 }
-exports.Excepcion = Excepcion;
+exports.InstanciarStruct = InstanciarStruct;

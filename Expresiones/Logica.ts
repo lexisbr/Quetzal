@@ -63,7 +63,7 @@ export class Logica implements Expresion {
                     return op1 && op2;
                 }
                 else {
-                    return new Excepcion(this.linea, this.columna, "\nSemantico", "Tipo de Dato Erroneo para AND");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para AND");
 
                 }
             }
@@ -73,7 +73,7 @@ export class Logica implements Expresion {
                     return op1 || op2;
                 }
                 else {
-                    return new Excepcion(this.linea, this.columna, "\nSemantico", "Tipo de Dato Erroneo para OR");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para OR");
 
                 }
             }
@@ -86,7 +86,7 @@ export class Logica implements Expresion {
                     return !op1;
                 }
                 else {
-                    return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para NOT");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para NOT");
 
                 }
             }

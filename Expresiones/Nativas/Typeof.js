@@ -55,7 +55,7 @@ class Typeof {
             return "String";
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion Typeof");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion Typeof");
         }
     }
     isInt(n) {

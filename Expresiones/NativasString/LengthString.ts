@@ -59,14 +59,14 @@ export class LengthString implements Expresion {
                         return valueSimbolo.length;
                 
                     }else {
-                        return new Excepcion(this.linea,this.columna,"Semantico","No puede obtener el tamaño de una cadena con un valor Null");
+                        return new Excepcion(this.linea,this.columna,"Error Semantico","No puede obtener el tamaño de una cadena con un valor Null");
                     }
                     
                 }else{
-                    return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion length()");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion length()");
                 }
             } else {
-                return new Excepcion(this.linea, this.columna, "Semantico", "La variable no esta definida");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable no esta definida");
             }
            
         } 

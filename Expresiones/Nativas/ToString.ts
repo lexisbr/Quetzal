@@ -61,7 +61,7 @@ export class ToString implements Expresion {
             {
                 return valor.toString();
             } else {
-                return new Excepcion(this.linea, this.columna, "Semantico", "La Funcion toString No Puede Convertir un tipo de Dato Null o Vacio a una Cadena");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toString No Puede Convertir un tipo de Dato Null o Vacio a una Cadena");
             }
 
     }

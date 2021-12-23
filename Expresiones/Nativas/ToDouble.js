@@ -43,7 +43,7 @@ class ToDouble {
             return valor.toFixed(2);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La Funcion toDouble solo permite Numeros Enteros para convertirlos a Decimales");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toDouble solo permite Numeros Enteros para convertirlos a Decimales");
         }
     }
     isInt(n) {

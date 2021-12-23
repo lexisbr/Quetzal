@@ -41,7 +41,7 @@ export class DoWhile implements Instruccion {
                 condicion = this.condicion.getValorImplicito(ent, arbol);
             } while (condicion);
         } else {
-            return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo de dato en condicion debe ser booleano")
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "El tipo de dato en condicion debe ser booleano")
         }
     }
     traducir(controlador:QuadControlador) {

@@ -16,16 +16,22 @@ class Main {
         nuevoEntorno.setEntorno("Main");
         arbol.tablas.push(nuevoEntorno); //GUARDANDO LAS TS PARA EL RECORRIDO EN 3D
         for (let i in this.instrucciones) {
-            let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
-            if (value instanceof Excepcion_1.Excepcion) {
-                arbol.addExcepcion(value);
-                arbol.updateConsola(value.toString());
+            if (!(this.instrucciones[i] instanceof Excepcion_1.Excepcion)) {
+                let value = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
+                if (value instanceof Excepcion_1.Excepcion) {
+                    arbol.addExcepcion(value);
+                    arbol.updateConsola("\n" + value.toString());
+                }
+                else if (value instanceof Return_1.Return) {
+                    if (value.getTipo() == Tipo_1.Tipo.VOID)
+                        return this;
+                    else
+                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Main no puede retornar un valor");
+                }
             }
-            else if (value instanceof Return_1.Return) {
-                if (value.getTipo() == Tipo_1.Tipo.VOID)
-                    return this;
-                else
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Main no puede retornar un valor");
+            else {
+                arbol.addExcepcion(this.instrucciones[i]);
+                arbol.updateConsola("\n" + this.instrucciones[i].toString());
             }
         }
     }

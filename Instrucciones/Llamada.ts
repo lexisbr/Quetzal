@@ -24,7 +24,7 @@ export class Llamada implements Instruccion {
     ejecutar(ent: Entorno, arbol: AST) {
         let funcion:any = arbol.getFuncion(this.nombre);
         if(funcion === null){
-            return new Excepcion (this.linea,this.columna,"Semantico","La funcion llamada no existe");
+            return new Excepcion (this.linea,this.columna,"Error Semantico","La funcion llamada no existe");
         }
         
         let nuevoEntorno = new Entorno(ent);
@@ -44,12 +44,12 @@ export class Llamada implements Instruccion {
                     let simbolo:Simbolo = new Simbolo(parametroTipo,parametrosFuncion[i].getIdentificador(),this.linea,this.columna,expresionValue);
                     nuevoEntorno.agregar(simbolo.getIdentificador(),simbolo);
                 }else{
-                    return new Excepcion (this.linea,this.columna,"Semantico","La tipos en la llamada no coinciden");
+                    return new Excepcion (this.linea,this.columna,"Error Semantico","La tipos en la llamada no coinciden");
                 }
             }
 
         }else{
-            return new Excepcion (this.linea,this.columna,"Semantico","La cantidad de parametros no es correcta");
+            return new Excepcion (this.linea,this.columna,"Error Semantico","La cantidad de parametros no es correcta");
         }
 
         let result = funcion.ejecutar(nuevoEntorno, arbol);

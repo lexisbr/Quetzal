@@ -60,7 +60,7 @@ export class ToDouble implements Expresion {
             {
                 return valor.toFixed(2);
             } else {
-                return new Excepcion(this.linea, this.columna, "Semantico", "La Funcion toDouble solo permite Numeros Enteros para convertirlos a Decimales");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toDouble solo permite Numeros Enteros para convertirlos a Decimales");
             }
 
     }

@@ -66,7 +66,7 @@ export class Relacional implements Expresion {
                 return new Excepcion(
                     this.linea,
                     this.columna,
-                    "Semantico",
+                    "Error Semantico",
                     "Tipo de Dato Erroneo para Operador Menor Que (<)"
                 );
             }
@@ -79,7 +79,7 @@ export class Relacional implements Expresion {
                 return new Excepcion(
                     this.linea,
                     this.columna,
-                    "Semantico",
+                    "Error Semantico",
                     "Tipo de Dato Erroneo para Operador Mayor Que (>)"
                 );
             }
@@ -100,7 +100,7 @@ export class Relacional implements Expresion {
                 return new Excepcion(
                     this.linea,
                     this.columna,
-                    "Semantico",
+                    "Error Semantico",
                     "Tipo de Dato Erroneo para Operador Igual Igual (==)"
                 );
             }
@@ -114,7 +114,7 @@ export class Relacional implements Expresion {
                 return new Excepcion(
                     this.linea,
                     this.columna,
-                    "Semantico",
+                    "Error Semantico",
                     "Tipo de Dato Erroneo para Operador Menor Igual (<=)"
                 );
             } //MAYOR IGUAL
@@ -127,7 +127,7 @@ export class Relacional implements Expresion {
                 return new Excepcion(
                     this.linea,
                     this.columna,
-                    "Semantico",
+                    "Error Semantico",
                     "Tipo de Dato Erroneo para Operador Mayor Igual (>=)"
                 );
             } //DIFERENTE QUE
@@ -146,7 +146,7 @@ export class Relacional implements Expresion {
                 return new Excepcion(
                     this.linea,
                     this.columna,
-                    "Semantico",
+                    "Error Semantico",
                     "Tipo de Dato Erroneo para Operador Diferente Que (!=)"
                 );
             }

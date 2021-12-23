@@ -50,10 +50,10 @@ export class DeclaracionArray implements Instruccion {
                         ent.agregar(this.identificador, simbolo);
                         return simbolo;
                     } else {
-                        return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
+                        return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
                     }
                 } else {
-                    return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo asignado a la variable no es correcto");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "El tipo asignado a la variable no es correcto");
                 }
             }
         } else {
@@ -65,7 +65,7 @@ export class DeclaracionArray implements Instruccion {
                         let simbolo: Simbolo = new Simbolo(this.tipo, identificador, this.linea, this.columna, null);
                         ent.agregar(identificador, simbolo);
                     } else {
-                        return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
+                        return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
                     }
                 }
             }

@@ -30,7 +30,7 @@ export class Case implements Instruccion {
             if(result instanceof Excepcion || result instanceof Break || result instanceof Return)
             return result;
             else if(result instanceof Continue) 
-            return new Excepcion(this.linea, this.columna, "\nSemantico", "Continue fuera de loop");
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "Continue fuera de loop");
         }
     }
     

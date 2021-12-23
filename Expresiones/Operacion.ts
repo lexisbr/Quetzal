@@ -133,7 +133,7 @@ export class Operacion implements Expresion {
                     return op1 + op2;
                 } else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Suma (+)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Suma (+)");
                 }
             }
             //resta
@@ -146,7 +146,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Resta (-)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Resta (-)");
                 }
             }
             //multiplicación
@@ -159,7 +159,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Multiplicacion (*)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Multiplicacion (*)");
                 }
             }
             //division
@@ -168,14 +168,14 @@ export class Operacion implements Expresion {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {
                     if(op2===0){
-                        return new Excepcion(this.linea,this.columna,"Semantico","No puede realizar una Operacion entre cero");
+                        return new Excepcion(this.linea,this.columna,"Error Semantico","No puede realizar una Operacion entre cero");
                     }
                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.DIVISION}`,`${op1}`,`${op2}`,""));
                     return op1 / op2;
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Division (/)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Division (/)");
                 }
             }
             //modulo
@@ -184,14 +184,14 @@ export class Operacion implements Expresion {
                 if (typeof(op1==="number") && typeof(op2==="number"))
                 {
                     if(op2===0){
-                        return new Excepcion(this.linea,this.columna,"Semantico","No puede realizar una Operacion entre cero");
+                        return new Excepcion(this.linea,this.columna,"Error Semantico","No puede realizar una Operacion entre cero");
                     }
                    //this.generateQuad2(arbol,new Quadrupla(`${Operador.MODULO}`,`${op1}`,`${op2}`,""));
                     return op1 % op2;
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Modular (%)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Modular (%)");
                 }
             } else if (this.operador == Operador.POW)
             {
@@ -202,7 +202,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Pow (xⁿ)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Pow (xⁿ)");
                 }
             } else if (this.operador == Operador.SQRT)
             {
@@ -212,7 +212,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Sqrt (√)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Sqrt (√)");
                 }
             } else if (this.operador == Operador.LOG)
             {
@@ -222,7 +222,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Log (log(x))");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Log (log(x))");
                 }
             }
  
@@ -234,7 +234,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Sin (seno)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Sin (seno)");
                 }
             } else if (this.operador == Operador.COSENO)
             {
@@ -244,7 +244,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Cos (coseno)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Cos (coseno)");
                 }
             } else if (this.operador == Operador.TAN)
             {
@@ -254,7 +254,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Tan (tangente)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Tan (tangente)");
                 }
             } else if (this.operador == Operador.CONCAT)
             {
@@ -264,7 +264,7 @@ export class Operacion implements Expresion {
                     return op1 + op2;
                 } else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
                 }
             }  else if (this.operador == Operador.REPEAT)
             {
@@ -274,12 +274,12 @@ export class Operacion implements Expresion {
                     return op1.repeat(op2);
                 } else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Concatenacion (&)");
                 }
             } else if (this.operador == Operador.INCREMENTO)
             {
                 if(!(this.op_izquierda instanceof Identificador)){
-                    return new Excepcion(this.linea,this.columna,"Semantico","No es un Identificador");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","No es un Identificador");
                 } 
                 if (typeOp1 == Tipo.INT || typeOp1 == Tipo.DOUBLE)
                 {   
@@ -289,17 +289,17 @@ export class Operacion implements Expresion {
                         return op1;
                     }
                     else {
-                        return new Excepcion(this.linea,this.columna,"Semantico","Variable no Definida");
+                        return new Excepcion(this.linea,this.columna,"Error Semantico","Variable no Definida");
                     }
                     
                 } else{
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Incremento (++)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Incremento (++)");
                 }
                 
             } else if (this.operador == Operador.DECREMENTO)
             {
                 if(!(this.op_izquierda instanceof Identificador)){
-                    return new Excepcion(this.linea,this.columna,"Semantico","No es un Identificador");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","No es un Identificador");
                 } 
                 
                 if (typeOp1 == Tipo.INT || typeOp1 == Tipo.DOUBLE)
@@ -310,11 +310,11 @@ export class Operacion implements Expresion {
                         return op1;
                     }
                     else {
-                        return new Excepcion(this.linea,this.columna,"Semantico","Variable no Definida");
+                        return new Excepcion(this.linea,this.columna,"Error Semantico","Variable no Definida");
                     }
                     
                 } else{
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Decremento (--)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Decremento (--)");
                 }
                 
             }
@@ -328,7 +328,7 @@ export class Operacion implements Expresion {
                 }
                 else
                 {
-                    return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Operacion Unaria (-)");
+                    return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Operacion Unaria (-)");
                 }
             }
         }

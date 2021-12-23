@@ -1,5 +1,6 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
+import { Excepcion } from "../AST/Excepcion";
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
@@ -20,27 +21,30 @@ export class Print implements Instruccion {
         this.salto = salto;
     }
 
-    traducir(controlador:QuadControlador) {
-		this.expresion.forEach(element => {
-			const tmpQ: Quadrupla | undefined = element.traducir(controlador);
-			if(tmpQ) {
-				controlador.addQuad(new Quadrupla("PRINTF", tmpQ.resultado, "", ""));
-			}
-		});
+    traducir(controlador: QuadControlador) {
+        this.expresiones.forEach(element => {
+            const tmpQ: Quadrupla | undefined = element.traducir(controlador);
+            if (tmpQ) {
+                controlador.addQuad(new Quadrupla("PRINTF", tmpQ.resultado, "", ""));
+            }
+        });
 
-		if(this.salto) {
-			controlador.addQuad(new Quadrupla("PRINTF", "\n", "", ""));
-		}
-	}
+        if (this.salto) {
+            controlador.addQuad(new Quadrupla("PRINTF", "\n", "", ""));
+        }
+    }
 
     ejecutar(ent: Entorno, arbol: AST) {
-        
-        this.expresion.forEach(element => {
-            let valor = element.getValorImplicito(ent, arbol);
+
+        for(let i in this.expresiones){
+            let valor = this.expresiones[i].getValorImplicito(ent, arbol);
+            if (valor instanceof Excepcion) {
+                return valor;
+            }
             arbol.updateConsola(valor);
-        });
-        if(this.salto){
-        arbol.updateConsola("\n");
+        }
+        if (this.salto) {
+            arbol.updateConsola("\n");
         }
     }
 

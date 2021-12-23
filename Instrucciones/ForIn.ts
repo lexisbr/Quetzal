@@ -52,7 +52,7 @@ export class ForIn implements Instruccion {
                 }
             }
         } else {
-            return new Excepcion(this.linea, this.columna, "\nSemantico", "Valor en For in debe ser String")
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "Valor en For in debe ser String")
         }
 
     }

@@ -140,10 +140,12 @@ BSL                             "\\".
 
 //error lexico
 .                                   {
-                                        console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+                                        console.error('Este es un error lexico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+                                        return 'error_lexico';
                                     }
 
 <<EOF>>                             return 'EOF'
+
 
 
 
@@ -197,6 +199,8 @@ BSL                             "\\".
     const {Atributo} = require("../Instrucciones/Atributo.js");
 
     const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
+
+    const {Excepcion} = require("../AST/Excepcion.js");
 %}
 
 /* operator associations and precedence */
@@ -253,6 +257,7 @@ RAIZ:
     | IF                                    { $$ = $1; }
     | SWITCH                                { $$ = $1; }
     | MAIN                                  { $$ = $1; }
+    | INVALID                               { $$ = $1; }
 ;
 
 MAIN:
@@ -500,4 +505,9 @@ TIPO:
     | boolean                    {$$ = Tipo.BOOL; }
     | char                       {$$ = Tipo.CHAR; }
     | void                       {$$ = Tipo.VOID; }
+;
+
+INVALID: 
+    error_lexico {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Lexico","El token de entrada no es valido"); }
+    | error {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Sintactico","Token no esperado"); }
 ;

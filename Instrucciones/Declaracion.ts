@@ -145,10 +145,10 @@ export class Declaracion implements Instruccion {
                     //console.log(arbol.controlador);
                     return simbolo;
                 } else {
-                    return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
+                    return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
                 }
             } else {
-                return new Excepcion(this.linea, this.columna, "\nSemantico", "El tipo asignado a la variable no es correcto");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "El tipo asignado a la variable no es correcto");
             }
         } else {
             if (this.identificadores.length > 0) {
@@ -159,7 +159,7 @@ export class Declaracion implements Instruccion {
                         simbolo.posicion = arbol.posiciones++;
                         ent.agregar(identificador, simbolo);
                     } else {
-                        return new Excepcion(this.linea, this.columna, "\nSemantico", "La variable ya existe");
+                        return new Excepcion(this.linea, this.columna, "Error Semantico", "La variable ya existe");
                     }
                 }
             }

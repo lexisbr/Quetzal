@@ -41,7 +41,7 @@ class ToLower {
             return value.toLowerCase();
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion toLowerCase");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion toLowerCase");
         }
     }
     isInt(n) {

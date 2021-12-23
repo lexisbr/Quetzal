@@ -73,7 +73,7 @@ class If {
             }
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La condicion en If debe ser booleana");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La condicion en If debe ser booleana");
         }
     }
     getTipo(ent, arbol) {

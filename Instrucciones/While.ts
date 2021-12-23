@@ -44,7 +44,7 @@ export class While implements Instruccion {
                     break;
                 }
             }else{
-                return new Excepcion(this.linea, this.columna, "\nSemantico","El tipo de dato en condicion debe ser booleano")
+                return new Excepcion(this.linea, this.columna, "Error Semantico","El tipo de dato en condicion debe ser booleano")
             }
         }
     }

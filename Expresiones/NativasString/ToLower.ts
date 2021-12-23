@@ -59,7 +59,7 @@ export class ToLower implements Expresion {
             
         } else
         {
-            return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Funcion toLowerCase");
+            return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion toLowerCase");
         }
            
     } 

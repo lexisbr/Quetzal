@@ -77,7 +77,7 @@ export class If implements Instruccion {
                 }
             }
         } else {
-            return new Excepcion(this.linea, this.columna, "\nSemantico", "La condicion en If debe ser booleana");
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "La condicion en If debe ser booleana");
         }
 
     }

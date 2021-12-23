@@ -24,18 +24,21 @@ if (typeof window !== 'undefined') {
             let value;
             if (element instanceof Funcion.Funcion) {
                 let value = ast.addFuncion(element);
-                if (value instanceof Excepcion.Excepcion) ast.updateConsola(value);
+                if (value instanceof Excepcion.Excepcion) ast.updateConsola("\n" + value);
 
             } else if (element instanceof Struct.Struct) {
                 let value = ast.addStruct(element);
-                if (value instanceof Excepcion.Excepcion) ast.updateConsola(value);
+                if (value instanceof Excepcion.Excepcion) ast.updateConsola("\n" + value);
             } else if (element instanceof Declaracion.Declaracion) {
-
                 value = element.ejecutar(entornoGlobal, ast);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola("\n" + value);
+                }
             }
 
-            if (value instanceof Excepcion.Excepcion) {
-                ast.updateConsola(value);
+            if (element instanceof Excepcion.Excepcion) {
+                ast.updateConsola("\n" + element);
             }
         });
 
@@ -49,13 +52,13 @@ if (typeof window !== 'undefined') {
                     main = true;
                     if (value instanceof Excepcion.Excepcion) {
                         ast.addExcepcion(value);
-                        ast.updateConsola(value);
-                    } 
+                        ast.updateConsola("\n" + value);
+                    }
                     main1 = element;
-                }else{
-                    let excepcion = new Excepcion.Excepcion(value.linea,value.columna,"\nSemantico","Existe mas de una funcion Main")
+                } else {
+                    let excepcion = new Excepcion.Excepcion(value.linea, value.columna, "Error Semantico", "Existe mas de una funcion Main")
                     ast.addExcepcion(excepcion);
-                    ast.updateConsola(excepcion);
+                    ast.updateConsola("\n" + excepcion);
                     return;
                 }
             }
@@ -63,15 +66,15 @@ if (typeof window !== 'undefined') {
         });
 
         ast.instrucciones.forEach(function (element) {
-            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion || element instanceof Struct.Struct)) {
-                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "\nSemantico", "Sentencias fuera de Main")
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion || element instanceof Struct.Struct || element instanceof Excepcion.Excepcion)) {
+                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "Error Semantico", "Sentencias fuera de Main")
                 ast.addExcepcion(excepcion);
-                ast.updateConsola(excepcion)
+                ast.updateConsola("\n" + excepcion)
             }
 
         });
+        console.log(ast.getExcepciones());
 
-       
         return ast.getConsola();
     }
 }
@@ -96,7 +99,7 @@ if (typeof window !== 'undefined') {
 
             if (value instanceof Excepcion.Excepcion) {
                 ast.updateConsola(value);
-            } 
+            }
 
         });
 
@@ -111,37 +114,38 @@ if (typeof window !== 'undefined') {
                     if (value instanceof Excepcion.Excepcion) {
                         ast.addExcepcion(value);
                         ast.updateConsola(value);
-                    } 
-             
-                }else{
-                    let excepcion = new Excepcion.Excepcion(value.linea,value.columna,"\nSemantico","Existe mas de una funcion Main")
+                    }
+
+                } else {
+                    let excepcion = new Excepcion.Excepcion(value.linea, value.columna, "Error Semantico", "Existe mas de una funcion Main")
                     ast.addExcepcion(excepcion);
                     ast.updateConsola(excepcion);
                     return;
                 }
-            } 
-            
+            }
+
         });
 
         ast.instrucciones.forEach(function (element) {
-            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion)) {
-                let excepcion = new Excepcion.Excepcion(element.linea,element.columna,"\nSemantico","Sentencias fuera de Main")
+            console.log(element);
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion || element instanceof Struct.Struct || element instanceof Excepcion.Excepcion)) {
+                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "Error Semantico", "Sentencias fuera de Main")
                 ast.addExcepcion(excepcion);
                 ast.updateConsola(excepcion)
-            } 
-            
+            }
+
         });
-        if(ast.excepciones.length==0){
+        if (ast.excepciones.length == 0) {
             const controlador = new QuadControlador(ast);
             controlador.actual = ast.tablas.shift();
-            ast.instrucciones.forEach(instruccion=>{
-                instruccion.traducir(controlador);  
+            ast.instrucciones.forEach(instruccion => {
+                instruccion.traducir(controlador);
             });
             //controlador.quads.forEach(console.log); //PASAR LA FIRMA DEL METODO CONSOLE.LOG
             console.log(controlador.quads);
             return "RETURN COMPLETED";  //luego vamos a devolver el codigo en 3d con sintaxis C
         }
-       
+
         return ast.getConsola();
     }
 }

@@ -66,7 +66,7 @@ export class SubString implements Expresion {
                 return value.substring(positionInitial,positionFinal+1);
             } else
             {
-                return new Excepcion(this.linea,this.columna,"Semantico","Tipo de Dato Erroneo para Funcion SubString");
+                return new Excepcion(this.linea,this.columna,"Error Semantico","Tipo de Dato Erroneo para Funcion SubString");
             }
            
         } 

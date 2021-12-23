@@ -56,19 +56,19 @@ class TipoParse {
                         return false;
                     }
                     else {
-                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "No es posible convertir a Boolean la cadena ingresada");
+                        return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "No es posible convertir a Boolean la cadena ingresada");
                     }
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La Funcion Parse no existe para este tipo de dato");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion Parse no existe para este tipo de dato");
                 }
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Cadena Erronea para Funcion Parse, solo permite numeros");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Cadena Erronea para Funcion Parse, solo permite numeros");
             }
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion Parse, la Expresion no es de Tipo String");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion Parse, la Expresion no es de Tipo String");
         }
     }
     isInt(n) {

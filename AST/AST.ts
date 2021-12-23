@@ -41,7 +41,7 @@ export class AST {
         if (this.getFuncion(funcion.getNombre()) == null) {
             this.funciones.push(funcion);
         }else{
-            return new Excepcion(funcion.linea,funcion.columna,"Semantico","La funcion ya existe");
+            return new Excepcion(funcion.linea,funcion.columna,"Error Semantico","La funcion ya existe");
         }
     }
 
@@ -69,12 +69,16 @@ export class AST {
         if (this.getStruct(struct.getIdentificador()) == null) {
             this.structs.push(struct);
         }else{
-            return new Excepcion(struct.linea,struct.columna,"Semantico","El struct ya existe");
+            return new Excepcion(struct.linea,struct.columna,"Error Semantico","El struct ya existe");
         }
     }
 
     addExcepcion(excepcion: Excepcion) {
         this.excepciones.push(excepcion);
+    }
+
+    getExcepciones(){
+        return this.excepciones;
     }
 
 }
