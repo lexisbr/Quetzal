@@ -125,6 +125,8 @@ export class Operacion implements Expresion {
             let typeOp1 = this.op_izquierda.getTipo(ent,arbol);
             let typeOp2 = this.op_derecha.getTipo(ent,arbol);
             //suma
+            if(op1 instanceof Excepcion) return op1;
+            if(op2 instanceof Excepcion) return op2;
             if (this.operador == Operador.SUMA)
             {
                 if (typeof(op1==="number") && typeof(op2==="number"))

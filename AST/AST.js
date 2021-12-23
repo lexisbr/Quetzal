@@ -59,5 +59,8 @@ class AST {
     addExcepcion(excepcion) {
         this.excepciones.push(excepcion);
     }
+    getExcepciones() {
+        return this.excepciones;
+    }
 }
 exports.AST = AST;

@@ -73,7 +73,6 @@ if (typeof window !== 'undefined') {
             }
 
         });
-        console.log(ast.getExcepciones());
 
         return ast.getConsola();
     }
@@ -145,9 +144,10 @@ if (typeof window !== 'undefined') {
             console.log(controlador.quads);
             return "RETURN COMPLETED";  //luego vamos a devolver el codigo en 3d con sintaxis C
         }
-
-        return ast.getConsola();
+        return [ast.getConsola(),ast.getExcepciones()];
     }
 }
+
+
 
 

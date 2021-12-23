@@ -104,6 +104,10 @@ class Operacion {
             let typeOp1 = this.op_izquierda.getTipo(ent, arbol);
             let typeOp2 = this.op_derecha.getTipo(ent, arbol);
             //suma
+            if (op1 instanceof Excepcion_1.Excepcion)
+                return op1;
+            if (op2 instanceof Excepcion_1.Excepcion)
+                return op2;
             if (this.operador == Operador_1.Operador.SUMA) {
                 if (typeof (op1 === "number") && typeof (op2 === "number")) {
                     //this.generateQuad2(arbol,new Quadrupla(`${Operador.SUMA}`,`${op1}`,`${op2}`,""));
