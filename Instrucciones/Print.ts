@@ -31,7 +31,7 @@ export class Print implements Instruccion {
 
     traducir(controlador: QuadControlador) {
 
-        this.expresion.forEach(element => {
+        this.expresiones.forEach(element => {
             const tmpQ: Quadrupla | undefined = element.traducir(controlador);
             let valor = element.getValorImplicito(controlador.actual, controlador.arbol);
             let tipoValor = element.getTipo(controlador.actual, controlador.arbol);
