@@ -15,12 +15,13 @@ class Case {
     }
     ejecutar(ent, arbol) {
         let nuevoEntorno = new Entorno_1.Entorno(ent);
+        nuevoEntorno.setEntorno("Case");
         for (let i in this.instrucciones) {
             let result = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
             if (result instanceof Excepcion_1.Excepcion || result instanceof Break_1.Break || result instanceof Return_1.Return)
                 return result;
             else if (result instanceof Continue_1.Continue)
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Continue fuera de loop");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Continue fuera de loop", nuevoEntorno.getEntorno());
         }
     }
     traducir(controlador) {

@@ -61,6 +61,10 @@ BSL                             "\\".
 "if"                                return 'if';
 "else"                              return 'else';
 "main"                              return 'main';
+
+"struct"                            return 'struct';
+
+
 /*Nativas Aritmeticas*/
 "pow"                               return 'pow';
 "sqrt"                              return 'sqrt';
@@ -138,10 +142,12 @@ BSL                             "\\".
 
 //error lexico
 .                                   {
-                                        console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+                                        console.error('Este es un error lexico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+                                        return 'error_lexico';
                                     }
 
 <<EOF>>                             return 'EOF'
+
 
 
 
@@ -191,10 +197,16 @@ BSL                             "\\".
     const {Break} = require("../Instrucciones/Break.js");
     const {Continue} = require("../Instrucciones/Continue.js");
 
+    const {Struct} = require("../Instrucciones/Struct.js");
+    const {Atributo} = require("../Instrucciones/Atributo.js");
+    
     //const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
     //REPORTE GRAMATICAL
     //const producciones = [];
     //const gramaticaDDS = [];
+    
+    const {Excepcion} = require("../AST/Excepcion.js");
+
 %}
 
 /* operator associations and precedence */
@@ -237,13 +249,15 @@ RAICES:
 ;
 
 RAIZ:
+
     PRINT semicolon                         { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <PRINT> ';'`);
                                                         gramaticaDDS.push(`Instruccion.val := Print.val ';'`);}
     | DECLARACION_NULA semicolon            { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <DECLARACION_NULA> ';'`);
                                                         gramaticaDDS.push(`Instruccion.val := Declaracion_Nula.val ';'`);}
     | DECLARACION semicolon                 { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <DECLARACION> ';'`);
                                                         gramaticaDDS.push(`Instruccion.val := Declaracion.val ';'`);}
-   // | DECLARACION_ARRAY                     { $$ = $1; }
+    | STRUCT semicolon                      { $$ = $1; }
+// | DECLARACION_ARRAY                     { $$ = $1; }
     | FUNCION                               { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <FUNCION>`);
                                                         gramaticaDDS.push(`Instruccion.val := Funcion.val`);}
     | WHILE                                 { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <WHILE>`);
@@ -276,6 +290,9 @@ RAIZ:
                                                         gramaticaDDS.push(`Instruccion.val := Switch.val`);}
     | MAIN                                  { $$ = $1;  producciones.push(`<INSTRUCCION> ::= <MAIN>`);
                                                         gramaticaDDS.push(`Instruccion.val := Main.val`);}
+    | INVALID                               { $$ = $1; }                                                        
+
+
 ;
 
 MAIN:
@@ -404,7 +421,6 @@ IDENTIFIER:
     identifier  { $$ = $1; }
 ;
 
-
 ASIGNACION:
     identifier asig EXPR              { $$ =  new Asignacion($1,$3,@1.first_line, @1.first_column); }
 ;
@@ -435,11 +451,28 @@ DEFAULT:
 ;
 
 PRINT:
-    print lparen ARGUMENTOS rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
-    | println lparen ARGUMENTOS rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
-
+    print lparen PRINT_EXPR rparen                { $$ = new Print($3, @1.first_line, @1.first_column,false); } 
+    | println lparen PRINT_EXPR rparen            { $$ = new Print($3, @1.first_line, @1.first_column,true); }
 ;
 
+PRINT_EXPR:
+    PRINT_EXPR coma EXPR    { $1.push($3); $$ = $1;} 
+    | EXPR                  { $$ = [$1]; }
+;
+
+STRUCT:
+    struct identifier allave STRUCT_ATRIBUTOS cllave { $$ = new Struct($2,$4,@1.first_line, @1.first_column); }
+;
+
+STRUCT_ATRIBUTOS:
+    STRUCT_ATRIBUTOS coma STRUCT_ATRIBUTO   { $1.push($3); $$ = $1;} 
+    |  STRUCT_ATRIBUTO                      { $$ = [$1]; }
+;
+
+
+STRUCT_ATRIBUTO:
+    TIPO identifier { $$ = new Atributo($2,$1,@1.first_line, @1.first_column); }
+;
 
 EXPR:
     PRIMITIVA                           { $$ = $1 }
@@ -450,13 +483,11 @@ EXPR:
     | NATIVAS_STRING                    { $$ = $1 }
     | NATIVA                            { $$ = $1 }
     | identifier                        { $$ = new Identificador($1,@1.first_line, @1.first_column);}
-    //| identifier dot length lparen rparen {$$ = new LengthString($1,@1.first_line,@1.first_column);}
     | LLAMADA                           { $$ = $1 }
 ;
 
 NATIVAS_STRING:
     EXPR concat EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
-    //| EXPR coma EXPR                                  {$$ = new Operacion($1,$3,Operador.CONCAT, @1.first_line, @1.first_column); }
     | EXPR repeat EXPR                                {$$ = new Operacion($1,$3,Operador.REPEAT, @1.first_line, @1.first_column); }
     | EXPR dot charOfPos lparen EXPR rparen           {$$ = new CharOfPosition($1,$5,@1.first_line, @1.first_column);}   
     | EXPR dot subString lparen EXPR coma EXPR rparen {$$ = new SubString($1,$5,$7,@1.first_line, @1.first_column);}    
@@ -512,6 +543,7 @@ PRIMITIVA:
     | lparen EXPR rparen         { $$ = $2 }
     | dollar EXPR                { $$ = $2 }
 ;
+
 NATIVA:
     int dot parse lparen EXPR rparen    {$$ = new TipoParse(Tipo.INT,$5,@1.first_line, @1.first_column);}
     | double dot parse lparen EXPR rparen {$$ = new TipoParse(Tipo.DOUBLE,$5,@1.first_line, @1.first_column);}
@@ -530,4 +562,9 @@ TIPO:
     | boolean                    {$$ = Tipo.BOOL; }
     | char                       {$$ = Tipo.CHAR; }
     | void                       {$$ = Tipo.VOID; }
+;
+
+INVALID: 
+    error_lexico {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Lexico","El token de entrada no es valido","Global"); }
+    | error {$$ = new Excepcion(@1.first_line, @1.first_column,"Error Sintactico","Token no esperado","Global"); }
 ;

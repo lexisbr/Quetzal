@@ -1,10 +1,14 @@
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
+
 import { Operador } from "../AST/Operador";
 import { Simbolo } from "../AST/Simbolo";
 import { Tipo } from "../AST/Tipo";
 import { Identificador } from "../Expresiones/Identificador";
 import { Primitivo } from "../Expresiones/Primitivo";
+
+import { Excepcion } from "../AST/Excepcion";
+
 import { Expresion } from "../Interfaces/Expresion";
 import { Instruccion } from "../Interfaces/Instruccion";
 import { QuadControlador } from "../Traductor/QuadControlador";
@@ -15,17 +19,18 @@ import { Quadrupla } from "../Traductor/Quadrupla";
 export class Print implements Instruccion {
     linea: number;
     columna: number;
-    public expresion: Array<Expresion>;
+    expresiones: Array<Expresion>;
     salto: boolean;
 
-    constructor(exp: Array<Expresion>, linea: number, columna: number, salto: boolean) {
-        this.expresion = exp;
+    constructor(expresiones: Array<Expresion>, linea: number, columna: number, salto: boolean) {
+        this.expresiones = expresiones;
         this.linea = linea;
         this.columna = columna;
         this.salto = salto;
     }
 
     traducir(controlador: QuadControlador) {
+
         this.expresion.forEach(element => {
             const tmpQ: Quadrupla | undefined = element.traducir(controlador);
             let valor = element.getValorImplicito(controlador.actual, controlador.arbol);
@@ -76,23 +81,28 @@ export class Print implements Instruccion {
                         controlador.addQuad(new Quadrupla(Operador.RESTA, "P", `${simbolo.posicion}`, "P"));
                     }
                 }
+
             }
         });
 
         if (this.salto) {
+
             controlador.addQuad(new Quadrupla("PRINTF", '%c', "((char)10)", ""));
         }
     }
     
+
     ejecutar(ent: Entorno, arbol: AST) {
-        
-        this.expresion.forEach(element => {
-            let valor = element.getValorImplicito(ent, arbol);
-            //valor = this.addSalto(valor);
+
+        for(let i in this.expresiones){
+            let valor = this.expresiones[i].getValorImplicito(ent, arbol);
+            if (valor instanceof Excepcion) {
+                return valor;
+            }
             arbol.updateConsola(valor);
-        });
-        if(this.salto){
-        arbol.updateConsola("\n");
+        }
+        if (this.salto) {
+            arbol.updateConsola("\n");
         }
     }
 

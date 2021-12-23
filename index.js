@@ -3,6 +3,7 @@ const Entorno = require("./AST/Entorno.js");
 const Instruccion = require("./Interfaces/Instruccion.js");
 const Excepcion = require("./AST/Excepcion.js");
 const Funcion = require("./Instrucciones/Funcion.js");
+const Struct = require("./Instrucciones/Struct.js");
 const Declaracion = require("./Instrucciones/Declaracion.js");
 const Main = require("./Instrucciones/Main.js");
 const Return = require("./Instrucciones/Return.js");
@@ -11,28 +12,43 @@ const grammar = require("./Gramatica/grammar.js");
 const { Operador } = require("./AST/Operador.js");
 
 const { QuadControlador } = require("./Traductor/QuadControlador.js");
-
+const tablaSimbolos = [];
 
 if (typeof window !== 'undefined') {
     window.parseExternal = function (input) {
         const instrucciones = grammar.parse(input);
         const ast = new AST.AST(instrucciones);
         const entornoGlobal = new Entorno.Entorno(null);
+        entornoGlobal.setEntorno("Global");
         const controlador = new QuadControlador(ast);
         ast.tablas.push(entornoGlobal); //GUARDO EL ENTORNO/TABLA PARA EL CODIGO EN 3D
         //console.log(ast.tablas);
         ast.instrucciones.forEach(function (element) {
             let value;
             if (element instanceof Funcion.Funcion) {
-                ast.addFuncion(element);
+                let value = ast.addFuncion(element);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola("\n" + value);
+                }
 
+            } else if (element instanceof Struct.Struct) {
+                let value = ast.addStruct(element);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola("\n" + value);
+                }
             } else if (element instanceof Declaracion.Declaracion) {
-
                 value = element.ejecutar(entornoGlobal, ast);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola("\n" + value);
+                }
             }
 
-            if (value instanceof Excepcion.Excepcion) {
-                ast.updateConsola(value);
+            if (element instanceof Excepcion.Excepcion) {
+                ast.addExcepcion(element);
+                ast.updateConsola("\n" + element);
             }
         });
 
@@ -46,30 +62,30 @@ if (typeof window !== 'undefined') {
                     main = true;
                     if (value instanceof Excepcion.Excepcion) {
                         ast.addExcepcion(value);
-                        ast.updateConsola(value);
-                    } 
+                        ast.updateConsola("\n" + value);
+                    }
                     main1 = element;
-                }else{
-                    let excepcion = new Excepcion.Excepcion(value.linea,value.columna,"\nSemantico","Existe mas de una funcion Main")
+                } else {
+                    let excepcion = new Excepcion.Excepcion(value.linea, value.columna, "Error Semantico", "Existe mas de una funcion Main")
                     ast.addExcepcion(excepcion);
-                    ast.updateConsola(excepcion);
+                    ast.updateConsola("\n" + excepcion);
                     return;
                 }
-            } 
-            
+            }
+
         });
 
         ast.instrucciones.forEach(function (element) {
-            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion)) {
-                let excepcion = new Excepcion.Excepcion(element.linea,element.columna,"\nSemantico","Sentencias fuera de Main")
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion || element instanceof Struct.Struct || element instanceof Excepcion.Excepcion)) {
+                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "Error Semantico", "Sentencias fuera de Main")
                 ast.addExcepcion(excepcion);
-                ast.updateConsola(excepcion)
-            } 
-            
+                ast.updateConsola("\n" + excepcion)
+            }
+
         });
 
-       
-        return ast.getConsola();
+        console.log(entornoGlobal);
+        return [ast.getConsola(), ast.getExcepciones()];
     }
 }
 if (typeof window !== 'undefined') {
@@ -86,8 +102,14 @@ if (typeof window !== 'undefined') {
                 ast.addFuncion(element);
 
             } else if (element instanceof Declaracion.Declaracion) {
-
                 value = element.ejecutar(entornoGlobal, ast);
+                if (value instanceof Excepcion.Excepcion) {
+                    ast.addExcepcion(value);
+                    ast.updateConsola(value);
+                }
+            }else if(element instanceof Excepcion.Excepcion) {
+                ast.addExcepcion(element);
+                ast.updateConsola(element.toString());
             }
 
             if (value instanceof Excepcion.Excepcion) {
@@ -110,7 +132,9 @@ if (typeof window !== 'undefined') {
                     }
 
                 } else {
-                    let excepcion = new Excepcion.Excepcion(value.linea, value.columna, "\nSemantico", "Existe mas de una funcion Main")
+
+                    let excepcion = new Excepcion.Excepcion(value.linea, value.columna, "Error Semantico", "Existe mas de una funcion Main")
+
                     ast.addExcepcion(excepcion);
                     ast.updateConsola(excepcion);
                     return;
@@ -120,8 +144,11 @@ if (typeof window !== 'undefined') {
         });
 
         ast.instrucciones.forEach(function (element) {
-            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion)) {
-                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "\nSemantico", "Sentencias fuera de Main")
+
+            console.log(element);
+            if (!(element instanceof Main.Main || element instanceof Declaracion.Declaracion || element instanceof Funcion.Funcion || element instanceof Struct.Struct || element instanceof Excepcion.Excepcion)) {
+                let excepcion = new Excepcion.Excepcion(element.linea, element.columna, "Error Semantico", "Sentencias fuera de Main")
+
                 ast.addExcepcion(excepcion);
                 ast.updateConsola(excepcion)
             }
@@ -225,5 +252,7 @@ function operadores_expresiones_unarias(opera) {
             return false;
     }
 }
+
+
 
 

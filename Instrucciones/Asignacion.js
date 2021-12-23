@@ -48,19 +48,16 @@ class Asignacion {
                 let simbolo = ent.getSimbolo(this.identificador);
                 let simboloValor = simbolo.getTipo(ent, arbol);
                 if (simboloValor == tipoValor || (tipoValor == Tipo_js_1.Tipo.NULL && simboloValor == Tipo_js_1.Tipo.STRING) || (tipoValor == Tipo_js_1.Tipo.INT && simboloValor == Tipo_js_1.Tipo.DOUBLE) || (tipoValor == Tipo_js_1.Tipo.CHAR && simboloValor == Tipo_js_1.Tipo.STRING)) {
-                    if (this.isDouble(tipoValor, simboloValor)) {
-                        valor = valor.toFixed(2);
-                    }
                     simbolo.setValor(valor);
                     ent.reemplazar(this.identificador, simbolo);
                     return simbolo;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Los tipos no coinciden");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Los tipos no coinciden", ent.getEntorno());
                 }
             }
             else {
-                return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La variable no esta definida");
+                return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable no esta definida", ent.getEntorno());
             }
         }
         else {

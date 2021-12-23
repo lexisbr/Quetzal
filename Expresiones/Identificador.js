@@ -17,7 +17,7 @@ class Identificador {
             return simbolo.getTipo(ent, arbol);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La variable no existe");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable no existe", ent.getEntorno());
         }
     }
     getId() {
@@ -30,7 +30,7 @@ class Identificador {
             return simbolo.getValorImplicito(ent, arbol);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La variable no existe");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La variable no existe", ent.getEntorno());
         }
     }
     traducir(controlador) {

@@ -58,5 +58,8 @@ class Entorno {
     setEntorno(id) {
         this.entorno = id;
     }
+    getEntorno() {
+        return this.entorno;
+    }
 }
 exports.Entorno = Entorno;

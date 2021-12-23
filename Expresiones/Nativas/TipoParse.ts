@@ -72,18 +72,18 @@ export class TipoParse implements Expresion {
                             return false;
                         } else
                         {
-                            return new Excepcion(this.linea, this.columna, "Semantico", "No es posible convertir a Boolean la cadena ingresada");
+                            return new Excepcion(this.linea, this.columna, "Error Semantico", "No es posible convertir a Boolean la cadena ingresada",ent.getEntorno());
                         }
                     } else {
-                        return new Excepcion(this.linea, this.columna, "Semantico", "La Funcion Parse no existe para este tipo de dato");
+                        return new Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion Parse no existe para este tipo de dato",ent.getEntorno());
                     }
                 } else {
-                        return new Excepcion(this.linea, this.columna, "Semantico", "Cadena Erronea para Funcion Parse, solo permite numeros");
+                        return new Excepcion(this.linea, this.columna, "Error Semantico", "Cadena Erronea para Funcion Parse, solo permite numeros",ent.getEntorno());
 
                 }
             } else {
                 
-                return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion Parse, la Expresion no es de Tipo String");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion Parse, la Expresion no es de Tipo String",ent.getEntorno());
 
                 
             }

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AST = void 0;
+const Excepcion_1 = require("./Excepcion");
 const QuadControlador_1 = require("../Traductor/QuadControlador");
 class AST {
     constructor(instrucciones) {
@@ -22,7 +23,12 @@ class AST {
         return this.consola;
     }
     addFuncion(funcion) {
-        this.funciones.push(funcion);
+        if (this.getFuncion(funcion.getNombre()) == null) {
+            this.funciones.push(funcion);
+        }
+        else {
+            return new Excepcion_1.Excepcion(funcion.linea, funcion.columna, "Error Semantico", "La funcion ya existe", "Global");
+        }
     }
     getFuncion(name) {
         for (let i in this.funciones) {
@@ -33,8 +39,28 @@ class AST {
         }
         return null;
     }
+    getStruct(identificador) {
+        for (let i in this.structs) {
+            let struct = this.structs[i];
+            if (struct.getIdentificador() === identificador) {
+                return struct;
+            }
+        }
+        return null;
+    }
+    addStruct(struct) {
+        if (this.getStruct(struct.getIdentificador()) == null) {
+            this.structs.push(struct);
+        }
+        else {
+            return new Excepcion_1.Excepcion(struct.linea, struct.columna, "Error Semantico", "El struct ya existe", "Global");
+        }
+    }
     addExcepcion(excepcion) {
         this.excepciones.push(excepcion);
+    }
+    getExcepciones() {
+        return this.excepciones;
     }
 }
 exports.AST = AST;

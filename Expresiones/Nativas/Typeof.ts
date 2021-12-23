@@ -68,7 +68,7 @@ export class Typeof implements Expresion {
                 return "String";
             } else
             {
-                return new Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion Typeof");
+                return new Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion Typeof",ent.getEntorno());
             }
 
     }

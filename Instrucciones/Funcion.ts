@@ -36,18 +36,18 @@ export class Funcion implements Instruccion {
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(ent, arbol);
             if (value instanceof Excepcion) {
-                arbol.updateConsola(value.toString());
+                return value;
             } else if (value instanceof Return) {
                 if (this.tipo == value.getTipo()) {
                     if(this.tipo != Tipo.VOID) return value.getValue();
                     else return this;
                 }
-                else return new Excepcion(this.linea, this.columna, "\nSemantico", "El valor de retorno no coincide con el tipo de la funcion.")
+                else return new Excepcion(this.linea, this.columna, "Error Semantico", "El valor de retorno no coincide con el tipo de la funcion.",ent.getEntorno())
             }
         }
         
         if(this.tipo != Tipo.VOID){
-            return new Excepcion(this.linea, this.columna, "\nSemantico", "La funcion debe retornar un valor")
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "La funcion debe retornar un valor",ent.getEntorno())
         }
     }
 

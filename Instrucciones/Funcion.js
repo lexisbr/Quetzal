@@ -21,7 +21,7 @@ class Funcion {
         for (let i in this.instrucciones) {
             let value = this.instrucciones[i].ejecutar(ent, arbol);
             if (value instanceof Excepcion_1.Excepcion) {
-                arbol.updateConsola(value.toString());
+                return value;
             }
             else if (value instanceof Return_1.Return) {
                 if (this.tipo == value.getTipo()) {
@@ -31,11 +31,11 @@ class Funcion {
                         return this;
                 }
                 else
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "El valor de retorno no coincide con el tipo de la funcion.");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "El valor de retorno no coincide con el tipo de la funcion.", ent.getEntorno());
             }
         }
         if (this.tipo != Tipo_1.Tipo.VOID) {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "La funcion debe retornar un valor");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La funcion debe retornar un valor", ent.getEntorno());
         }
     }
     getNombre() {

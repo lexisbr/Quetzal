@@ -26,11 +26,10 @@ export class While implements Instruccion {
         while(true){
             let condicion = this.condicion.getValorImplicito(ent, arbol);
             if(condicion instanceof Excepcion) return condicion;
-
+            let nuevoEntorno:Entorno = new Entorno(ent);
+            nuevoEntorno.setEntorno("While");
             if (this.condicion.getTipo(ent,arbol) == Tipo.BOOL){
                 if(condicion){
-                    let nuevoEntorno:Entorno = new Entorno(ent);
-                    nuevoEntorno.setEntorno("While");
                     arbol.tablas.push(nuevoEntorno);
                     for(let i in this.instrucciones){
                         let instruccion = this.instrucciones[i];
@@ -44,7 +43,7 @@ export class While implements Instruccion {
                     break;
                 }
             }else{
-                return new Excepcion(this.linea, this.columna, "\nSemantico","El tipo de dato en condicion debe ser booleano")
+                return new Excepcion(this.linea, this.columna, "Error Semantico","El tipo de dato en condicion debe ser booleano",nuevoEntorno.getEntorno())
             }
         }
     }

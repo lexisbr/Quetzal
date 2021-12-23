@@ -92,7 +92,7 @@ class Logica {
                     return op1 && op2;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Tipo de Dato Erroneo para AND");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para AND", ent.getEntorno());
                 }
             }
             //OR
@@ -101,7 +101,7 @@ class Logica {
                     return op1 || op2;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "\nSemantico", "Tipo de Dato Erroneo para OR");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para OR", ent.getEntorno());
                 }
             }
         }
@@ -113,7 +113,7 @@ class Logica {
                     return !op1;
                 }
                 else {
-                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para NOT");
+                    return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para NOT", ent.getEntorno());
                 }
             }
         }

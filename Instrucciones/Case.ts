@@ -25,12 +25,13 @@ export class Case implements Instruccion {
 
     ejecutar(ent: Entorno, arbol: AST) {
         let nuevoEntorno = new Entorno(ent);
+        nuevoEntorno.setEntorno("Case");
         for(let i in this.instrucciones){
             let result = this.instrucciones[i].ejecutar(nuevoEntorno, arbol);
             if(result instanceof Excepcion || result instanceof Break || result instanceof Return)
             return result;
             else if(result instanceof Continue) 
-            return new Excepcion(this.linea, this.columna, "\nSemantico", "Continue fuera de loop");
+            return new Excepcion(this.linea, this.columna, "Error Semantico", "Continue fuera de loop",nuevoEntorno.getEntorno());
         }
     }
     

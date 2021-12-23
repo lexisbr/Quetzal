@@ -68,6 +68,16 @@ h1 {
     text-align:center;
 	justify-content: space-between;
 }
+
+.buttonsDivReportes{
+	height:30px;
+    width:800px;
+	margin: auto;
+	margin-bottom: 50px;
+    text-align:center;
+	justify-content: space-between;
+}
+
 .buttons{
 	float:center;
 	margin: 20px 50px;

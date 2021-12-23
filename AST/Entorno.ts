@@ -4,7 +4,7 @@ import { Simbolo } from "./Simbolo";
 export class Entorno{
     private anterior:Entorno;
     private tabla:{[id:string] : Simbolo};
-    private entorno:String;
+    private entorno:string;
 
     constructor(anterior:any){
         this.tabla = {};
@@ -85,5 +85,9 @@ export class Entorno{
 
     setEntorno(id:string){
         this.entorno = id;
+    }
+
+    getEntorno(){
+        return this.entorno;
     }
 }

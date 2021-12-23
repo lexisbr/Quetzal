@@ -41,7 +41,7 @@ class Length {
             return value.length;
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "Tipo de Dato Erroneo para Funcion length");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "Tipo de Dato Erroneo para Funcion length", ent.getEntorno());
         }
     }
     isInt(n) {

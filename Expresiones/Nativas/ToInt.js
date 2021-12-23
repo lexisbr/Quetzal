@@ -43,7 +43,7 @@ class ToInt {
             return Math.trunc(valor);
         }
         else {
-            return new Excepcion_1.Excepcion(this.linea, this.columna, "Semantico", "La Funcion toInt solo permite Numeros Decimales para convertirlos a Enteros");
+            return new Excepcion_1.Excepcion(this.linea, this.columna, "Error Semantico", "La Funcion toInt solo permite Numeros Decimales para convertirlos a Enteros", ent.getEntorno());
         }
     }
     isInt(n) {
