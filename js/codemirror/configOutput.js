@@ -1,7 +1,7 @@
 
 let source2 = '';
 let myCodeMirror2 = CodeMirror(document.querySelector("#codeConsole"), {
-	lineNumbers: false,
+	lineNumbers: true,
 	tabSize: 4,
 	value: ``,
 	readOnly: true,

@@ -19,7 +19,7 @@ export class Primitivo implements Expresion {
     traducir(controlador:QuadControlador):Quadrupla | undefined {
         //const value = `${this.valor}` == `true`? 1: `${this.valor}` == `false` ? 0: `${this.valor}`;
         const value = `${this.valor}` === "true" ? "1" : `${this.valor}` === "false" ? "0" : `${this.valor}`;
-        return new Quadrupla("op","arg1","arg2",`${this.valor}`);   //AL SER UN VALOR PRIMITIVO, NO NECESITAMOS GUARDAR TEMP, PORQUE SE RETORNA EL VALOR 
+        return new Quadrupla("op","arg1","arg2",`${value}`);   //AL SER UN VALOR PRIMITIVO, NO NECESITAMOS GUARDAR TEMP, PORQUE SE RETORNA EL VALOR 
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {

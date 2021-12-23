@@ -85,45 +85,159 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
  this.$ = $$[$0-1]; return this.$; 
+                            producciones.push(`<INICIO> ::= <INSTRUCCIONES> EOF`);
+                            gramaticaDDS.push(`Inicio.val := Instrucciones.val EOF`);
 break;
-case 2: case 61:
- $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+case 2:
+ $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
+                            producciones.push(`<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>`);
+                            gramaticaDDS.push(`Instrucciones.val := Instrucciones.val Instruccion.val`);
 break;
-case 3: case 27: case 34: case 52:
+case 3:
  this.$ = [$$[$0]]; 
+                            producciones.push(`<INSTRUCCIONES> ::= <INSTRUCCION>`);
+                            gramaticaDDS.push(`Instrucciones.val := Instruccion.val`);
 break;
-case 4: case 5: case 6: case 9: case 12: case 13: case 14: case 15: case 18:
- this.$ = $$[$0-1]; 
+case 4:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <PRINT> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Print.val ';'`);
 break;
-case 7: case 8: case 10: case 11: case 19: case 20: case 21: case 24: case 28: case 31: case 35: case 53:
- this.$ = $$[$0]; 
+case 5:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <DECLARACION_NULA> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Declaracion_Nula.val ';'`);
+break;
+case 6:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <DECLARACION> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Declaracion.val ';'`);
+break;
+case 7:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <FUNCION>`);
+                                                        gramaticaDDS.push(`Instruccion.val := Funcion.val`);
+break;
+case 8:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <WHILE>`);
+                                                        gramaticaDDS.push(`Instruccion.val := While.val`);
+break;
+case 9:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <DO_WHILE> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Do_While.val ';'`);
+break;
+case 10:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <FOR>`);
+                                                        gramaticaDDS.push(`Instruccion.val := For.val`);
+break;
+case 11:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <FOR_IN>`);
+                                                        gramaticaDDS.push(`Instruccion.val := For_In.val`); 
+break;
+case 12:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <RETURN> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Return.val ';'`);
+break;
+case 13:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <BREAK> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Break.val ';'`);
+break;
+case 14:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <CONTINUE> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Continue.val ';'`);
+break;
+case 15:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <LLAMADA> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Llamada.val ';'`);
 break;
 case 16:
  this.$ = new Incremento(new Operacion(new Identificador($$[$0-2],_$[$0-2].first_line, _$[$0-2].first_column),new Identificador($$[$0-2],_$[$0-2].first_line, _$[$0-2].first_column),Operador.INCREMENTO, _$[$0-2].first_line, _$[$0-2].first_column),_$[$0-2].first_line, _$[$0-2].first_column); 
+                                                        producciones.push(`<INSTRUCCION> ::= <Identificador> '++' ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Identificador.val '++' ';'`);
 break;
 case 17:
  this.$ = new Decremento(new Operacion(new Identificador($$[$0-2],_$[$0-2].first_line, _$[$0-2].first_column),new Identificador($$[$0-2],_$[$0-2].first_line, _$[$0-2].first_column),Operador.DECREMENTO, _$[$0-2].first_line, _$[$0-2].first_column),_$[$0-2].first_line, _$[$0-2].first_column); 
+                                                        producciones.push(`<INSTRUCCION> ::= <Identificador> '--' ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Identificador.val '--' ';'`);
+break;
+case 18:
+ this.$ = $$[$0-1];  producciones.push(`<INSTRUCCION> ::= <ASIGNACION> ';'`);
+                                                        gramaticaDDS.push(`Instruccion.val := Asignacion.val ';'`);
+break;
+case 19:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <IF>`);
+                                                        gramaticaDDS.push(`Instruccion.val := If.val`);
+break;
+case 20:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <SWITCH>`);
+                                                        gramaticaDDS.push(`Instruccion.val := Switch.val`);
+break;
+case 21:
+ this.$ = $$[$0];  producciones.push(`<INSTRUCCION> ::= <MAIN>`);
+                                                        gramaticaDDS.push(`Instruccion.val := Main.val`);
 break;
 case 22:
 this.$ = new Main($$[$0-1],_$[$0-6].first_line, _$[$0-6].first_column); 
+                                                        producciones.push(`<MAIN> ::= 'void' 'main' '(' ')' '{' <INSTRUCCIONES> '}'`);
+                                                        gramaticaDDS.push(`Main.val := 'void' 'main' '(' ')' '{' Instrucciones.val '}'`);
 break;
 case 23:
- this.$ = new Funcion($$[$0-6],$$[$0-4],$$[$0-1],$$[$0-7],_$[$0-7].first_line, _$[$0-7].first_column); 
+ this.$ = new Funcion($$[$0-6],$$[$0-4],$$[$0-1],$$[$0-7],_$[$0-7].first_line, _$[$0-7].first_column);
+                                                        producciones.push(`<FUNCION> ::= <Identificador> '(' <LISTA_PARAMETROS> ')' '{' <INSTRUCCIONES> '}'`);
+                                                        gramaticaDDS.push(`Funcion.val := Identificador.val '(' Lista_Parametros.val ')' '{' Instrucciones.val '}'`);
+                                                         
 break;
-case 25: case 32:
- this.$ = []; 
+case 24:
+ this.$ = $$[$0];                               producciones.push(`<LISTA_PARAMETROS> ::= <PARAMETRO>`);
+                                                        gramaticaDDS.push(`Lista_Parametros.val := Parametro.val`);
 break;
-case 26: case 33: case 51:
- $$[$0-2].push($$[$0]); this.$ = $$[$0-2];
+case 25:
+ this.$ = [];                                        producciones.push(`<LISTA_PARAMETROS> ::= `);
+                                                        gramaticaDDS.push(`Lista_Parametros.val := `);
+break;
+case 26:
+ $$[$0-2].push($$[$0]); this.$ = $$[$0-2];  producciones.push(`<PARAMETROS> ::= <PARAMETROS> ',' <PARAMETRO>`);
+                                                        gramaticaDDS.push(`Parametros.val := Parametros.val ',' Parametro.val`);
+break;
+case 27:
+ this.$ = [$$[$0]];                            producciones.push(`<PARAMETROS> ::= <PARAMETRO>`);
+                                                        gramaticaDDS.push(`Parametros.val := Parametro.val`);
+break;
+case 28:
+ this.$ = $$[$0];                  producciones.push(`<PARAMETRO> ::= <DECLARACION_PARAMETROS>`);
+                                                        gramaticaDDS.push(`Parametro.val := Declaracion_Parametros.val`);
 break;
 case 29:
  this.$ = new Declaracion($$[$0],null,$$[$0-1],_$[$0-1].first_line, _$[$0-1].first_column); 
+                                                        producciones.push(`<DECLARACION_PARAMETROS> ::= <TIPO> <Identificador>`);
+                                                        gramaticaDDS.push(`Declaracion_Parametros.val := Declaracion_Parametros.val`);
 break;
 case 30:
  this.$ = new Llamada($$[$0-3],$$[$0-1],_$[$0-3].first_line, _$[$0-3].first_column);
+                                                        producciones.push(`<LLAMADA> ::= <Identificador>  '(' <LISTA_ARGUMENTOS> ')'`);
+                                                        gramaticaDDS.push(`Main.val := Identificador.val '(' Lista_Argumentos.val ')'`);
+break;
+case 31:
+ this.$ = $$[$0];                               producciones.push(`<LISTA_ARGUMENTOS> ::= <ARGUMENTOS>`);
+                                                        gramaticaDDS.push(`Lista_Argumentos.val := Argumentos.val`);
+break;
+case 32:
+ this.$ = [];                                        
+                                                        producciones.push(`<LISTA_ARGUMENTOS> ::= `);
+                                                        gramaticaDDS.push(`Lista_Argumentos.val := `);
+break;
+case 33:
+ $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; producciones.push(`<ARGUMENTOS> ::= <ARGUMENTOS> ',' <ARGUMENTO>`);
+                                                        gramaticaDDS.push(`Argumentos.val := Argumentos.val ',' Argumento.val`);
+break;
+case 34:
+ this.$ = [$$[$0]];                        producciones.push(`<ARGUMENTOS> ::= <ARGUMENTO>`);
+                                                        gramaticaDDS.push(`Argumentos.val := Argumento.val`);
+break;
+case 35:
+ this.$ = $$[$0];                                    producciones.push(`<ARGUMENTO> ::= <EXPRESION>`);
+                                                        gramaticaDDS.push(`Argumento.val := Expresion.val`);
 break;
 case 36:
  this.$ = new While($$[$0-1],$$[$0-4],_$[$0-6].first_line,_$[$0-6].first_column); 
+                                                        producciones.push(`<WHILE> ::= 'while' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}'`);
+                                                        gramaticaDDS.push(`While.val := 'while' '(' Expresion.val ')' '{' Instrucciones.val '}'`);
 break;
 case 37:
  this.$ = new DoWhile($$[$0-5],$$[$0-1],_$[$0-7].first_line,_$[$0-7].first_column); 
@@ -164,6 +278,15 @@ break;
 case 50:
  this.$ = new Declaracion(null,null,$$[$0-1],$$[$0],_$[$0-1].first_line, _$[$0-1].first_column); 
 break;
+case 51:
+ $$[$0-2].push($$[$0]); this.$ = $$[$0-2];
+break;
+case 52:
+ this.$ = [$$[$0]]; 
+break;
+case 53:
+ this.$ = $$[$0]; 
+break;
 case 54:
  this.$ =  new Asignacion($$[$0-2],$$[$0],_$[$0-2].first_line, _$[$0-2].first_column); 
 break;
@@ -184,6 +307,9 @@ case 59:
 break;
 case 60:
  this.$ = new Switch($$[$0-4],null,$$[$0],_$[$0-6].first_line, _$[$0-6].first_column); 
+break;
+case 61:
+ $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
 break;
 case 62:
 this.$ = [$$[$0]]; 
@@ -507,6 +633,9 @@ parse: function parse(input) {
     return true;
 }};
 
+    let producciones = [];
+    let gramaticaDDS = [];
+
     const {Print} = require("../Instrucciones/Print.js");
     const {Primitivo} = require("../Expresiones/Primitivo.js");
     const {Operacion} = require("../Expresiones/Operacion.js");
@@ -549,7 +678,10 @@ parse: function parse(input) {
     const {Break} = require("../Instrucciones/Break.js");
     const {Continue} = require("../Instrucciones/Continue.js");
 
-    const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
+    //const {ReporteGramatical} = require("../Reportes/ReporteGramatical.js");
+    //REPORTE GRAMATICAL
+    //const producciones = [];
+    //const gramaticaDDS = [];
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({

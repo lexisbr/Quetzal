@@ -29,28 +29,30 @@ export class Asignacion implements Instruccion {
         const variable: Simbolo = controlador.actual.getSimbolo(this.identificador);
         let simboloValor = variable.getTipo(controlador.actual, controlador.arbol);
         let valor = this.expresion.getValorImplicito(controlador.actual, controlador.arbol);
+        console.log(simboloValor);
         if (simboloValor == Tipo.STRING) {
             const tmp = controlador.getTemp();
             const tmp2 = controlador.getTemp();
             controlador.addQuad(new Quadrupla(`ASSIGN`, `H`, ``, `${tmp}`));
             for (let i = 0; i < valor.length; i++) {
-                controlador.addQuad(new Quadrupla(`=`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[H]`));
-                controlador.addQuad(new Quadrupla(Operador.SUMA.toString(), `1`, `H`, `H`));
+                controlador.addQuad(new Quadrupla(`ASSIGN`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[(int)H]`));
+                controlador.addQuad(new Quadrupla(Operador.SUMA, `H`, `1`, `H`));
             }
-            controlador.addQuad(new Quadrupla(`=`, `-1`, `H`, `${controlador.arbol.heap}`));
-            controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
+            controlador.addQuad(new Quadrupla(`ASSIGN`, `-1`, ``, `${controlador.arbol.heap}[(int)H]`));
+            controlador.addQuad(new Quadrupla(`+`, `H`, `1`, `H`));
             controlador.addQuad(new Quadrupla(`+`, `P`, `${variable.posicion.toString()}`, `${tmp2}`));
-            controlador.addQuad(new Quadrupla(`=`, `${tmp}`, ``, `${controlador.arbol.stack}[${tmp2}]`));
+            controlador.addQuad(new Quadrupla(`ASSIGN`, `${tmp}`, ``, `${controlador.arbol.stack}[(int)${tmp2}]`));
             console.log(controlador);
-        } else if (simboloValor == Tipo.INT || simboloValor == Tipo.DOUBLE) {
+        } else if (simboloValor == Tipo.INT || simboloValor == Tipo.DOUBLE || simboloValor == Tipo.BOOL) {
             const tmp = controlador.getTemp();
             controlador.addQuad(new Quadrupla(Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp));
             const quad_expr = this.expresion.traducir(controlador);
             const res = (quad_expr) ? quad_expr.resultado : "";
-            controlador.addQuad(new Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[" + tmp + "]"));
+            controlador.addQuad(new Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[(int)" + tmp + "]"));
         }
         return;
     }
+    
 
 
     ejecutar(ent: Entorno, arbol: AST) {
@@ -65,64 +67,7 @@ export class Asignacion implements Instruccion {
                         valor = valor.toFixed(2);
                     }
                     simbolo.setValor(valor);
-                    if (tipoValor == Tipo.INT || tipoValor == Tipo.DOUBLE) {
-                        console.log("entra------");
-                        if (this.expresion instanceof Operacion || this.expresion instanceof Primitivo) {
-                            let temp = arbol.controlador.getTemp();
-                            arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${simbolo.posicion}`, `${temp}`));
-                            arbol.controlador.codigo3D.push(`${temp} = P + ${simbolo.posicion} ;`);
-                            let etiqueta = (this.expresion instanceof Operacion)?this.expresion.etiqueta:valor;
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `${etiqueta}`, `${temp}`, `${arbol.stack}`));
-                            arbol.controlador.codigo3D.push(`${arbol.stack}[${temp}] = ${etiqueta} ;`);
-                        } 
-                    } else if (tipoValor == Tipo.STRING){
-                        if (this.expresion instanceof Operacion || this.expresion instanceof Primitivo) {
-                            let temp = arbol.controlador.getTemp();
-                            let temp2 = arbol.controlador.getTemp();
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `H`, ``, `${temp}`));
-                            arbol.controlador.codigo3D.push(`${temp} = H ;`);
-                            for (let i = 0; i < valor.length; i++){
-                                arbol.controlador.addQuad(new Quadrupla(`=`, `${valor.charCodeAt(i)}`, `H`, `${arbol.heap}`));
-                                arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = ${valor.charCodeAt(i)} ;`);
-                                arbol.controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
-                                arbol.controlador.codigo3D.push(`H = H + 1 ;`);
-                            }
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `-1`, `H`, `${arbol.heap}`));
-                            arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = -1 ;`);
-                            arbol.controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
-                            arbol.controlador.codigo3D.push(`H = H + 1 ;`);
-                            arbol.controlador.codigo3D.push(`${temp2} = P + ${simbolo.posicion} ;`);
-                            arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${simbolo.posicion}`, `${temp2}`));
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `${temp}`, `${temp2}`, `${arbol.stack}`));
-                            arbol.controlador.codigo3D.push(`${arbol.stack}[(int)${temp2}] = ${temp} ;`);
-                            console.log("Imprimiendo string--------");
-                            console.log(arbol.controlador.codigo3D.join("\n"));
-                            console.log("Saliendo de imprimir string");
-                        }
-                    } else if (tipoValor == Tipo.CHAR){
-                        if (this.expresion instanceof Operacion) {
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `${this.expresion.etiqueta}`, `${simbolo.posicion}`, `${arbol.stack}`));
-                        } else if (this.expresion instanceof Primitivo) {
-                            let temp = arbol.controlador.getTemp();
-                            let temp2 = arbol.controlador.getTemp();
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `H`, ``, `${temp}`));
-                            arbol.controlador.codigo3D.push(`${temp} = H ;`);
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `${valor.charCodeAt(0)}`, `H`, `${arbol.heap}`));
-                            arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = ${valor.charCodeAt(0)} ;`);
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `-1`, `H`, `${arbol.heap}`));
-                            arbol.controlador.codigo3D.push(`${arbol.heap}[(int)H] = -1 ;`);
-                            arbol.controlador.addQuad(new Quadrupla(`+`, `1`, `H`, `H`));
-                            arbol.controlador.codigo3D.push(`H = H + 1 ;`);
-                            arbol.controlador.codigo3D.push(`${temp2} = P + ${simbolo.posicion} ;`);
-                            arbol.controlador.addQuad(new Quadrupla(`+`, `P`, `${simbolo.posicion}`, `${temp2}`));
-                            arbol.controlador.addQuad(new Quadrupla(`=`, `${temp}`, `${temp2}`, `${arbol.stack}`));
-                            arbol.controlador.codigo3D.push(`${arbol.stack}[(int)${temp2}] = ${temp} ;`);
-                            console.log("Imprimiendo string--------");
-                            console.log(arbol.controlador.codigo3D.join("\n"));
-                            console.log("Saliendo de imprimir string");
-                        }
-                    }
-
+                    
                     ent.reemplazar(this.identificador, simbolo);
 
                     return simbolo;

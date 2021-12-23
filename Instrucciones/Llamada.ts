@@ -28,7 +28,10 @@ export class Llamada implements Instruccion {
         }
         
         let nuevoEntorno = new Entorno(ent);
+        //nuevoEntorno.setEntorno("Llamada a Funcion");
+        
         arbol.tablas.push(nuevoEntorno);    //REVISAR POR QUE SE CREA UN NUEVO ENTORNO
+        //console.log(nuevoEntorno);
         let parametrosFuncion = funcion.getParametros();
         if(this.parametros.length == parametrosFuncion.length){
             for(let i in this.parametros){

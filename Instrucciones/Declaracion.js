@@ -28,21 +28,21 @@ class Declaracion {
             const tmp2 = controlador.getTemp();
             controlador.addQuad(new Quadrupla_1.Quadrupla(`ASSIGN`, `H`, ``, `${tmp}`));
             for (let i = 0; i < valor.length; i++) {
-                controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[H]`));
-                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), `1`, `H`, `H`));
+                controlador.addQuad(new Quadrupla_1.Quadrupla(`ASSIGN`, `${valor.charCodeAt(i)}`, ``, `${controlador.arbol.heap}[(int)H]`));
+                controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA, `H`, `1`, `H`));
             }
-            controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `-1`, `H`, `${controlador.arbol.heap}`));
-            controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `1`, `H`, `H`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`ASSIGN`, `-1`, ``, `${controlador.arbol.heap}[(int)H]`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `H`, `1`, `H`));
             controlador.addQuad(new Quadrupla_1.Quadrupla(`+`, `P`, `${variable.posicion.toString()}`, `${tmp2}`));
-            controlador.addQuad(new Quadrupla_1.Quadrupla(`=`, `${tmp}`, ``, `${controlador.arbol.stack}[${tmp2}]`));
+            controlador.addQuad(new Quadrupla_1.Quadrupla(`ASSIGN`, `${tmp}`, ``, `${controlador.arbol.stack}[(int)${tmp2}]`));
             console.log(controlador);
         }
-        else if (simboloValor == Tipo_1.Tipo.INT || simboloValor == Tipo_1.Tipo.DOUBLE) {
+        else if (simboloValor == Tipo_1.Tipo.INT || simboloValor == Tipo_1.Tipo.DOUBLE || simboloValor == Tipo_1.Tipo.BOOL) {
             const tmp = controlador.getTemp();
             controlador.addQuad(new Quadrupla_1.Quadrupla(Operador_1.Operador.SUMA.toString(), "P", variable.posicion.toString(), tmp));
             const quad_expr = this.expresion.traducir(controlador);
             const res = (quad_expr) ? quad_expr.resultado : "";
-            controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[" + tmp + "]"));
+            controlador.addQuad(new Quadrupla_1.Quadrupla("ASSIGN", res, "", controlador.arbol.stack + "[(int)" + tmp + "]"));
         }
         return;
     }
